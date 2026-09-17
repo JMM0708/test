@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Récit de données de l'Observatoire de l'habitat AGORAH : la programmation de logements à La Réunion, 2020-2025.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Habiter La Réunion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f1f3f4;
+  --surface:#ffffff;
+  --surface-2:#f7f9fa;
+  --ink:#1a1a1a;
+  --ink-2:#3d4a51;
+  --muted:#6b7780;
+  --line:#e2e7ea;
+  --line-strong:#c8d0d4;
+  --teal:#15495a;
+  --teal-2:#1f6478;
+  --teal-3:#3d7383;
+  --teal-4:#7a9fac;
+  --teal-deep:#0f3645;
+  --orange:#f39200;
+  --on-teal:#ffffff;
+  --on-mark:#ffffff;
+  --on-ramp-1:#0f3645;
+  --on-teal-4:#0f3645;
+  --ramp-0:#e9eff2; --ramp-1:#b8ccd4; --ramp-2:#7a9fac; --ramp-3:#3d7383; --ramp-4:#15495a;
+  --ind-low:#8e4a8d; --ind-ok:#2d6cb3; --ind-over:#2e7d32;
+  --grid:#e6ebee;
+  --alert:#b3402f;
+  --nodata:#d7dee1;
+  --shadow:0 1px 2px rgba(21,73,90,.06), 0 8px 24px rgba(21,73,90,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0d1a20;
+    --surface:#13242c;
+    --surface-2:#182d36;
+    --ink:#eaf1f4;
+    --ink-2:#c2d2d9;
+    --muted:#93a6ae;
+    --line:#23414d;
+    --line-strong:#2f5464;
+    --teal:#5aa3bc;
+    --teal-2:#4e97b0;
+    --teal-3:#6fb3c8;
+    --teal-4:#98cbdb;
+    --teal-deep:#0a2630;
+    --on-teal:#06222c;
+    --on-mark:#06222c;
+    --on-ramp-1:#dbe9ee;
+    --on-teal-4:#06222c;
+    --ramp-0:#16303a; --ramp-1:#21505f; --ramp-2:#317c95; --ramp-3:#55a6c0; --ramp-4:#8ed2e6;
+    --ind-low:#c07fbf; --ind-ok:#6ea6e2; --ind-over:#68b86d;
+    --grid:#1e3b46;
+    --alert:#e07a68;
+    --nodata:#35474f;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.28);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0d1a20; --surface:#13242c; --surface-2:#182d36;
+  --ink:#eaf1f4; --ink-2:#c2d2d9; --muted:#93a6ae;
+  --line:#23414d; --line-strong:#2f5464;
+  --teal:#5aa3bc; --teal-2:#4e97b0; --teal-3:#6fb3c8; --teal-4:#98cbdb; --teal-deep:#0a2630;
+  --on-teal:#06222c;
+  --on-mark:#06222c;
+  --on-ramp-1:#dbe9ee;
+  --on-teal-4:#06222c;
+  --ramp-0:#16303a; --ramp-1:#21505f; --ramp-2:#317c95; --ramp-3:#55a6c0; --ramp-4:#8ed2e6;
+  --ind-low:#c07fbf; --ind-ok:#6ea6e2; --ind-over:#68b86d;
+  --grid:#1e3b46;
+  --alert:#e07a68;
+  --nodata:#35474f;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.28);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  font-size:16px; line-height:1.62; font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px}
+.col{max-width:66ch}
+p{margin:0 0 1.05em}
+a{color:var(--teal-2)}
+strong{font-weight:700}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- Bandeau de tête ---------- */
+.masthead{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+  background:var(--teal-deep); color:#eaf3f6;
+  border-bottom:3px solid var(--orange);
+}
+.masthead__in{
+  max-width:1180px; margin:0 auto; padding:9px 20px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; font-weight:700;
+}
+.masthead__mark{display:flex; align-items:center; gap:9px}
+.masthead__sq{width:13px; height:13px; background:var(--orange); display:block}
+.masthead__sep{color:#6f97a4; font-weight:400; letter-spacing:0}
+.masthead__right{margin-left:auto; color:#9fc0cb; letter-spacing:.1em}
+@media (max-width:640px){ .masthead__right{display:none} }
+
+/* ---------- Ouverture ---------- */
+.hero{padding-block:44px 8px}
+.hero__grid{display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); gap:44px; align-items:center}
+@media (max-width:920px){ .hero__grid{grid-template-columns:1fr; gap:28px} }
+.eyebrow{
+  font-size:11.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 18px;
+}
+h1{
+  font-size:clamp(33px,5.6vw,56px); line-height:1.02; letter-spacing:-.033em;
+  font-weight:800; margin:0 0 22px; text-wrap:balance;
+}
+h1 em{font-style:normal; color:var(--orange)}
+.hero__lede{font-size:clamp(16.5px,1.6vw,19px); color:var(--ink-2); max-width:54ch; font-weight:400}
+.hero__meta{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  display:flex; gap:26px; flex-wrap:wrap; font-size:12.5px; color:var(--muted);
+}
+.hero__meta b{display:block; color:var(--ink); font-size:13.5px; font-weight:700; letter-spacing:-.01em}
+
+.island{width:100%; height:auto; display:block; overflow:visible}
+.island-card{background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow); padding:18px 18px 12px}
+.island-card__foot{display:flex; gap:16px; flex-wrap:wrap; font-size:11.5px; color:var(--muted); margin-top:6px}
+.dotkey{display:inline-flex; align-items:center; gap:6px}
+.dotkey i{width:9px; height:9px; border-radius:50%; display:block}
+
+/* ---------- Chiffres d'ouverture ---------- */
+.headline{
+  margin-top:40px; background:var(--teal); color:var(--on-teal);
+  display:grid; grid-template-columns:minmax(0,1.25fr) repeat(3,minmax(0,1fr));
+  border:1px solid var(--teal);
+}
+:root[data-theme="dark"] .headline, :root:not([data-theme="light"]) .headline{}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .headline{background:var(--surface); border-color:var(--line); color:var(--ink)} }
+:root[data-theme="dark"] .headline{background:var(--surface); border-color:var(--line); color:var(--ink)}
+@media (max-width:860px){ .headline{grid-template-columns:1fr 1fr} }
+@media (max-width:520px){ .headline{grid-template-columns:1fr} }
+.headline__cell{padding:22px 22px 20px; border-right:1px solid rgba(255,255,255,.16)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .headline__cell{border-right-color:var(--line)} }
+:root[data-theme="dark"] .headline__cell{border-right-color:var(--line)}
+.headline__cell:last-child{border-right:0}
+.headline__k{font-size:11px; letter-spacing:.17em; text-transform:uppercase; font-weight:700; opacity:.78; margin-bottom:8px}
+.headline__v{font-size:clamp(30px,4.4vw,46px); font-weight:800; letter-spacing:-.035em; line-height:1; font-variant-numeric:tabular-nums}
+.headline__v--orange{color:var(--orange)}
+.headline__note{font-size:12.5px; opacity:.8; margin-top:8px; line-height:1.45}
+
+/* ---------- Sections ---------- */
+section{scroll-margin-top:70px}
+.sec{padding-block:66px 10px}
+.sec-head{
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-top:2px solid var(--teal); padding-top:11px; margin-bottom:30px;
+}
+.sec-head__n{
+  font-weight:800; font-size:13px; letter-spacing:.04em; color:var(--teal);
+  font-variant-numeric:tabular-nums;
+}
+.sec-head__t{font-size:13px; font-weight:700; letter-spacing:.17em; text-transform:uppercase; color:var(--ink-2)}
+.badge{
+  margin-left:auto; background:var(--teal); color:var(--on-teal);
+  font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase;
+  padding:5px 11px;
+}
+h2{font-size:clamp(25px,3.5vw,40px); line-height:1.08; letter-spacing:-.028em; font-weight:800; margin:0 0 14px; text-wrap:balance; max-width:20ch}
+h2 em{font-style:normal; color:var(--orange)}
+.underline{width:62px; height:4px; background:var(--orange); margin-bottom:22px}
+h3{font-size:17px; font-weight:700; letter-spacing:-.01em; margin:34px 0 10px}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin:26px 0 30px}
+.kpi{background:var(--surface-2); padding:16px 16px 15px}
+.kpi--lead{background:var(--teal); color:var(--on-teal)}
+.kpi--lead .kpi__k{opacity:.8}
+.kpi--lead .kpi__s{opacity:.85}
+.kpi__k{font-size:10.5px; letter-spacing:.15em; text-transform:uppercase; font-weight:700; color:var(--muted); margin-bottom:9px}
+.kpi--lead .kpi__k{color:var(--on-teal)}
+.kpi__v{font-size:29px; font-weight:800; letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums}
+.kpi__s{font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.4}
+.kpi--lead .kpi__s{color:var(--on-teal)}
+
+/* ---------- Figures ---------- */
+.fig{background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow); padding:20px 20px 14px; margin:28px 0 12px}
+.fig__t{font-size:15.5px; font-weight:700; letter-spacing:-.01em; margin-bottom:3px}
+.fig__s{font-size:13px; color:var(--muted); margin-bottom:16px; max-width:76ch}
+.fig svg{display:block; width:100%; height:auto; overflow:visible}
+.chartscroll{overflow-x:auto; overflow-y:hidden}
+@media (max-width:760px){ .chartscroll svg{min-width:600px} }
+.chartscroll:focus-visible{outline:2px solid var(--orange); outline-offset:3px}
+.scrollhint{display:none; font-size:11.5px; color:var(--muted); margin:6px 0 0; letter-spacing:.04em}
+@media (max-width:760px){ .scrollhint{display:block} }
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:var(--ink-2); margin-top:14px}
+.legend span{display:inline-flex; align-items:center; gap:7px}
+.legend i{width:11px; height:11px; display:block; flex:none}
+.src{font-size:12px; color:var(--muted); font-style:italic; margin:10px 0 0}
+details.data{margin-top:12px; font-size:13px}
+details.data summary{cursor:pointer; color:var(--teal-2); font-weight:600; font-style:normal; font-size:12.5px}
+details.data summary:focus-visible{outline:2px solid var(--orange); outline-offset:2px}
+.tablewrap{overflow-x:auto; margin-top:10px}
+table{border-collapse:collapse; width:100%; font-size:12.5px; font-variant-numeric:tabular-nums}
+th,td{text-align:right; padding:5px 9px; border-bottom:1px solid var(--line); white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:700}
+
+/* ---------- Encadré ---------- */
+.aside{border-left:4px solid var(--orange); background:var(--surface-2); padding:18px 20px; margin:30px 0; font-size:14.5px; max-width:78ch}
+.aside__t{font-weight:700; font-size:13px; letter-spacing:.13em; text-transform:uppercase; margin-bottom:8px; color:var(--ink-2)}
+.aside p:last-child{margin-bottom:0}
+.pull{font-size:clamp(19px,2.5vw,26px); line-height:1.32; font-weight:600; letter-spacing:-.02em; color:var(--teal); margin:34px 0; max-width:26ch; border-top:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong); padding-block:20px}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pull{color:var(--teal-4)} }
+:root[data-theme="dark"] .pull{color:var(--teal-4)}
+
+/* ---------- Scrollytelling carte ---------- */
+.scrolly{display:grid; grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr); gap:46px; align-items:start; margin-top:14px}
+.scrolly__fig{position:sticky; top:66px; order:2}
+.scrolly__steps{order:1}
+.step{min-height:78vh; display:flex; align-items:center}
+.step:last-child{min-height:58vh}
+.step__in{background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--line-strong); box-shadow:var(--shadow); padding:20px 22px; transition:border-left-color .3s ease}
+.step.is-active .step__in{border-left-color:var(--orange)}
+.step__n{font-size:10.5px; letter-spacing:.17em; text-transform:uppercase; font-weight:700; color:var(--muted); margin-bottom:8px}
+.step h3{margin:0 0 9px; font-size:20px; letter-spacing:-.02em}
+.step p{font-size:14.5px; margin-bottom:0; color:var(--ink-2)}
+.step p+p{margin-top:.8em}
+@media (max-width:900px){
+  .scrolly{grid-template-columns:1fr; gap:0}
+  .scrolly__fig{position:sticky; top:calc(env(safe-area-inset-top,0px) + 42px); order:0; background:var(--paper); padding-block:8px; z-index:20}
+  .scrolly__steps{order:1}
+  .step{min-height:66vh}
+}
+.mapcard{background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow); padding:16px 16px 12px}
+.mapnote{font-size:11.5px; color:var(--muted); font-style:italic; margin:10px 0 2px; line-height:1.4}
+.mapcard__t{font-size:14.5px; font-weight:700; margin-bottom:2px; letter-spacing:-.01em}
+.mapcard__s{font-size:12.5px; color:var(--muted); margin-bottom:10px; min-height:2.6em}
+.commune{stroke:var(--surface); stroke-width:1.1; cursor:pointer; transition:fill .45s ease}
+.commune:hover{stroke:var(--orange); stroke-width:2.2}
+.oppt{transition:opacity .45s ease}
+
+/* ---------- Tooltip ---------- */
+.tip{
+  position:fixed; z-index:90; pointer-events:none; opacity:0; transform:translate(-50%,-115%);
+  background:var(--teal-deep); color:#eef6f8; padding:9px 12px; font-size:12.5px; line-height:1.45;
+  box-shadow:0 8px 22px rgba(0,0,0,.28); max-width:250px; transition:opacity .12s ease;
+  font-variant-numeric:tabular-nums;
+}
+:root[data-theme="dark"] .tip{background:#06171e; border:1px solid var(--line)}
+.tip b{display:block; font-size:13px; margin-bottom:3px}
+.tip em{font-style:normal; color:var(--orange)}
+
+/* ---------- Synthèse ---------- */
+.closing{background:var(--teal-deep); color:#e9f2f5; margin-top:72px; padding-block:56px 40px}
+.closing h2{color:#fff; max-width:22ch}
+.closing h2 em{color:var(--orange)}
+.closing .underline{margin-bottom:24px}
+.closing .sec-head{border-top-color:var(--orange)}
+.closing .sec-head__n{color:var(--orange)}
+.closing .sec-head__t{color:#b9d2da}
+.closing .badge{background:var(--orange); color:#231400}
+.recap{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:1px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.14); margin:30px 0}
+.recap__c{background:var(--teal-deep); padding:17px 18px}
+.recap__k{font-size:10.5px; letter-spacing:.15em; text-transform:uppercase; font-weight:700; color:#8fb3bf; margin-bottom:9px}
+.recap__v{font-size:26px; font-weight:800; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.recap__s{font-size:12.5px; color:#a9c6d0; margin-top:6px; line-height:1.45}
+.role{border-left:4px solid var(--orange); padding:18px 20px; background:rgba(255,255,255,.05); margin-top:30px; font-size:14.5px; color:#dcebef; max-width:72ch}
+.role .aside__t{color:#b9d2da}
+.closing .src{color:#8fb3bf}
+.foot{border-top:1px solid rgba(255,255,255,.16); margin-top:36px; padding-top:18px; font-size:12px; color:#8fb3bf; display:flex; gap:18px; flex-wrap:wrap}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important; scroll-behavior:auto !important}
+}
+</style>
+
+</head>
+<body>
+<div class="masthead">
+  <div class="masthead__in">
+    <span class="masthead__mark"><span class="masthead__sq"></span> AGORAH</span>
+    <span class="masthead__sep">·</span>
+    <span>Observatoire de l'habitat</span>
+    <span class="masthead__right">La Réunion · 2020 – 2025</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero__grid">
+      <div>
+        <p class="eyebrow">Programmation de logements · Récit de données</p>
+        <h1>Le territoire construit beaucoup.<br>Mais pas <em>ce qui manque</em>.</h1>
+        <p class="hero__lede">Entre 2020 et 2025, La Réunion a produit 41&nbsp;565 logements pour un objectif de 45&nbsp;157 fixé par les programmes locaux de l'habitat. Un score de 92&nbsp;%, presque rassurant — jusqu'à ce qu'on ouvre la boîte.</p>
+        <div class="hero__meta">
+          <div><b>736 opérations aidées</b>suivies à la parcelle</div>
+          <div><b>15&nbsp;307 permis privés</b>Sit@del2 géolocalisés</div>
+          <div><b>124 quartiers PLH</b>24 communes · 5 EPCI</div>
+        </div>
+      </div>
+      <figure class="island-card" style="margin:0">
+        <svg class="island" id="hero-map" viewBox="0 0 1000 897" role="img" aria-label="Carte de La Réunion : localisation des 736 opérations de logements aidés produites entre 2020 et 2025"></svg>
+        <div class="island-card__foot">
+          <span class="dotkey"><i style="background:var(--teal)"></i> Locatif social</span>
+          <span class="dotkey"><i style="background:var(--teal-3)"></i> Accession sociale</span>
+          <span class="dotkey"><i style="background:var(--teal-4)"></i> Intermédiaire</span>
+          <span class="dotkey"><i style="background:var(--orange)"></i> Réhabilitation</span>
+          <span style="color:var(--muted)">736 opérations · 2020-2025</span>
+        </div>
+      </figure>
+    </div>
+
+    <div class="headline">
+      <div class="headline__cell">
+        <div class="headline__k">Production totale suivie</div>
+        <div class="headline__v">41&nbsp;565</div>
+        <div class="headline__note">logements réalisés sur 45&nbsp;157 programmés — soit 92&nbsp;% de l'objectif départemental.</div>
+      </div>
+      <div class="headline__cell">
+        <div class="headline__k">Locatif social</div>
+        <div class="headline__v headline__v--orange">54&nbsp;%</div>
+        <div class="headline__note">10&nbsp;128 logements pour 18&nbsp;750 attendus.</div>
+      </div>
+      <div class="headline__cell">
+        <div class="headline__k">Accession sociale</div>
+        <div class="headline__v headline__v--orange">45&nbsp;%</div>
+        <div class="headline__note">3&nbsp;347 logements pour 7&nbsp;375 attendus.</div>
+      </div>
+      <div class="headline__cell">
+        <div class="headline__k">Marché libre</div>
+        <div class="headline__v">148&nbsp;%</div>
+        <div class="headline__note">28&nbsp;090 logements pour 19&nbsp;032 attendus.</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="sec" id="volume">
+    <div class="sec-head">
+      <span class="sec-head__n">01</span>
+      <span class="sec-head__t">Le volume</span>
+      <span class="badge">Habitat</span>
+    </div>
+    <h2>Six années de production <em>sans décrochage</em></h2>
+    <div class="underline"></div>
+    <div class="col">
+      <p>La production de logements du territoire ne s'effondre pas. D'une année sur l'autre, le total des logements neufs — aidés et privés confondus — oscille entre 6&nbsp;265 et 7&nbsp;778 unités, sans rupture franche. Le marché libre porte les deux tiers du volume, les opérations aidées le tiers restant. La réhabilitation, elle, se joue à part : 7&nbsp;202 logements remis à niveau en six ans, dont plus de la moitié par un seul bailleur.</p>
+      <p>Ce plateau apparent masque deux mouvements contraires. Le marché libre s'essouffle lentement — 5&nbsp;467 logements autorisés en 2021, 4&nbsp;082 en 2025, soit un quart de moins. Le locatif social, lui, se maintient autour de 1&nbsp;700 logements par an, sans jamais atteindre le rythme qu'exigeraient les objectifs des PLH.</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi kpi--lead">
+        <div class="kpi__k">Logements aidés neufs</div>
+        <div class="kpi__v">13&nbsp;111</div>
+        <div class="kpi__s">650 opérations · 2020 – 2025</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__k">Marché libre</div>
+        <div class="kpi__v">28&nbsp;090</div>
+        <div class="kpi__s">15&nbsp;307 permis privés pondérés</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__k">Réhabilitation</div>
+        <div class="kpi__v">7&nbsp;202</div>
+        <div class="kpi__s">86 opérations, comptées à part</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__k">Prêts à taux zéro</div>
+        <div class="kpi__v">2&nbsp;756</div>
+        <div class="kpi__s">2020 – 2024, échelle communale</div>
+      </div>
+    </div>
+
+    <figure class="fig">
+      <figcaption>
+        <div class="fig__t">Logements neufs produits chaque année, par catégorie</div>
+        <div class="fig__s">Logements aidés neufs (hors réhabilitation) et logements du marché libre estimés à partir des permis privés. Survolez une barre pour le détail.</div>
+      </figcaption>
+      <svg id="chart-annees" viewBox="0 0 1000 380" role="img" aria-label="Histogramme empilé de la production annuelle de logements neufs par catégorie, 2020 à 2025"></svg>
+      <div class="legend" id="legend-annees"></div>
+      <details class="data"><summary>Voir le tableau de données</summary><div class="tablewrap" id="table-annees"></div></details>
+      <p class="src">Sources : Opefin 2020-2025 (DEAL), Sit@del2 géolocalisé 2020-2025 (SDES) — traitements AGORAH</p>
+    </figure>
+
+    <figure class="fig">
+      <figcaption>
+        <div class="fig__t">La réhabilitation, un effort discontinu</div>
+        <div class="fig__s">Logements aidés réhabilités par année. Le pic de 2023 correspond à quelques opérations de grande ampleur sur le parc social ancien.</div>
+      </figcaption>
+      <svg id="chart-reha" viewBox="0 0 1000 170" role="img" aria-label="Histogramme des logements réhabilités par année, 2020 à 2025"></svg>
+      <p class="src">Sources : Opefin 2020-2025 (DEAL) — traitements AGORAH</p>
+    </figure>
+  </section>
+
+  <section class="sec" id="equilibre">
+    <div class="sec-head">
+      <span class="sec-head__n">02</span>
+      <span class="sec-head__t">L'équilibre</span>
+      <span class="badge">Habitat</span>
+    </div>
+    <h2>Un objectif tenu, <em>trois promesses tenues à moitié</em></h2>
+    <div class="underline"></div>
+    <div class="col">
+      <p>Les programmes locaux de l'habitat ne fixent pas un volume, ils fixent une composition : 18&nbsp;750 logements locatifs sociaux, 7&nbsp;375 logements en accession sociale, 19&nbsp;032 logements de marché libre. C'est cette composition qui décide de qui peut se loger.</p>
+      <p>Le résultat est un renversement complet. Le marché libre dépasse sa cible de 9&nbsp;058 logements, pendant que le locatif social en manque 8&nbsp;622 et l'accession sociale 4&nbsp;028. Le total est presque atteint parce qu'un excédent de logements chers vient compenser un déficit de logements abordables — deux produits qui ne s'adressent pas aux mêmes ménages.</p>
+    </div>
+
+    <figure class="fig">
+      <figcaption>
+        <div class="fig__t">Réalisé face à l'objectif PLH, par catégorie de logement</div>
+        <div class="fig__s">La trame grise représente l'objectif du PLH ; la barre pleine, les logements effectivement produits. Le trait orange marque les 100&nbsp;%.</div>
+      </figcaption>
+      <svg id="chart-plh" viewBox="0 0 1000 250" role="img" aria-label="Barres de réalisation comparées aux objectifs PLH pour le locatif social, l'accession sociale et le marché libre"></svg>
+      <p class="src">Sources : PLH des cinq EPCI, Opefin 2020-2025 (DEAL), Sit@del2 2020-2025 (SDES), PTZ 2020-2024 — traitements AGORAH</p>
+    </figure>
+
+    <p class="pull">Aucun des cinq EPCI n'atteint son objectif de locatif social. Tous dépassent celui du marché libre.</p>
+
+    <figure class="fig">
+      <figcaption>
+        <div class="fig__t">Le même déséquilibre dans les cinq intercommunalités</div>
+        <div class="fig__s">Taux d'atteinte des objectifs PLH par catégorie. Une lecture comparée ligne à ligne : la colonne du marché libre est toujours la plus longue.</div>
+      </figcaption>
+      <svg id="chart-epci" viewBox="0 0 1000 430" role="img" aria-label="Petits multiples : taux d'atteinte des objectifs PLH par catégorie pour les cinq EPCI"></svg>
+      <div class="legend" id="legend-epci"></div>
+      <details class="data"><summary>Voir le tableau de données</summary><div class="tablewrap" id="table-epci"></div></details>
+      <p class="src">Sources : PLH des cinq EPCI, Opefin 2020-2025 (DEAL), Sit@del2 2020-2025 (SDES) — traitements AGORAH</p>
+    </figure>
+
+    <div class="aside">
+      <div class="aside__t">Note de lecture</div>
+      <p>Le locatif intermédiaire (LLI), 2&nbsp;392 logements sur la période, n'apparaît dans aucune de ces comparaisons : il ne figure pas dans les objectifs des PLH. Il pèse pourtant 18&nbsp;% de la production aidée neuve, et l'essentiel se concentre dans le Nord et l'Ouest.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="geographie">
+    <div class="sec-head">
+      <span class="sec-head__n">03</span>
+      <span class="sec-head__t">La géographie</span>
+      <span class="badge">Habitat</span>
+    </div>
+    <h2>La même carte, <em>quatre lectures</em></h2>
+    <div class="underline"></div>
+    <div class="col">
+      <p>Un volume de logements ne dit rien sans son territoire. Les quatre lectures qui suivent utilisent le même fond de carte — les 24 communes — et changent seulement ce qu'il mesure. Faites défiler : la carte suit le texte.</p>
+    </div>
+
+    <div class="scrolly">
+      <div class="scrolly__fig">
+        <div class="mapcard">
+          <div class="mapcard__t" id="map-title">Les logements produits</div>
+          <div class="mapcard__s" id="map-sub">Total des logements réalisés entre 2020 et 2025, toutes catégories suivies confondues.</div>
+          <svg id="story-map" viewBox="0 0 1000 897" role="img" aria-label="Carte choroplèthe des 24 communes de La Réunion"></svg>
+          <div class="legend" id="map-legend"></div>
+          <p class="mapnote">Limites communales généralisées : les surfaces non couvertes par le découpage fourni apparaissent en gris neutre.</p>
+        </div>
+      </div>
+      <div class="scrolly__steps">
+        <div class="step" data-mode="volume">
+          <div class="step__in">
+            <div class="step__n">Lecture 1 · Le volume</div>
+            <h3>Quatre communes portent la moitié de la production</h3>
+            <p>Le Tampon (5&nbsp;934 logements), Saint-Paul (4&nbsp;772), Saint-Denis (4&nbsp;556) et Saint-Pierre (3&nbsp;854) concentrent 46&nbsp;% de tout ce qui s'est construit sur la période. Le littoral et les grandes plaines urbanisées absorbent l'essentiel ; les Hauts et les cirques comptent en centaines, pas en milliers.</p>
+            <p>C'est la carte que l'on montre habituellement. Elle décrit une géographie du poids démographique, pas une performance.</p>
+          </div>
+        </div>
+        <div class="step" data-mode="taux">
+          <div class="step__in">
+            <div class="step__n">Lecture 2 · L'atteinte des objectifs</div>
+            <h3>Rapportée aux objectifs, la carte s'inverse</h3>
+            <p>Onze communes dépassent leur objectif PLH, et ce sont rarement les plus grandes : Cilaos atteint 375&nbsp;% de sa cible, L'Étang-Salé 203&nbsp;%, Les Avirons 188&nbsp;%, Les Trois-Bassins 176&nbsp;%.</p>
+            <p>À l'inverse, Bras-Panon (61&nbsp;%) et Saint-Denis (63&nbsp;%) restent loin du compte. Saint-Denis, première commune du territoire par le volume produit, est aussi l'une des plus en retard sur ce qui lui était demandé.</p>
+          </div>
+        </div>
+        <div class="step" data-mode="social">
+          <div class="step__in">
+            <div class="step__n">Lecture 3 · Le seul locatif social</div>
+            <h3>Le violet recouvre le territoire</h3>
+            <p>En ne conservant que le locatif social, vingt communes sur vingt-quatre passent sous leur objectif, et douze sous la barre des 50&nbsp;%. Saint-Leu s'arrête à 11&nbsp;%, Petite-Île à 16&nbsp;%, Saint-Joseph à 17&nbsp;%, Saint-Pierre à 24&nbsp;%.</p>
+            <p>Quatre communes seulement tiennent leur engagement : Saint-André (166&nbsp;%), Saint-Benoît (136&nbsp;%), Sainte-Suzanne (115&nbsp;%) et Le Tampon (112&nbsp;%). Trois n'ont produit aucun logement locatif social en six ans : Cilaos, Salazie et Sainte-Rose.</p>
+          </div>
+        </div>
+        <div class="step" data-mode="semis">
+          <div class="step__in">
+            <div class="step__n">Lecture 4 · Les opérations</div>
+            <h3>736 opérations, un chapelet côtier</h3>
+            <p>Chaque point est une opération aidée, dimensionnée par son nombre de logements. Le dessin qui apparaît est celui de l'urbanisation réunionnaise : un ruban littoral continu du Port à Saint-Pierre, quelques pôles dans les Hauts, et de vastes espaces vides qui correspondent au cœur du Parc national.</p>
+            <p>Les points cerclés de pointillés signalent les 195 opérations que l'on ne sait situer qu'au centre de leur commune — une limite de la donnée, pas du territoire.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="src">Sources : Opefin 2020-2025 (DEAL), Sit@del2 2020-2025 (SDES), PLH des cinq EPCI, PTZ 2020-2024, quartiers PLH 2022 — traitements AGORAH</p>
+  </section>
+
+  <section class="sec" id="communes">
+    <div class="sec-head">
+      <span class="sec-head__n">04</span>
+      <span class="sec-head__t">Les communes</span>
+      <span class="badge">Habitat</span>
+    </div>
+    <h2>L'écart que la moyenne <em>ne montre jamais</em></h2>
+    <div class="underline"></div>
+    <div class="col">
+      <p>Pour chaque commune, deux mesures : l'atteinte de l'objectif PLH toutes catégories, et l'atteinte du seul objectif de locatif social. La distance entre les deux points, c'est exactement la part de l'effort qui a été portée par le marché plutôt que par la commande publique.</p>
+    </div>
+
+    <figure class="fig">
+      <figcaption>
+        <div class="fig__t">Atteinte des objectifs PLH : toutes catégories face au locatif social</div>
+        <div class="fig__s">Communes classées par écart décroissant entre les deux mesures. Échelle tronquée à 200&nbsp;% ; les valeurs supérieures sont fléchées et annotées.</div>
+      </figcaption>
+      <svg id="chart-communes" viewBox="0 0 1000 720" role="img" aria-label="Graphique en haltères : taux d'atteinte PLH toutes catégories et locatif social pour les 24 communes"></svg>
+      <div class="legend" id="legend-communes"></div>
+      <details class="data"><summary>Voir le tableau de données</summary><div class="tablewrap" id="table-communes"></div></details>
+      <p class="src">Sources : PLH des cinq EPCI, Opefin 2020-2025 (DEAL), Sit@del2 2020-2025 (SDES), PTZ 2020-2024 — traitements AGORAH</p>
+    </figure>
+
+    <p class="pull">À Cilaos, l'objectif du PLH est atteint à 375&nbsp;%. Aucun logement locatif social n'y a été produit en six ans.</p>
+  </section>
+
+  <section class="sec" id="rattrapage">
+    <div class="sec-head">
+      <span class="sec-head__n">05</span>
+      <span class="sec-head__t">Le rattrapage</span>
+      <span class="badge">Habitat</span>
+    </div>
+    <h2>Six communes en <em>dette de logement social</em></h2>
+    <div class="underline"></div>
+    <div class="col">
+      <p>Le déficit ne se rattrape pas tout seul. Six communes de la CIVIS sont déficitaires au titre de la loi SRU et engagées dans un contrat de mixité sociale : au 1<sup>er</sup> janvier 2022, il leur manquait 4&nbsp;627 logements locatifs sociaux pour atteindre le taux légal.</p>
+      <p>L'objectif triennal 2023-2025 négocié avec l'État ne porte que sur 1&nbsp;507 d'entre eux, soit un tiers du manque — et les taux de rattrapage consentis descendent à 19&nbsp;% à Cilaos, 25&nbsp;% à Petite-Île et Saint-Louis. Même tenu intégralement, ce contrat laisse la dette pour l'essentiel intacte.</p>
+    </div>
+
+    <figure class="fig">
+      <figcaption>
+        <div class="fig__t">Contrat de mixité sociale de la CIVIS : le manque et l'objectif</div>
+        <div class="fig__s">Logements locatifs sociaux manquants au 1<sup>er</sup> janvier 2022, et objectif triennal 2023-2025 pour chaque commune déficitaire.</div>
+      </figcaption>
+      <svg id="chart-cms" viewBox="0 0 1000 300" role="img" aria-label="Logements sociaux manquants et objectif triennal pour les six communes déficitaires de la CIVIS"></svg>
+      <div class="legend" id="legend-cms"></div>
+      <p class="src">Sources : Contrat de mixité sociale CIVIS 2023-2025, inventaire SRU au 1<sup>er</sup> janvier 2022 — traitements AGORAH</p>
+    </figure>
+  </section>
+
+  <section class="sec" id="foncier">
+    <div class="sec-head">
+      <span class="sec-head__n">06</span>
+      <span class="sec-head__t">Le foncier</span>
+      <span class="badge">Foncier</span>
+    </div>
+    <h2>Le gisement existe. Il <em>n'est presque pas mobilisé</em></h2>
+    <div class="underline"></div>
+    <div class="col">
+      <p>Les documents d'urbanisme réservent déjà du foncier au logement. Les PLU du territoire comptent 179 emplacements réservés destinés au logement social ou à la mixité sociale, soit 120,9&nbsp;hectares et un potentiel estimé à 4&nbsp;819 logements — près de la moitié du déficit social constaté sur la période.</p>
+      <p>Sur ces 179 emplacements, 11 seulement portent aujourd'hui une opération identifiée, pour 815 logements. Autrement dit, 94&nbsp;% du foncier réservé au logement social reste inactivé, dans des documents qui, eux, restent opposables.</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi kpi--lead">
+        <div class="kpi__k">Emplacements réservés</div>
+        <div class="kpi__v">179</div>
+        <div class="kpi__s">120,9&nbsp;ha destinés au logement</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__k">Potentiel estimé</div>
+        <div class="kpi__v">4&nbsp;819</div>
+        <div class="kpi__s">logements, densités SCOT appliquées</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__k">Réellement mobilisés</div>
+        <div class="kpi__v">11</div>
+        <div class="kpi__s">emplacements, soit 815 logements</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__k">Réserves de l'EPF</div>
+        <div class="kpi__v">411</div>
+        <div class="kpi__s">acquisitions pour le logement · 210,5&nbsp;ha</div>
+      </div>
+    </div>
+
+    <figure class="fig">
+      <figcaption>
+        <div class="fig__t">Emplacements réservés au logement : potentiel par intercommunalité</div>
+        <div class="fig__s">Nombre d'emplacements, surface et potentiel de logements. La CASUD concentre à elle seule 67 des 179 emplacements du territoire.</div>
+      </figcaption>
+      <svg id="chart-er" viewBox="0 0 1000 300" role="img" aria-label="Potentiel de logements des emplacements réservés par EPCI"></svg>
+      <p class="src">Sources : PLU en vigueur (millésimes 2023-2025), densités SCOT, EPF Réunion — traitements AGORAH</p>
+    </figure>
+
+    <div class="aside">
+      <div class="aside__t">Les réserves de l'Établissement public foncier</div>
+      <p>L'EPF Réunion porte 1&nbsp;194 acquisitions sur le territoire, soit 797,7&nbsp;hectares, dont 411 terrains (210,5&nbsp;ha) explicitement destinés au logement. 582 ont déjà été rétrocédées à une collectivité ou un opérateur ; 43 seulement accueillent une opération de logements repérée dans les données de production.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="avenir">
+    <div class="sec-head">
+      <span class="sec-head__n">07</span>
+      <span class="sec-head__t">Ce qui vient</span>
+      <span class="badge">Habitat</span>
+    </div>
+    <h2>Dans le Nord, <em>4&nbsp;787 logements</em> en attente</h2>
+    <div class="underline"></div>
+    <div class="col">
+      <p>La CINOR est la seule intercommunalité dont la programmation pluriannuelle à venir est aujourd'hui partagée dans l'observatoire. Arrêtée au 26 novembre 2025, elle recense 100 opérations : 1&nbsp;883 logements programmés pour 2026, 1&nbsp;783 en pré-programmation 2027 et 1&nbsp;121 en prise en charge — auxquels s'ajoutent 558 logements abandonnés, soit 13 opérations sur 100.</p>
+      <p>Rapportés au retard de la CINOR sur son objectif de locatif social (41&nbsp;% d'atteinte, 2&nbsp;409 logements manquants), ces volumes changent l'ordre de grandeur : la programmation connue couvrirait l'essentiel du déficit, à condition qu'elle sorte.</p>
+    </div>
+
+    <figure class="fig">
+      <figcaption>
+        <div class="fig__t">Programmation pluriannuelle de la CINOR au 26 novembre 2025</div>
+        <div class="fig__s">Logements par état d'avancement. Les opérations abandonnées sont conservées dans le suivi : elles documentent l'écart entre programmation et production.</div>
+      </figcaption>
+      <svg id="chart-ppa" viewBox="0 0 1000 250" role="img" aria-label="Logements de la programmation pluriannuelle CINOR par état d'avancement"></svg>
+      <p class="src">Sources : Programmation pluriannuelle CINOR au 26/11/2025 (DEAL) — traitements AGORAH</p>
+    </figure>
+  </section>
+
+  <section class="sec" id="donnee">
+    <div class="sec-head">
+      <span class="sec-head__n">08</span>
+      <span class="sec-head__t">La donnée</span>
+      <span class="badge">Habitat</span>
+    </div>
+    <h2>Ce que l'observatoire <em>sait, et ne sait pas</em></h2>
+    <div class="underline"></div>
+    <div class="col">
+      <p>Une carte n'est fiable que si l'on sait où elle l'est. Sur les 736 opérations aidées suivies, 455 sont rattachées à une parcelle cadastrale précise — elles représentent 82&nbsp;% des logements. 86 sont situées à l'adresse ou à la rue. Les 195 restantes ne sont connues qu'au centre de leur commune : elles pèsent 540 logements, soit 2,7&nbsp;% du total, et sont signalées comme telles partout où elles apparaissent.</p>
+      <p>Deux jeux restent hors de portée du quartier : les prêts à taux zéro (2&nbsp;756 logements, connus à la commune) et les logements évolutifs sociaux (309 logements). Ils sont comptés dans les volumes, jamais cartographiés à la parcelle.</p>
+    </div>
+
+    <figure class="fig">
+      <figcaption>
+        <div class="fig__t">Précision de localisation des opérations aidées</div>
+        <div class="fig__s">En nombre d'opérations, puis en nombre de logements : les opérations mal localisées sont massivement de petites opérations.</div>
+      </figcaption>
+      <svg id="chart-loc" viewBox="0 0 1000 230" role="img" aria-label="Répartition des opérations et des logements selon la précision de localisation"></svg>
+      <div class="legend" id="legend-loc"></div>
+      <p class="src">Sources : Opefin 2020-2025 (DEAL), cadastre, BAN — traitements AGORAH</p>
+    </figure>
+
+    <figure class="fig">
+      <figcaption>
+        <div class="fig__t">Qui produit le logement aidé</div>
+        <div class="fig__s">Logements par opérateur, construction neuve et réhabilitation distinguées. La SHLMR porte à elle seule 57&nbsp;% de la réhabilitation du territoire.</div>
+      </figcaption>
+      <svg id="chart-ope" viewBox="0 0 1000 330" role="img" aria-label="Logements produits par opérateur, neuf et réhabilitation"></svg>
+      <div class="legend" id="legend-ope"></div>
+      <p class="src">Sources : Opefin 2020-2025 (DEAL) — traitements AGORAH</p>
+    </figure>
+  </section>
+</div>
+
+<div class="closing">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-head__n">09</span>
+      <span class="sec-head__t">Synthèse</span>
+      <span class="badge">Habitat</span>
+    </div>
+    <h2>Produire plus n'a pas suffi à <em>loger mieux</em></h2>
+    <div class="underline"></div>
+    <div class="col" style="color:#cfe0e6">
+      <p>Six années de production, un objectif départemental presque atteint, et pourtant un déficit de 12&nbsp;650 logements abordables — locatif social et accession sociale réunis. Le foncier réservé pour les combler existe déjà dans les PLU, à 94&nbsp;% inutilisé. La programmation connue du Nord montre qu'un rattrapage est possible là où il est explicitement organisé.</p>
+      <p>Ces chiffres n'ont de valeur que suivis dans la durée, à l'échelle où les décisions se prennent : la commune, le quartier, l'opération.</p>
+    </div>
+
+    <div class="recap">
+      <div class="recap__c">
+        <div class="recap__k">Production</div>
+        <div class="recap__v">41&nbsp;565</div>
+        <div class="recap__s">logements réalisés pour 45&nbsp;157 programmés — 92&nbsp;%</div>
+      </div>
+      <div class="recap__c">
+        <div class="recap__k">Déficit abordable</div>
+        <div class="recap__v">12&nbsp;650</div>
+        <div class="recap__s">logements sociaux et en accession sociale manquants</div>
+      </div>
+      <div class="recap__c">
+        <div class="recap__k">Foncier réservé</div>
+        <div class="recap__v">4&nbsp;819</div>
+        <div class="recap__s">logements potentiels, dont 815 engagés</div>
+      </div>
+      <div class="recap__c">
+        <div class="recap__k">Programmation CINOR</div>
+        <div class="recap__v">4&nbsp;787</div>
+        <div class="recap__s">logements programmés, pré-programmés ou pris en charge</div>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="aside__t">Le rôle de l'observatoire</div>
+      <p>L'Observatoire de l'habitat rassemble, à l'échelle de l'EPCI, de la commune et du quartier, la production de logements, le foncier mobilisable, les zonages d'urbanisme et le marché immobilier. Il ne remplace pas le tableau de bord interactif dont ce récit est tiré : celui-ci permet de descendre à l'opération, de filtrer par catégorie et par année, de rechercher une parcelle et d'exporter les données sources.</p>
+    </div>
+
+    <p class="src" style="margin-top:26px">Sources : Opefin 2020-2025 (DEAL) · Sit@del2 géolocalisé 2020-2025 (SDES) · PTZ 2020-2024 · PLH des cinq EPCI · Contrat de mixité sociale CIVIS 2023-2025 · PLU en vigueur et emplacements réservés (millésimes 2023-2025) · EPF Réunion · Programmation pluriannuelle CINOR au 26/11/2025 · Quartiers PLH 2022 · PEIGEO — traitements AGORAH</p>
+
+    <div class="foot">
+      <span>© AGORAH 2026 · Agence d'urbanisme de La Réunion</span>
+      <span>Observatoire de l'habitat</span>
+      <span>Récit généré à partir du tableau de bord « Programmation de logements »</span>
+    </div>
+  </div>
+</div>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script>
+const DATA = {"annees":{"2020":{"ls":1623,"as":163,"lli":172,"reha":649,"ml":4569},"2021":{"ls":1495,"as":104,"lli":504,"reha":1243,"ml":5467},"2022":{"ls":1802,"as":70,"lli":706,"reha":622,"ml":5200},"2023":{"ls":1586,"as":84,"lli":259,"reha":2056,"ml":4451},"2024":{"ls":1882,"as":107,"lli":371,"reha":1061,"ml":4321},"2025":{"ls":1740,"as":63,"lli":380,"reha":1571,"ml":4082}},"reunion":{"obj":{"total":45157,"par_groupe":{"locatif_social":18750,"accession_sociale":7375,"marche_libre":19032},"par_produit_plh":{"1.1-LLTS":8899.2,"1.2-LLS":6971.799999999999,"3.1-PSLA":1636.7,"3.3-PTZ":1727.0000000000005,"3.2-LES":561.2,"4-Marché libre":14724.6,"1.3-PLS":2800.8}},"ls":10128,"as":591,"lli":2392,"reha":7202,"ml":28090,"ptz":2756},"epci":{"TCO":{"r":{"ls":2263,"as":328,"lli":793,"reha":1865,"ml":6542,"ptz":799,"nbop":198,"nblogt_aide":3384},"obj":{"locatif_social":5050,"accession_sociale":1430,"marche_libre":4320},"objTotal":10800,"real":9932,"taux":92.0},"CINOR":{"r":{"ls":1685,"as":59,"lli":1207,"reha":2256,"ml":5418,"ptz":545,"nbop":140,"nblogt_aide":2951},"obj":{"locatif_social":4094,"accession_sociale":1409,"marche_libre":4854},"objTotal":10357,"real":7707,"taux":74.4},"CIVIS":{"r":{"ls":1697,"as":65,"lli":275,"reha":845,"ml":7069,"ptz":585,"nbop":145,"nblogt_aide":2037},"obj":{"locatif_social":4614,"accession_sociale":2022,"marche_libre":3564},"objTotal":10200,"real":9416,"taux":92.3},"CIREST":{"r":{"ls":1606,"as":91,"lli":14,"reha":1611,"ml":3920,"ptz":439,"nbop":101,"nblogt_aide":1711},"obj":{"locatif_social":1392,"accession_sociale":1056,"marche_libre":2352},"objTotal":4800,"real":6056,"taux":126.2},"CASUD":{"r":{"ls":2877,"as":48,"lli":103,"reha":625,"ml":5142,"ptz":388,"nbop":152,"nblogt_aide":3028},"obj":{"locatif_social":3600,"accession_sociale":1458,"marche_libre":3942},"objTotal":9000,"real":8455,"taux":93.9}},"communes":[{"c":"97422","nom":"Le Tampon","epci":"CASUD","r":{"ls":2517,"as":17,"lli":93,"reha":267,"ml":3173,"ptz":227,"nbop":102,"nblogt_aide":2627},"real":5934,"obj":5610,"objLS":2244,"taux":105.8,"tauxLS":112.2},{"c":"97415","nom":"Saint-Paul","epci":"TCO","r":{"ls":1295,"as":133,"lli":218,"reha":359,"ml":2974,"ptz":370,"nbop":91,"nblogt_aide":1646},"real":4772,"obj":4800,"objLS":2300,"taux":99.4,"tauxLS":56.3},{"c":"97411","nom":"Saint-Denis","epci":"CINOR","r":{"ls":923,"as":7,"lli":814,"reha":1805,"ml":3416,"ptz":210,"nbop":85,"nblogt_aide":1744},"real":4556,"obj":7193,"objLS":2795,"taux":63.3,"tauxLS":33.0},{"c":"97416","nom":"Saint-Pierre","epci":"CIVIS","r":{"ls":440,"as":25,"lli":97,"reha":604,"ml":3171,"ptz":218,"nbop":58,"nblogt_aide":562},"real":3854,"obj":5340,"objLS":1866,"taux":72.2,"tauxLS":23.6},{"c":"97409","nom":"Saint-André","epci":"CIREST","r":{"ls":761,"as":40,"lli":14,"reha":910,"ml":1656,"ptz":147,"nbop":44,"nblogt_aide":815},"real":2604,"obj":1584,"objLS":459.36,"taux":164.4,"tauxLS":165.7},{"c":"97414","nom":"Saint-Louis","epci":"CIVIS","r":{"ls":407,"as":13,"lli":45,"reha":141,"ml":1684,"ptz":157,"nbop":32,"nblogt_aide":465},"real":2261,"obj":2880,"objLS":1302,"taux":78.5,"tauxLS":31.3},{"c":"97410","nom":"Saint-Benoît","epci":"CIREST","r":{"ls":546,"as":35,"lli":0,"reha":584,"ml":1101,"ptz":162,"nbop":31,"nblogt_aide":581},"real":1844,"obj":1380,"objLS":400.20000000000005,"taux":133.6,"tauxLS":136.4},{"c":"97418","nom":"Sainte-Marie","epci":"CINOR","r":{"ls":339,"as":47,"lli":393,"reha":395,"ml":1258,"ptz":185,"nbop":36,"nblogt_aide":779},"real":1829,"obj":2290,"objLS":931,"taux":79.9,"tauxLS":36.4},{"c":"97408","nom":"La Possession","epci":"TCO","r":{"ls":435,"as":124,"lli":359,"reha":265,"ml":1075,"ptz":164,"nbop":47,"nblogt_aide":918},"real":1798,"obj":2300,"objLS":1210,"taux":78.2,"tauxLS":36.0},{"c":"97412","nom":"Saint-Joseph","epci":"CASUD","r":{"ls":173,"as":18,"lli":10,"reha":318,"ml":1480,"ptz":117,"nbop":35,"nblogt_aide":201},"real":1788,"obj":2550,"objLS":1020,"taux":70.1,"tauxLS":17.0},{"c":"97413","nom":"Saint-Leu","epci":"TCO","r":{"ls":111,"as":40,"lli":28,"reha":0,"ml":1328,"ptz":109,"nbop":22,"nblogt_aide":179},"real":1588,"obj":2100,"objLS":990,"taux":75.6,"tauxLS":11.2},{"c":"97420","nom":"Sainte-Suzanne","epci":"CINOR","r":{"ls":423,"as":5,"lli":0,"reha":56,"ml":744,"ptz":150,"nbop":19,"nblogt_aide":428},"real":1322,"obj":874,"objLS":368,"taux":151.3,"tauxLS":114.9},{"c":"97404","nom":"L'Étang-Salé","epci":"CIVIS","r":{"ls":366,"as":2,"lli":133,"reha":0,"ml":704,"ptz":84,"nbop":21,"nblogt_aide":501},"real":1156,"obj":570,"objLS":390,"taux":202.8,"tauxLS":93.8},{"c":"97401","nom":"Les Avirons","epci":"CIVIS","r":{"ls":380,"as":15,"lli":0,"reha":29,"ml":633,"ptz":45,"nbop":18,"nblogt_aide":395},"real":1073,"obj":570,"objLS":390,"taux":188.2,"tauxLS":97.4},{"c":"97407","nom":"Le Port","epci":"TCO","r":{"ls":359,"as":29,"lli":188,"reha":1241,"ml":602,"ptz":81,"nbop":34,"nblogt_aide":576},"real":1071,"obj":1200,"objLS":360,"taux":89.2,"tauxLS":99.7},{"c":"97405","nom":"Petite-Île","epci":"CIVIS","r":{"ls":104,"as":6,"lli":0,"reha":71,"ml":664,"ptz":73,"nbop":12,"nblogt_aide":110},"real":847,"obj":780,"objLS":642,"taux":108.6,"tauxLS":16.2},{"c":"97423","nom":"Les Trois-Bassins","epci":"TCO","r":{"ls":63,"as":2,"lli":0,"reha":0,"ml":563,"ptz":75,"nbop":4,"nblogt_aide":65},"real":703,"obj":400,"objLS":190,"taux":175.8,"tauxLS":33.2},{"c":"97406","nom":"La Plaine-des-Palmistes","epci":"CIREST","r":{"ls":102,"as":3,"lli":0,"reha":0,"ml":471,"ptz":49,"nbop":6,"nblogt_aide":105},"real":625,"obj":450,"objLS":130.5,"taux":138.9,"tauxLS":78.2},{"c":"97402","nom":"Bras-Panon","epci":"CIREST","r":{"ls":197,"as":1,"lli":0,"reha":117,"ml":282,"ptz":54,"nbop":8,"nblogt_aide":198},"real":534,"obj":870,"objLS":252.3,"taux":61.4,"tauxLS":78.1},{"c":"97403","nom":"Entre-Deux","epci":"CASUD","r":{"ls":127,"as":11,"lli":0,"reha":40,"ml":296,"ptz":25,"nbop":11,"nblogt_aide":138},"real":459,"obj":558,"objLS":222,"taux":82.3,"tauxLS":57.2},{"c":"97417","nom":"Saint-Philippe","epci":"CASUD","r":{"ls":60,"as":2,"lli":0,"reha":0,"ml":192,"ptz":19,"nbop":4,"nblogt_aide":62},"real":273,"obj":282,"objLS":114,"taux":96.8,"tauxLS":52.6},{"c":"97419","nom":"Sainte-Rose","epci":"CIREST","r":{"ls":0,"as":6,"lli":0,"reha":0,"ml":209,"ptz":20,"nbop":6,"nblogt_aide":6},"real":235,"obj":360,"objLS":104.4,"taux":65.3,"tauxLS":0.0},{"c":"97424","nom":"Cilaos","epci":"CIVIS","r":{"ls":0,"as":4,"lli":0,"reha":0,"ml":213,"ptz":8,"nbop":4,"nblogt_aide":4},"real":225,"obj":60,"objLS":24,"taux":375.0,"tauxLS":0.0},{"c":"97421","nom":"Salazie","epci":"CIREST","r":{"ls":0,"as":6,"lli":0,"reha":0,"ml":201,"ptz":7,"nbop":6,"nblogt_aide":6},"real":214,"obj":156,"objLS":45.24000000000001,"taux":137.2,"tauxLS":0.0}],"loc_ops":{"commune":195,"Parcelle":455,"Adresse":43,"Rue":43},"loc_logts":{"commune":540,"Parcelle":16713,"Adresse":1153,"Rue":1907},"er":{"n":179,"ha":120.9,"pot":4819,"used":11,"used_logts":815,"par_epci":{"CASUD":{"n":67,"ha":47.7,"pot":1902},"CIREST":{"n":22,"ha":20.3,"pot":810},"TCO":{"n":39,"ha":24.0,"pot":964},"CINOR":{"n":23,"ha":14.5,"pot":564},"CIVIS":{"n":28,"ha":14.5,"pot":579}}},"rf":{"n":1194,"ha":797.7,"logement":411,"logement_ha":210.5,"retroced":582,"used":43},"ppa":{"prog2026":{"nb_op":36,"nb_logts":1883},"preprog2027":{"nb_op":35,"nb_logts":1783},"pec":{"nb_op":16,"nb_logts":1121},"abandon":{"nb_op":13,"nb_logts":558}},"ppa_meta":{"prog2026":{"label":"Programmation 2026","short":"Prog. 2026","order":1,"color":"#15495a"},"preprog2027":{"label":"Pré-programmation 2027","short":"Pré-prog 2027","order":2,"color":"#3d7383"},"pec":{"label":"PEC","short":"PEC","order":3,"color":"#7a9fac"},"abandon":{"label":"Abandon","short":"Abandon","order":4,"color":"#b3402f"}},"ppa_source":"PPA CINOR — 26/11/2025","cms":{"97401":{"commune":"Les Avirons","manquant":620,"taux_rattrapage":0.33,"objectif":205},"97404":{"commune":"L'Étang-Salé","manquant":482,"taux_rattrapage":0.5,"objectif":241},"97405":{"commune":"Petite-Ile","manquant":1070,"taux_rattrapage":0.25,"objectif":268},"97414":{"commune":"Saint-Louis","manquant":1135,"taux_rattrapage":0.25,"objectif":284},"97416":{"commune":"Saint-Pierre","manquant":832,"taux_rattrapage":0.5,"objectif":416},"97424":{"commune":"Cilaos","manquant":488,"taux_rattrapage":0.19,"objectif":93}},"cms_meta":{"epci":"CIVIS","periode":"2023-2025","total_objectif":1507,"total_manquant":4627,"note":"Contrat de Mixité Sociale (rattrapage SRU). Objectif triennal 2023-2025 de production de logements locatifs sociaux pour les communes déficitaires de la CIVIS. Manquant au 1er janvier 2022."},"qpv":57,"meta":{"source_op":"01-01-Opefin","source_qplh":"quartier_plh_2022","nb_operations":736,"nb_quartiers":124},"permis_meta":{"total_kept":15633,"finance":326,"prive":15307,"total_logts_prive":28090,"periode":"2020-2025 (date réelle d'autorisation)","note":"Logements autorisés non annulés. Pondération par état d'avancement : autorisé ×0,9 ; commencé et terminé ×1.","source":"Sit@del2 géolocalisé (SDES)"},"ptz_meta":{"periode":"2020-2024","note":"PTZ réalisés (Prêt à Taux Zéro) — accession sociale (3.3-PTZ). Échelle communale uniquement ; non disponible au quartier. Données 2020-2023 complètes, 2024 partielle, 2025 non disponible.","total":2756},"les_meta":{"nb_op":187,"total":309,"note":"LES (LESD+LESG) — accession sociale ; dans le volume, hors carte, échelle communale (non ventilé au quartier)."},"par_produit":{"LLI":{"nb_op":71,"nb_logts":2392},"REHA":{"nb_op":86,"nb_logts":7202},"PLS":{"nb_op":134,"nb_logts":3333},"LESD":{"nb_op":155,"nb_logts":155},"LESG":{"nb_op":32,"nb_logts":154},"LLS":{"nb_op":122,"nb_logts":3681},"LLTS":{"nb_op":117,"nb_logts":3114},"PSLA":{"nb_op":19,"nb_logts":282}},"operateurs_split":[["SHLMR",172,3812,4112],["SIDR",95,2200,1091],["SEMADER",76,1691,507],["SODEGIS",68,1473,599],["SEMAC",46,1381,273],["SODIAC",22,746,169],["SEDRE",24,426,451],["PRIVE",41,803,0],["KHEOPS DEVELOPPEMENT",8,160,0],["ARCHIPEL BOIS HABITAT",28,138,0]]};
+const MAP = {"w":1000.0,"h":896.2,"island":"M947.6,657.8L943.0,671.1L946.8,689.7L945.2,713.1L950.3,726.8L947.0,758.1L950.3,785.4L954.4,796.9L936.5,827.5L922.7,835.0L913.4,846.3L899.8,853.8L870.1,849.8L861.3,858.0L843.5,860.9L834.5,859.8L829.8,863.1L824.6,861.2L813.6,867.9L793.4,873.3L749.4,870.0L743.7,872.8L742.9,877.7L740.4,877.0L738.9,882.5L733.2,885.8L721.1,882.3L713.5,884.0L693.1,896.2L684.4,886.2L673.3,884.0L659.9,884.2L633.8,891.6L622.0,885.6L617.3,878.3L601.5,872.8L596.9,864.8L572.9,873.2L560.5,866.2L555.8,867.9L545.6,864.0L538.1,869.3L534.3,861.5L516.5,850.4L495.4,846.6L468.6,832.6L467.4,834.7L458.7,828.2L437.5,827.3L431.4,831.4L425.9,822.7L422.3,824.3L425.3,822.2L423.1,816.7L408.6,818.2L391.5,811.9L382.9,801.2L384.3,795.3L379.3,792.5L377.8,794.7L376.9,791.1L343.6,786.4L321.8,774.1L313.1,764.1L309.3,754.2L284.8,730.1L260.3,719.3L198.2,708.1L186.4,694.9L189.9,688.5L184.3,681.8L185.2,673.2L182.7,669.4L166.7,659.0L167.9,652.7L156.0,644.8L151.2,637.1L130.8,626.9L123.3,620.0L122.2,609.7L115.2,599.8L111.5,581.6L102.8,573.3L112.0,546.6L110.3,532.3L113.1,529.6L111.3,515.2L113.7,504.2L104.5,487.2L88.9,481.5L90.1,476.3L87.2,474.8L86.4,470.4L88.5,469.2L86.8,467.8L86.7,449.3L82.0,447.8L81.9,443.2L69.5,435.3L58.8,419.0L60.9,411.8L65.0,412.0L50.8,405.6L47.1,399.0L21.8,378.3L16.8,367.3L8.0,359.5L5.6,346.4L8.7,316.5L11.4,314.9L2.7,299.9L1.2,284.9L29.9,253.1L51.9,255.9L85.9,235.5L98.0,221.4L104.5,203.7L106.2,183.1L104.4,169.9L96.6,148.0L102.3,133.8L104.5,113.3L109.8,115.0L107.6,115.5L107.5,122.8L108.9,115.7L112.5,119.3L115.2,115.1L113.5,109.3L117.2,109.8L114.7,108.4L117.7,106.3L111.9,105.2L109.5,109.6L112.3,109.2L112.4,111.1L105.8,111.2L108.3,107.1L108.7,95.7L114.4,87.7L140.8,99.1L156.4,100.1L184.7,96.9L208.9,85.3L218.7,69.6L233.5,61.4L247.3,46.3L256.7,42.5L259.2,53.8L256.7,42.4L286.0,19.8L299.7,14.2L331.0,4.8L359.6,9.1L377.6,0.0L392.0,12.7L407.9,22.0L435.9,24.9L461.6,18.5L474.0,21.3L488.8,28.7L509.1,32.8L524.0,40.0L538.9,41.3L551.8,34.5L573.8,37.5L588.5,44.7L606.0,42.2L647.1,65.4L664.8,67.3L693.9,75.4L723.0,92.3L733.1,107.6L752.3,126.1L773.9,160.9L780.9,185.8L781.0,232.5L784.0,251.9L793.8,271.4L807.2,276.0L816.2,289.7L818.0,289.3L822.2,300.8L831.2,308.1L829.6,323.5L840.9,344.6L870.1,376.3L879.3,396.2L896.2,409.7L911.7,436.4L918.5,439.7L927.5,437.0L939.7,441.8L956.7,460.2L964.3,463.9L970.6,463.5L983.4,473.2L985.1,485.6L990.5,489.9L991.6,498.1L996.1,501.8L993.4,506.8L994.3,520.4L1000.0,537.6L992.3,544.3L982.4,544.1L980.5,574.1L977.2,580.4L970.1,584.0L963.9,592.3L962.5,600.9L954.0,614.9L954.4,629.0L951.8,632.2L947.8,657.8L696.0,632.1ZM389.8,363.3L388.3,360.0L381.6,355.7L376.2,346.3L368.1,340.5L366.6,336.9L381.1,326.8L383.3,321.6L382.0,317.5L383.5,314.8L383.9,306.9L382.7,305.1L383.3,302.1L382.1,298.6L383.4,288.8L382.4,275.1L382.0,298.6L382.7,305.1L383.9,306.9L382.0,317.5L383.3,321.6L381.1,326.8L366.6,336.9L368.1,340.5L376.2,346.3L381.6,355.7L389.8,363.3L397.3,364.8ZM392.4,270.5L395.3,265.5L392.4,257.1L395.3,265.5ZM417.0,236.9L412.2,239.9L407.6,238.8L412.2,239.9ZM519.2,229.1L508.2,232.1L495.5,232.6L508.2,232.1ZM577.6,209.9L566.4,218.9L558.4,222.5L566.4,218.9ZM203.5,383.6L190.8,386.2L203.5,383.6L217.4,385.1ZM82.1,409.2L82.5,406.3L86.1,405.5L96.8,399.1L82.5,406.3ZM109.8,395.2L104.3,396.2L98.5,400.0ZM255.0,392.7L261.2,393.2L267.6,390.3L270.4,390.4L267.6,390.3L261.1,393.2ZM301.1,284.5L299.0,289.8L301.1,284.5L297.6,280.3Z","paths":{"97423":"M122.6,443.0L106.6,453.4L96.9,453.2L87.8,457.1L86.7,449.3L82.0,447.8L81.9,443.2L76.2,441.1L69.5,435.3L58.4,417.3L60.9,411.8L69.3,412.0L78.0,408.6L81.8,409.8L82.5,406.3L96.3,399.1L98.7,400.0L105.6,395.7L125.3,391.4L131.3,388.6L133.7,385.5L141.9,385.5L149.5,381.5L170.2,381.2L176.5,384.5L190.8,386.2L203.5,383.6L226.8,386.2L232.2,383.8L239.6,388.6L257.5,393.7L268.0,390.1L289.0,391.9L295.4,393.8L312.4,411.1L322.1,417.5L330.3,420.0L332.0,422.7L326.2,426.9L325.0,431.3L321.4,434.5L307.2,432.6L301.0,428.4L295.1,429.8L277.1,425.3L262.8,428.2L247.8,421.0L238.4,422.0L234.7,420.2L229.4,421.8L224.0,419.7L214.2,419.6L186.9,425.5L183.0,423.9L174.8,424.4L169.8,428.3L158.9,429.3L137.2,441.1Z","97421":"M543.1,288.6L549.9,294.7L552.3,292.4L553.3,297.1L555.6,299.0L556.4,332.5L552.0,338.6L541.9,346.5L538.5,352.8L533.8,352.6L525.7,356.6L519.0,355.2L514.6,358.3L513.3,362.6L504.9,366.9L495.9,359.3L486.7,380.2L481.6,384.0L472.9,385.8L461.3,395.3L449.0,414.7L441.2,402.7L429.1,395.5L425.9,395.7L424.0,392.2L424.4,386.8L420.3,381.3L399.6,369.5L397.3,364.7L389.8,363.3L388.3,360.0L381.6,355.7L376.2,346.3L366.7,337.6L372.7,331.5L381.1,326.8L383.3,321.6L382.0,317.5L383.9,306.9L382.1,298.6L383.4,288.8L382.4,275.1L395.1,268.1L392.3,257.2L394.0,248.0L397.1,246.7L401.2,241.2L407.6,238.8L412.2,239.9L453.3,224.1L472.6,222.7L479.8,227.8L484.9,236.8L495.5,232.6L508.2,232.1L519.2,229.1L526.4,232.1L544.9,233.1L549.1,227.9L555.7,226.6L558.4,222.5L566.4,218.9L576.5,210.9L584.7,218.3L584.7,220.4L593.4,221.9L594.5,224.0L592.3,226.3L593.0,231.6L580.2,239.3L573.3,239.2L572.6,243.8L569.7,244.5L566.3,252.4L556.5,254.7Z","97410":"M831.4,309.1L829.3,315.6L830.6,327.0L840.7,344.2L854.0,360.7L869.7,375.8L875.0,384.4L878.8,395.5L887.1,402.2L862.7,423.7L858.8,433.0L854.1,438.0L854.5,440.0L851.2,441.0L850.1,444.8L846.0,446.0L845.2,452.9L849.0,458.0L843.3,458.3L844.2,462.3L848.2,465.4L846.8,467.4L848.5,469.7L850.1,468.0L854.4,468.6L854.4,471.4L846.9,477.9L849.5,482.7L842.7,488.4L843.7,491.9L837.2,491.8L836.0,496.4L837.0,501.6L835.2,506.5L832.2,508.0L829.3,513.0L814.7,514.7L804.8,520.2L707.6,403.9L701.3,402.5L700.1,400.6L691.2,399.1L685.9,402.3L679.2,403.5L667.2,425.5L658.0,426.3L656.9,425.1L654.7,427.9L647.7,429.5L641.1,434.0L634.9,441.4L628.4,439.0L623.3,439.2L620.2,441.5L618.4,447.0L613.7,448.0L607.4,444.3L604.6,440.2L598.1,437.8L593.0,438.1L585.4,441.4L583.2,445.3L578.9,445.6L575.3,448.6L574.0,453.9L565.2,458.8L558.0,460.2L553.0,459.0L545.8,461.6L531.7,453.7L522.6,458.8L513.1,459.7L508.7,456.8L494.9,457.0L481.5,461.5L475.1,460.3L469.3,464.3L467.8,463.5L469.0,461.7L467.9,447.3L463.1,432.5L459.6,425.2L449.1,414.7L461.3,395.3L472.9,385.8L481.6,384.0L486.7,380.2L495.9,359.3L504.7,366.9L513.3,362.6L514.6,358.3L519.0,355.2L525.7,356.6L533.8,352.6L538.5,352.8L541.1,348.6L546.2,350.0L551.8,347.9L563.9,356.0L569.9,356.2L577.2,364.2L585.6,368.3L598.4,369.5L598.5,363.1L604.0,358.3L605.5,352.6L617.8,338.3L623.4,335.7L630.9,323.6L637.8,317.7L637.5,310.7L647.9,296.9L649.1,292.9L658.3,292.3L661.5,294.3L669.3,292.9L675.6,285.8L684.9,283.0L687.4,280.2L696.5,283.2L708.5,280.5L714.3,283.4L717.9,280.8L728.5,278.5L735.2,272.6L730.0,254.9L732.4,252.8L738.2,253.0L738.0,244.8L742.6,245.0L743.4,240.3L750.2,237.5L764.9,236.6L767.3,231.6L770.8,233.8L780.9,230.6L784.0,251.9L787.7,256.2L790.9,267.8L793.8,271.4L808.5,277.2L816.2,289.7L818.0,289.3L822.2,300.8Z","97414":"M339.2,729.9L325.7,732.4L304.1,744.0L301.8,747.4L291.9,734.8L280.9,728.7L282.2,726.0L271.1,718.8L264.1,710.1L278.0,688.8L277.5,679.3L282.3,674.9L284.3,668.7L282.1,655.8L277.6,646.1L278.4,639.3L275.7,625.0L277.9,603.5L281.5,589.0L278.5,577.7L273.8,577.3L268.0,571.0L266.2,561.4L272.6,550.6L272.1,544.4L276.1,542.0L278.5,533.6L277.0,527.6L281.0,517.1L287.2,513.6L295.0,504.9L295.4,499.1L304.4,476.2L308.7,484.7L312.4,487.7L313.6,498.3L317.2,506.7L332.3,520.7L337.1,527.4L343.8,531.7L346.4,540.5L354.4,543.8L356.1,550.5L369.3,553.3L374.1,552.4L379.4,556.7L385.6,553.5L395.8,559.4L395.9,565.1L393.3,569.8L397.8,595.2L393.5,605.2L394.2,620.2L391.1,629.0L393.3,642.8L396.0,647.9L394.9,654.1L399.6,664.1L394.2,687.6L387.6,690.5L393.1,697.1L386.8,707.4L384.6,716.7L376.7,717.8L361.2,725.8Z","97424":"M459.6,496.7L453.2,510.0L453.1,515.4L449.4,526.9L446.6,532.2L440.1,538.3L422.1,549.0L415.8,551.2L409.8,549.1L395.8,559.4L385.6,553.5L379.4,556.7L374.1,552.4L369.3,553.3L356.1,550.5L354.4,543.8L346.4,540.5L343.8,531.7L337.1,527.4L332.3,520.7L321.3,512.0L313.6,498.3L312.4,487.7L308.7,484.7L304.5,476.9L301.8,462.1L305.1,457.2L309.1,455.5L312.1,442.2L316.2,440.6L318.7,436.1L325.0,431.3L327.5,425.6L332.0,422.7L336.8,423.9L342.2,417.8L347.6,418.2L353.6,415.4L358.3,412.3L360.2,408.8L384.4,395.8L386.4,391.4L384.8,385.4L385.8,383.1L388.9,382.2L400.6,370.2L420.3,381.3L424.4,386.8L424.0,392.2L425.9,395.7L435.2,398.4L443.0,404.4L447.1,413.6L457.6,422.7L463.1,432.5L467.9,447.3L469.0,461.7L461.4,474.7L458.6,486.0Z","97416":"M422.9,816.6L408.6,818.2L391.5,811.9L382.9,801.2L384.3,795.3L379.3,792.5L377.8,794.7L378.5,792.3L376.9,791.1L369.0,788.8L365.9,790.0L344.1,786.5L335.1,782.7L319.6,771.9L313.1,764.1L309.3,754.2L301.8,747.4L304.1,744.0L325.7,732.4L361.2,725.8L376.7,717.8L386.4,716.0L394.1,711.2L403.2,697.9L403.1,693.1L409.6,681.8L408.3,676.5L409.6,667.5L423.8,662.2L435.8,671.6L435.7,674.8L440.0,680.8L450.8,690.7L453.0,695.0L451.9,698.2L453.9,703.6L465.7,714.6L476.9,721.2L479.4,720.8L483.6,726.8L482.4,731.4L477.7,735.9L472.2,737.7L473.1,742.4L477.2,740.5L487.0,741.7L513.0,769.7L516.2,767.9L518.9,762.8L537.9,758.7L543.3,750.5L546.4,749.8L548.1,745.5L551.9,746.3L558.9,742.9L559.4,740.9L570.4,738.0L576.6,733.9L585.0,716.5L597.4,708.8L599.7,709.4L599.7,707.6L604.1,706.0L612.4,697.0L620.9,693.5L621.6,699.5L624.6,703.5L623.7,711.3L625.2,720.0L607.9,724.2L609.1,726.5L606.6,728.6L605.2,734.4L599.6,737.5L598.2,742.9L593.0,748.3L589.9,747.6L585.7,756.8L577.5,760.7L567.1,769.2L554.9,768.4L535.0,777.8L527.6,786.7L529.6,796.5L527.3,801.2L528.5,803.7L518.0,830.3L517.1,836.6L518.7,838.3L515.0,846.3L515.4,850.1L510.0,850.8L497.6,846.0L495.4,846.6L489.6,841.8L483.0,841.6L470.6,835.5L468.6,832.6L467.4,834.7L458.7,828.2L451.8,828.9L445.3,827.2L440.7,828.9L437.5,827.3L431.4,831.4L430.6,827.4L425.9,822.7L422.3,824.3L425.3,822.2Z","97415":"M253.9,214.9L262.7,220.6L271.7,219.7L280.6,227.3L288.1,230.6L290.1,235.6L294.9,237.4L297.0,245.8L303.1,257.3L298.1,267.8L291.8,270.6L296.0,274.5L297.6,281.6L301.1,284.5L298.8,289.2L301.1,294.8L298.6,307.2L303.2,312.8L303.0,315.1L306.2,317.4L305.6,320.5L315.5,324.1L323.2,332.9L324.0,337.6L316.0,351.8L309.5,355.7L302.8,363.3L302.1,368.1L305.0,370.5L309.6,370.3L310.1,373.0L314.8,378.1L318.6,379.8L324.6,386.8L330.8,389.6L336.5,387.0L341.8,379.8L351.8,382.3L357.8,381.6L363.6,376.8L362.5,371.3L367.6,371.3L374.3,367.0L389.5,372.2L400.6,370.1L385.3,383.9L386.4,391.4L384.4,395.8L360.2,408.8L358.3,412.3L353.6,415.4L347.6,418.2L342.2,417.8L340.5,421.5L334.7,424.5L331.0,420.4L322.1,417.5L312.4,411.1L295.4,393.8L288.6,391.8L277.9,392.1L269.5,390.1L257.5,393.7L239.6,388.6L231.8,383.7L226.8,386.2L203.5,383.6L190.8,386.2L176.5,384.5L170.1,381.2L149.2,381.5L141.9,385.5L133.4,385.6L131.3,388.6L125.3,391.4L105.6,395.7L98.7,400.0L96.3,399.1L82.5,406.3L81.8,409.8L78.0,408.6L69.3,412.0L63.2,411.9L50.8,405.6L47.1,399.0L28.2,384.8L18.5,373.8L15.7,368.8L16.8,367.3L14.4,367.2L8.0,359.5L5.6,346.4L9.6,319.6L8.7,316.5L10.5,317.4L11.4,314.9L2.7,299.9L0.0,290.9L1.2,284.9L14.3,272.5L15.1,268.4L25.3,259.7L29.9,253.1L32.2,252.7L33.8,254.9L33.5,252.5L36.0,254.8L46.0,256.5L51.9,255.9L85.9,235.5L95.3,225.6L101.0,215.0L104.5,203.7L103.3,201.9L106.2,184.4L104.4,169.9L96.6,149.2L102.2,149.2L110.4,146.2L129.4,147.5L150.6,154.3L165.4,167.8L175.9,171.2L193.5,172.0L205.6,175.9L214.9,176.7L226.9,182.5L232.0,188.5L243.9,196.5L250.7,204.5Z","97406":"M574.2,452.9L577.8,457.8L586.5,459.1L589.5,463.3L585.9,473.6L591.1,475.8L591.0,479.6L597.4,482.4L595.2,485.2L601.4,493.6L600.4,504.0L597.2,505.6L599.1,511.1L603.9,514.4L603.8,521.4L605.3,522.8L610.1,522.5L612.6,524.9L618.8,523.3L618.6,528.2L622.2,532.3L634.8,538.0L639.6,535.5L646.5,538.0L657.3,535.2L660.4,524.7L665.2,520.6L665.5,516.5L679.0,510.7L686.1,524.6L690.8,528.5L692.9,537.8L698.3,544.8L702.7,555.6L715.9,573.6L738.0,555.0L740.5,546.6L743.9,543.3L749.8,541.0L761.2,545.5L772.0,542.9L788.2,527.5L804.8,520.2L707.6,403.9L701.3,402.5L700.1,400.6L691.2,399.1L685.9,402.3L679.2,403.5L667.2,425.5L658.0,426.3L656.9,425.1L654.7,427.9L647.7,429.5L641.1,434.0L634.9,441.4L628.4,439.0L623.3,439.2L620.2,441.5L618.4,447.0L613.7,448.0L607.4,444.3L604.6,440.2L598.1,437.8L593.0,438.1L585.4,441.4L583.2,445.3L577.9,446.3Z","97409":"M679.7,186.7L656.0,206.1L642.9,206.0L636.3,218.2L618.6,226.3L609.0,224.6L602.3,227.3L598.2,226.7L592.4,221.3L584.7,220.4L584.7,218.3L576.5,210.9L583.0,207.3L584.2,201.6L603.3,179.8L608.2,171.5L619.4,164.8L622.0,165.5L623.9,163.4L633.2,161.2L635.5,159.6L635.8,155.8L646.3,147.9L649.1,148.0L655.2,140.7L664.0,146.0L668.1,142.1L673.0,142.0L674.2,137.3L678.0,138.7L679.7,130.6L684.1,127.2L682.9,123.3L686.5,125.4L688.7,121.9L691.3,122.8L692.6,111.0L690.3,110.8L690.1,108.3L686.0,107.9L685.1,100.9L682.3,101.3L679.7,98.8L676.7,99.7L676.6,95.8L673.4,93.0L666.0,93.8L667.8,71.0L664.8,67.3L693.9,75.4L723.8,93.1L730.3,104.4L751.9,125.6L759.4,137.1L765.5,149.9L774.9,162.7L780.8,185.0L757.8,187.5L735.0,196.5L715.5,191.7L704.6,184.8L687.1,183.6Z","97408":"M304.0,180.5L300.5,193.7L324.4,192.3L340.7,203.3L349.2,205.8L355.2,204.5L368.2,217.5L379.5,224.1L393.4,246.7L392.3,257.2L395.1,268.1L382.5,274.6L382.2,276.2L383.4,288.8L382.0,298.6L383.9,306.9L382.0,317.5L383.3,321.6L381.1,326.8L366.6,336.9L368.1,340.5L376.2,346.3L381.6,355.7L388.3,360.0L389.8,363.3L397.5,364.9L400.4,370.0L389.5,372.2L374.4,367.0L367.6,371.3L362.5,371.3L363.7,376.8L357.8,381.6L351.8,382.3L341.8,379.8L336.5,387.0L330.8,389.6L324.6,386.8L318.6,379.8L314.8,378.1L310.1,373.0L309.6,370.3L305.0,370.5L302.1,368.1L302.8,363.3L309.5,355.7L316.0,351.8L324.0,337.6L323.2,332.9L315.5,324.1L305.6,320.5L305.7,316.4L303.0,315.1L303.2,312.8L298.6,307.2L301.1,294.8L298.8,289.2L301.1,284.5L297.6,281.6L296.0,274.5L291.8,270.6L298.1,267.8L303.1,257.3L294.3,236.8L290.2,235.6L288.1,230.6L280.6,227.3L271.7,219.7L262.7,220.6L254.6,215.0L250.1,203.5L226.1,182.0L213.8,176.5L205.6,175.9L193.5,172.0L175.9,171.2L165.0,167.7L168.1,161.0L166.8,158.2L182.8,119.8L174.9,113.2L181.7,105.3L183.4,96.8L208.9,85.3L213.6,80.0L218.7,69.6L233.5,61.4L247.3,46.3L256.7,42.5L259.2,53.8L258.5,58.6L261.6,63.7L261.7,68.4L265.6,70.9L266.7,75.9L272.4,84.5L275.3,85.0L279.1,89.1L277.7,90.9L278.1,98.8L283.3,107.7L283.1,116.8L290.0,126.3L294.0,128.5L296.6,134.6L300.9,135.5L307.0,147.0L303.9,159.5L305.7,165.3L300.9,175.5Z","97407":"M139.4,99.0L156.4,100.1L183.5,96.8L181.7,105.3L174.9,113.2L182.8,119.8L166.8,158.2L168.1,161.0L165.0,167.7L150.6,154.3L130.0,147.6L110.4,146.2L96.7,149.2L102.3,133.8L105.0,119.9L104.5,113.3L109.8,115.0L107.6,115.5L107.5,122.8L108.9,115.7L110.8,115.7L110.7,119.1L112.5,119.3L112.9,116.5L115.2,115.1L113.5,109.3L117.2,109.8L114.7,108.4L117.7,106.3L111.9,105.2L109.5,109.6L112.3,109.2L112.4,111.1L105.8,111.2L108.3,107.1L108.7,95.7L114.4,87.7L120.2,91.8Z","97405":"M600.9,839.9L601.6,842.2L597.5,850.6L591.0,851.5L589.4,858.9L591.3,865.5L577.4,872.8L567.6,871.4L560.5,866.2L555.8,867.9L545.6,864.0L543.5,864.7L544.0,866.6L538.1,869.3L537.4,864.7L534.3,861.5L515.5,850.1L514.7,848.1L518.7,838.3L517.1,836.6L518.0,830.3L528.5,803.7L527.3,801.2L529.6,796.5L527.6,786.7L532.6,780.0L554.9,768.4L566.4,769.3L572.9,765.4L577.5,760.7L585.7,756.8L589.9,747.6L593.0,748.3L598.2,742.9L599.6,737.5L605.2,734.4L606.6,728.6L609.1,726.5L607.9,724.2L625.2,720.0L624.1,726.3L627.1,736.7L619.4,745.2L617.4,753.1L601.5,764.0L603.2,766.5L598.9,769.5L600.6,773.7L597.6,775.9L597.7,787.8L594.0,790.4L595.0,798.7L601.8,803.2L600.3,814.2L601.9,820.6Z","97413":"M195.4,588.8L194.0,592.5L195.0,595.4L190.7,596.7L192.3,606.1L191.3,609.4L186.3,620.1L180.7,622.3L180.6,626.6L175.5,632.3L175.3,636.6L171.9,641.0L173.0,645.0L171.4,650.3L167.9,652.7L158.6,644.6L156.0,644.8L151.2,637.1L130.8,626.9L123.3,620.0L122.2,609.7L115.2,599.8L116.1,596.9L114.6,597.0L111.6,588.6L111.5,581.6L102.8,573.3L112.0,546.6L110.3,532.3L110.8,529.6L113.1,529.6L111.5,508.1L113.7,504.5L105.0,491.2L104.5,487.2L99.7,486.1L94.8,482.2L88.9,481.5L90.1,476.3L87.2,474.8L88.1,472.1L86.4,470.4L88.5,469.2L86.8,467.8L87.8,457.1L96.9,453.2L106.6,453.4L121.0,443.6L137.2,441.1L158.9,429.3L169.8,428.3L174.8,424.4L183.0,423.9L186.9,425.5L214.2,419.6L224.0,419.7L229.4,421.8L234.7,420.2L238.4,422.0L247.8,421.0L262.8,428.2L277.1,425.3L295.1,429.8L301.0,428.4L307.2,432.6L321.5,434.5L316.2,440.6L312.1,442.2L309.1,455.5L302.2,460.6L301.6,463.5L304.6,472.3L300.0,476.3L298.6,480.1L288.6,489.6L277.2,494.4L268.4,511.4L260.0,517.0L257.1,523.6L246.0,533.8L243.9,538.4L237.1,541.9L230.9,550.6L225.9,552.8L218.8,559.4L214.3,566.8L211.9,567.3L209.5,573.0L204.1,575.9L203.8,579.5Z","97418":"M578.7,44.1L576.1,62.3L573.3,69.4L573.5,88.1L582.0,117.8L565.3,138.3L549.7,174.1L543.4,176.9L541.0,175.4L541.2,172.1L536.8,173.1L540.3,168.4L542.3,153.9L546.1,148.0L545.1,145.2L531.4,144.6L530.9,152.3L527.6,158.9L513.3,149.2L511.3,153.7L506.4,154.2L506.3,147.2L503.3,143.8L493.6,143.4L493.1,145.1L478.7,149.6L476.0,148.8L475.7,146.0L464.8,149.9L448.5,148.6L450.6,137.1L458.6,118.9L459.5,112.2L478.0,89.3L466.9,63.0L460.3,18.7L474.0,21.3L488.8,28.7L509.1,32.8L524.0,40.0L538.9,41.3L550.9,34.5L575.8,38.2L578.5,40.0Z","97402":"M732.5,252.8L729.8,257.3L735.2,272.6L728.5,278.5L717.9,280.8L714.3,283.4L708.5,280.5L696.5,283.2L687.4,280.2L684.9,283.0L675.6,285.8L669.3,292.9L661.5,294.3L658.3,292.3L649.1,292.9L647.9,296.9L637.5,310.7L637.8,317.7L630.9,323.6L623.4,335.7L617.8,338.3L605.5,352.6L604.0,358.3L598.5,363.1L598.4,369.5L585.6,368.3L577.2,364.2L569.9,356.2L563.9,356.0L552.7,348.2L546.2,350.0L541.2,348.6L556.4,332.5L555.3,297.8L553.3,297.1L552.3,292.4L549.9,294.7L543.1,288.6L549.7,274.9L551.6,264.4L557.0,254.3L566.9,251.7L569.7,244.5L572.6,243.8L573.3,239.2L580.2,239.3L593.0,231.6L592.3,226.3L594.5,224.0L601.3,227.2L609.0,224.6L616.1,226.6L620.9,225.6L637.0,217.6L642.9,206.0L656.0,206.1L680.5,186.0L685.4,183.9L705.0,184.9L715.5,191.7L735.0,196.5L757.8,187.5L780.8,185.0L780.9,230.6L770.8,233.8L767.3,231.6L764.9,236.6L750.9,237.3L744.5,239.5L743.0,244.7L738.0,244.8L738.2,253.0Z","97401":"M223.1,606.9L218.4,618.1L219.4,622.3L223.9,622.1L226.8,628.7L226.1,646.7L219.2,663.1L223.0,669.2L218.5,668.0L211.6,662.3L212.1,659.3L184.4,654.4L177.2,649.0L174.1,648.9L169.9,659.7L166.8,659.3L167.9,652.7L171.4,650.3L173.0,645.0L171.7,641.7L175.3,636.6L175.2,632.9L180.6,626.6L180.8,622.2L186.4,620.0L191.3,609.4L192.3,606.1L190.7,596.7L195.0,595.4L194.9,587.9L200.1,584.6L203.9,579.2L203.9,576.2L209.5,573.0L211.9,567.3L214.3,566.8L219.0,559.2L225.9,552.8L230.9,550.6L237.1,541.9L243.9,538.4L246.0,533.8L257.1,523.6L260.0,517.0L268.4,511.4L277.2,494.4L288.6,489.6L304.5,472.5L298.4,493.9L295.4,499.1L295.0,504.9L287.2,513.6L281.0,517.1L277.0,527.6L278.5,533.6L275.6,542.8L272.5,543.6L274.6,528.2L271.7,528.6L267.0,536.3L261.7,551.4L263.9,558.3L260.8,564.1L259.3,573.5L253.9,577.2L253.1,580.5L250.2,582.6L248.0,590.1L244.2,590.3L240.5,594.8L228.2,600.0Z","97404":"M228.3,713.7L203.8,708.2L203.2,709.3L202.8,707.8L200.4,709.0L200.5,707.1L198.2,708.1L196.2,704.4L191.4,702.1L186.3,694.4L189.9,688.5L186.2,681.7L184.3,681.6L185.2,673.2L182.7,669.4L169.9,659.7L174.1,648.9L177.2,649.0L184.4,654.4L212.1,659.3L211.6,662.3L218.5,668.0L223.0,669.2L219.2,663.1L226.1,646.7L226.8,628.7L223.9,622.1L219.4,622.3L218.4,618.1L225.4,602.7L234.0,596.8L240.5,594.8L244.2,590.3L248.0,590.1L250.2,582.6L253.1,580.5L253.9,577.2L259.3,573.5L260.8,564.1L263.9,558.3L261.8,550.9L267.0,536.3L271.2,529.1L274.2,528.0L272.6,550.6L266.2,562.4L268.0,571.0L273.8,577.3L278.5,577.7L281.5,589.0L277.9,603.5L275.7,625.0L278.4,639.3L277.6,646.1L282.1,655.8L284.3,668.7L282.3,674.9L277.5,679.3L278.0,688.8L264.1,710.1L271.1,718.8L282.2,726.0L280.9,728.7L260.3,719.3L237.3,714.0Z","97419":"M983.9,543.2L980.6,550.1L981.9,558.1L980.4,574.3L977.2,580.4L970.1,584.0L963.9,592.3L962.5,600.9L954.0,614.9L952.9,626.4L954.4,629.0L951.8,632.2L947.8,657.8L698.8,632.7L695.2,631.7L693.5,628.3L705.4,608.3L706.8,597.1L705.4,588.8L711.1,577.7L738.0,555.0L742.2,544.5L749.8,541.0L761.2,545.5L772.0,542.9L788.2,527.5L814.7,514.7L829.3,513.0L832.2,508.0L835.2,506.5L837.0,501.6L836.0,496.4L837.2,491.8L843.7,491.9L842.7,488.4L849.5,482.7L846.9,477.9L854.4,471.4L854.4,468.6L850.1,468.0L848.5,469.7L846.8,467.4L848.2,465.4L844.2,462.3L843.3,458.3L849.0,458.0L845.2,452.9L846.0,446.0L850.1,444.8L851.2,441.0L854.5,440.0L854.1,438.0L858.8,433.0L862.7,423.7L888.0,401.3L896.2,409.7L911.9,436.7L918.5,439.7L927.5,437.0L939.7,441.8L951.2,451.8L952.6,453.6L951.8,455.7L956.7,460.2L964.3,463.9L970.6,463.5L983.4,473.2L982.3,476.1L984.6,478.1L985.1,485.6L987.3,485.8L988.7,489.7L990.5,489.9L991.6,498.1L996.1,501.8L993.4,506.8L994.3,520.4L997.0,533.0L1000.0,537.6L992.3,544.3Z","97411":"M465.8,49.3L468.7,69.3L478.0,89.3L459.5,112.2L456.7,123.6L453.9,122.6L446.6,138.2L441.3,130.3L435.1,130.7L431.6,127.2L419.2,124.3L421.9,111.3L419.8,103.7L413.1,109.8L411.7,115.8L403.4,111.7L403.1,102.2L407.3,98.2L409.6,90.5L406.4,87.6L394.4,105.4L385.6,99.6L382.6,102.3L376.9,115.3L367.8,123.1L365.8,122.9L368.9,114.7L359.7,114.0L353.5,127.1L351.5,128.1L350.0,123.3L345.0,119.2L346.0,113.6L338.9,104.5L339.1,100.1L337.0,96.5L342.6,79.3L338.9,74.0L330.8,77.8L322.2,92.0L315.1,89.3L311.8,82.6L308.5,80.6L305.2,84.9L304.3,92.8L289.4,96.0L290.3,98.9L288.5,100.3L281.2,96.9L280.9,104.6L278.1,98.8L278.6,87.7L272.4,84.5L266.7,75.9L265.6,70.9L261.7,68.4L261.6,63.7L258.5,58.6L259.2,53.8L256.7,42.4L286.0,19.8L299.7,14.2L331.0,4.8L359.6,9.1L368.3,6.3L372.8,0.8L377.6,0.0L392.0,12.7L407.9,22.0L435.9,24.9L460.3,18.7Z","97420":"M673.9,138.1L673.0,142.0L668.1,142.1L664.2,146.0L655.2,140.7L649.1,148.0L646.3,147.9L635.8,155.8L635.5,159.6L633.2,161.2L623.9,163.4L622.0,165.5L619.4,164.8L611.6,169.1L584.2,201.6L583.2,207.0L573.4,205.7L580.4,192.6L576.0,192.4L571.8,188.3L564.8,186.5L559.4,187.9L563.3,185.1L563.2,183.2L566.7,181.8L568.1,178.5L567.5,177.1L561.8,178.2L552.3,168.9L565.3,138.3L582.0,117.8L573.5,88.1L573.3,69.4L576.1,62.3L578.5,40.1L588.5,44.7L606.0,42.2L647.1,65.4L657.0,67.8L664.8,67.3L667.5,70.0L666.0,93.8L674.1,93.4L676.6,95.8L676.7,99.7L679.7,98.8L682.3,101.3L685.1,100.9L686.0,107.9L690.2,108.4L690.3,110.8L692.7,111.4L693.0,116.9L690.8,117.7L691.3,122.8L688.7,121.9L686.5,125.4L682.9,123.3L684.4,126.4L679.7,130.6L678.0,138.7L675.5,136.6Z","97412":"M687.8,888.9L681.5,885.1L663.1,883.7L633.8,891.6L622.0,885.6L617.3,878.3L601.5,872.8L601.5,870.1L596.9,864.8L591.2,866.3L589.4,858.9L591.0,851.5L597.5,850.6L601.6,842.2L600.6,826.2L601.9,820.6L600.3,814.2L601.8,803.2L595.2,799.0L594.1,795.3L594.1,790.0L597.5,788.1L598.6,783.5L597.6,775.9L600.6,773.7L598.9,769.5L603.2,766.5L601.4,764.4L603.0,762.1L609.9,759.5L614.8,753.5L617.4,753.1L619.4,745.2L627.1,736.7L624.1,726.3L625.5,719.6L623.7,711.3L624.6,703.5L621.6,699.5L620.6,692.1L622.7,680.0L618.3,668.5L619.8,649.0L626.0,639.9L626.4,618.0L643.9,584.0L662.8,569.4L667.6,562.7L676.6,558.4L680.4,559.7L689.0,567.7L697.2,571.0L705.4,588.8L706.8,597.1L705.4,608.3L693.5,628.3L694.4,630.8L698.8,632.7L745.4,637.3L744.1,644.4L750.0,676.9L757.3,691.4L769.0,697.8L769.2,702.4L763.3,715.5L764.3,730.5L758.9,744.0L758.7,750.4L762.3,762.8L765.7,766.3L773.9,792.9L778.1,797.9L778.0,806.6L775.6,808.5L777.2,813.2L775.4,821.6L779.7,838.9L786.3,847.5L788.5,856.3L787.5,866.5L779.8,873.1L749.4,870.0L743.7,872.8L742.9,877.7L740.4,877.0L738.9,882.5L736.4,882.1L733.2,885.8L727.2,885.2L726.7,883.5L725.2,885.0L721.1,882.3L713.5,884.0L699.3,891.1L697.4,894.9L693.1,896.2L687.8,892.3Z","97422":"M582.2,723.7L577.8,729.3L576.6,733.9L570.4,738.0L559.4,740.9L558.9,742.9L551.9,746.3L548.1,745.5L546.4,749.8L543.3,750.5L537.9,758.7L518.9,762.8L516.2,767.9L513.0,769.7L487.0,741.7L477.2,740.5L473.1,742.4L472.2,737.7L477.7,735.9L482.4,731.4L483.6,726.8L479.4,720.8L476.9,721.2L465.7,714.6L453.9,703.6L451.9,698.2L453.0,695.0L450.8,690.7L440.0,680.8L435.7,674.8L435.8,671.6L423.8,662.2L444.5,645.0L439.8,643.6L437.6,635.1L448.3,636.2L454.5,633.5L457.7,630.0L456.7,625.1L458.1,622.8L464.0,618.8L471.2,618.7L476.1,613.2L474.2,608.9L477.6,607.2L478.1,604.3L474.0,601.8L480.6,591.4L470.6,583.7L467.8,578.0L469.5,575.5L474.6,577.6L481.1,572.0L479.3,566.1L482.2,561.9L482.9,543.0L487.4,538.8L494.7,538.2L498.8,539.0L505.1,544.0L508.5,525.5L502.3,514.8L502.3,504.5L496.1,491.1L497.9,485.2L496.8,478.3L491.0,470.1L493.1,467.7L497.1,468.0L495.6,461.3L498.5,460.5L500.4,456.7L508.7,456.8L513.1,459.7L522.6,458.8L531.7,453.7L545.8,461.6L553.0,459.0L563.4,459.5L574.4,453.1L579.8,458.8L586.5,459.1L589.5,463.3L585.9,473.6L591.1,475.8L591.0,479.6L597.4,482.4L595.2,485.2L601.4,493.6L600.4,504.0L597.2,505.6L599.1,511.1L603.9,514.4L603.8,521.4L605.3,522.8L610.1,522.5L612.6,524.9L618.8,523.3L618.6,528.2L622.2,532.3L634.8,538.0L639.6,535.5L646.5,538.0L657.3,535.2L660.4,524.7L665.2,520.6L665.5,516.5L679.0,510.7L686.1,524.6L690.8,528.5L692.9,537.8L698.3,544.8L702.7,555.6L715.9,573.6L711.1,577.7L705.4,588.8L697.2,571.0L689.0,567.7L680.4,559.7L676.6,558.4L667.6,562.7L662.8,569.4L643.9,584.0L626.4,618.0L625.9,640.6L619.8,649.0L618.3,668.5L622.7,680.0L620.9,693.5L612.4,697.0L604.1,706.0L599.7,707.6L599.7,709.4L597.4,708.8L585.0,716.5Z","97417":"M853.9,859.0L843.5,860.9L834.5,859.8L829.8,863.1L828.3,861.1L824.6,861.2L805.7,870.5L797.5,870.5L796.9,872.7L796.1,871.3L793.4,873.3L780.2,872.6L787.8,865.9L788.5,855.7L786.3,847.5L779.7,838.9L775.4,821.6L777.2,813.2L775.6,808.5L778.0,806.6L778.1,797.9L773.9,792.9L765.7,766.3L762.3,762.8L758.4,747.2L761.7,735.7L763.5,735.3L763.3,715.5L769.2,702.4L769.0,697.8L757.3,691.4L750.0,676.9L744.1,644.4L745.4,637.3L947.6,657.8L943.0,671.1L946.8,689.7L945.2,713.1L950.3,726.8L949.0,729.3L950.0,737.1L947.8,743.7L949.1,751.6L947.0,758.1L948.3,759.3L948.5,770.4L950.1,771.4L948.7,775.0L950.3,785.4L954.4,796.9L953.0,801.5L936.5,827.5L922.7,835.0L913.7,843.5L912.8,846.8L903.1,850.4L898.9,854.0L897.0,852.5L889.5,853.9L882.8,850.8L877.2,852.1L870.1,849.8L862.1,857.8Z","97403":"M458.1,622.8L456.7,625.1L457.7,630.0L454.5,633.5L448.3,636.2L437.6,635.1L439.8,643.6L444.4,645.2L423.8,662.2L409.6,667.5L408.3,676.5L409.6,681.8L403.1,693.1L403.2,697.9L394.1,711.2L385.0,716.5L386.8,707.4L393.1,697.1L387.6,690.5L394.2,687.6L399.6,664.1L394.9,654.1L396.0,647.9L393.3,642.8L391.1,629.0L394.2,620.2L393.5,605.2L397.8,595.2L393.3,569.8L395.9,565.1L395.8,559.4L409.8,549.1L416.1,551.1L433.3,543.2L446.6,532.2L453.1,515.4L453.4,509.2L459.4,497.4L458.6,486.0L461.4,474.7L467.4,464.0L473.1,463.0L475.1,460.3L481.5,461.5L500.4,456.7L498.5,460.5L495.6,461.3L497.1,468.0L493.1,467.7L491.0,470.1L496.8,478.3L497.9,485.2L496.1,491.1L502.3,504.5L502.3,514.8L508.5,525.5L506.4,540.1L504.6,540.6L505.0,544.2L498.8,539.0L487.4,538.8L482.5,543.6L482.2,561.9L479.3,566.1L481.1,572.0L474.6,577.6L469.5,575.5L467.8,578.0L470.6,583.7L480.6,591.4L474.0,601.8L478.1,604.3L477.6,607.2L474.2,608.9L476.1,613.2L471.2,618.7L464.0,618.8Z"}};
+const OPS = [[307.0,214.0,22,3,1],[372.1,64.0,25,3,1],[333.4,609.4,102,4,1],[150.9,293.7,14,3,1],[146.3,280.7,12,0,1],[240.8,565.3,1,1,1],[640.7,275.0,1,1,1],[433.1,579.1,1,1,1],[247.3,622.6,1,1,1],[253.4,628.6,1,1,1],[568.5,797.6,1,1,1],[556.4,799.2,1,1,1],[565.6,795.3,1,1,1],[564.2,801.1,1,1,1],[554.9,795.0,1,1,1],[556.7,802.9,1,1,1],[680.9,487.6,1,1,1],[685.2,493.8,1,1,1],[696.1,487.7,1,1,1],[144.5,118.7,1,1,1],[141.2,122.4,1,1,1],[147.2,123.5,1,1,1],[314.5,212.8,1,1,1],[313.7,221.5,1,1,1],[308.3,219.8,1,1,1],[314.0,219.1,11,1,1],[307.4,217.0,11,1,1],[311.9,212.9,11,1,1],[312.0,224.6,11,1,1],[311.4,222.9,11,1,1],[312.6,218.0,11,1,1],[311.5,218.6,11,1,1],[304.6,219.1,11,1,1],[314.4,222.8,11,1,1],[315.2,209.7,11,1,1],[309.8,211.8,11,1,1],[705.5,140.1,1,1,1],[702.1,142.2,1,1,1],[703.0,143.8,1,1,1],[713.9,145.6,1,1,1],[708.1,155.2,1,1,1],[702.0,153.9,1,1,1],[701.3,147.6,1,1,1],[703.4,153.4,1,1,1],[707.8,147.4,1,1,1],[712.3,143.1,1,1,1],[707.0,147.2,1,1,1],[708.2,149.1,1,1,1],[705.9,144.0,1,1,1],[706.5,146.1,1,1,1],[708.2,143.9,1,1,1],[681.0,370.8,1,1,1],[672.8,378.4,1,1,1],[682.9,378.8,1,1,1],[684.9,372.7,1,1,1],[672.5,370.9,1,1,1],[678.1,369.8,1,1,1],[366.5,69.1,1,1,1],[373.4,66.8,1,1,1],[362.3,74.8,1,1,1],[365.3,75.3,1,1,1],[373.8,68.9,1,1,1],[366.5,67.0,1,1,1],[366.7,64.9,1,1,1],[700.1,727.1,1,1,1],[689.1,725.9,1,1,1],[692.3,723.7,1,1,1],[689.6,724.2,1,1,1],[688.8,722.7,1,1,1],[689.6,732.5,1,1,1],[694.3,728.4,1,1,1],[688.0,726.1,1,1,1],[694.4,725.2,1,1,1],[692.7,730.0,1,1,1],[691.4,722.2,1,1,1],[701.8,726.5,1,1,1],[689.8,721.6,1,1,1],[686.8,731.5,1,1,1],[697.2,730.1,1,1,1],[695.0,735.1,1,1,1],[693.0,731.6,1,1,1],[694.2,734.3,1,1,1],[175.8,535.3,1,1,1],[174.5,532.0,1,1,1],[180.1,529.5,1,1,1],[171.4,538.9,1,1,1],[171.5,536.4,1,1,1],[178.9,529.8,1,1,1],[172.2,534.2,1,1,1],[176.3,540.7,1,1,1],[336.8,615.9,1,1,1],[333.7,604.7,1,1,1],[334.5,618.7,1,1,1],[332.9,608.7,1,1,1],[331.2,606.7,1,1,1],[332.4,610.8,1,1,1],[336.8,612.4,1,1,1],[331.0,613.3,1,1,1],[332.0,616.1,1,1,1],[333.4,613.6,1,1,1],[333.9,611.7,1,1,1],[335.6,618.2,1,1,1],[331.8,620.0,1,1,1],[147.7,286.7,1,1,1],[154.6,281.1,1,1,1],[157.5,281.2,1,1,1],[150.7,280.0,1,1,1],[145.9,287.4,1,1,1],[156.3,288.8,1,1,1],[146.4,289.1,1,1,1],[154.6,290.6,1,1,1],[158.1,286.3,1,1,1],[152.7,282.7,1,1,1],[143.5,286.2,1,1,1],[151.2,288.4,4,1,1],[146.7,284.5,4,1,1],[150.9,291.9,4,1,1],[149.3,287.1,4,1,1],[155.7,290.5,1,1,1],[151.5,289.9,1,1,1],[409.4,751.5,1,1,1],[412.4,751.9,1,1,1],[405.3,749.2,1,1,1],[409.5,760.2,1,1,1],[411.8,754.3,1,1,1],[409.7,757.6,1,1,1],[397.8,753.9,1,1,1],[401.8,763.2,1,1,1],[402.7,754.0,1,1,1],[402.7,752.4,1,1,1],[401.8,752.6,1,1,1],[402.1,752.1,1,1,1],[404.2,757.4,1,1,1],[402.3,763.2,1,1,1],[400.7,751.3,1,1,1],[399.7,752.2,1,1,1],[403.3,754.5,1,1,1],[406.9,764.0,1,1,1],[410.6,759.0,1,1,1],[408.6,751.7,1,1,1],[402.5,763.0,1,1,1],[405.3,762.6,1,1,1],[402.4,751.1,1,1,1],[409.6,761.8,1,1,1],[405.9,759.0,1,1,1],[859.8,754.9,1,1,1],[857.2,751.5,1,1,1],[523.4,105.5,1,1,1],[525.1,91.2,1,1,1],[523.8,98.8,1,1,1],[524.0,100.0,1,1,1],[521.8,98.8,1,1,1],[889.6,535.5,1,1,1],[883.4,532.4,1,1,1],[631.7,124.7,1,1,1],[630.6,128.6,1,1,1],[637.0,122.9,1,1,1],[891.6,529.4,1,1,1],[897.5,527.7,1,1,1],[633.4,116.8,1,1,1],[890.1,531.2,1,1,1],[892.9,537.8,1,1,1],[635.5,122.6,1,1,1],[473.8,314.3,1,1,1],[476.3,311.6,1,1,1],[469.5,307.0,1,1,1],[469.3,306.1,1,1,1],[471.5,318.6,1,1,1],[474.3,316.6,1,1,1],[545.9,615.0,1,1,1],[548.0,613.7,1,1,1],[548.6,613.3,1,1,1],[559.1,611.6,1,1,1],[557.9,611.6,1,1,1],[548.7,607.5,1,1,1],[557.9,608.4,1,1,1],[551.6,605.7,1,1,1],[556.5,610.6,1,1,1],[556.4,615.8,1,1,1],[555.2,608.6,1,1,1],[559.1,613.3,1,1,1],[552.5,604.9,1,1,1],[559.2,613.9,1,1,1],[557.5,612.2,1,1,1],[546.1,613.0,1,1,1],[554.9,617.3,1,1,1],[188.9,418.1,1,1,1],[200.7,417.4,1,1,1],[381.2,470.6,1,1,1],[386.9,462.7,1,1,1],[381.6,464.5,1,1,1],[386.7,468.8,1,1,1],[195.5,647.6,41,0,0],[195.6,648.4,10,0,0],[187.4,634.3,29,4,0],[184.1,632.6,24,0,0],[184.1,632.6,32,0,0],[184.1,632.6,42,0,0],[179.3,635.0,29,0,0],[179.8,635.6,18,0,0],[213.4,601.6,36,0,0],[213.4,601.6,21,0,0],[208.2,601.9,31,0,0],[208.2,601.9,12,0,0],[208.2,601.9,9,0,0],[766.0,221.3,107,0,0],[741.8,222.8,51,4,0],[722.6,219.9,18,0,0],[403.3,642.0,3,0,0],[412.8,659.0,10,0,0],[412.8,659.0,8,0,0],[410.3,648.7,16,4,0],[405.5,641.0,30,0,0],[405.5,641.0,10,1,0],[403.9,645.5,22,0,0],[403.9,645.5,14,0,0],[406.1,637.7,40,0,0],[244.6,675.6,15,0,0],[244.6,675.6,15,0,0],[243.7,674.0,12,0,0],[243.7,674.0,8,0,0],[233.4,665.9,50,0,0],[239.4,675.9,20,0,0],[239.4,675.9,25,0,0],[244.7,671.3,21,0,0],[243.6,674.3,18,0,0],[255.0,682.1,18,3,0],[255.0,682.1,6,0,0],[237.6,680.2,45,3,0],[237.6,680.2,22,0,0],[557.8,804.7,18,0,0],[562.9,831.3,31,0,0],[663.4,466.2,29,0,0],[650.1,483.2,55,0,0],[655.6,452.2,18,0,0],[158.3,152.3,45,4,0],[117.0,119.6,48,0,0],[133.0,104.6,1,0,0],[133.0,104.6,1,0,0],[133.0,104.6,18,0,0],[133.0,104.6,1,0,0],[117.2,124.2,20,3,0],[117.2,124.2,14,1,0],[125.5,115.8,25,3,0],[131.9,109.2,14,0,0],[124.8,132.8,32,0,0],[129.2,104.9,30,0,0],[129.2,104.9,6,1,0],[139.7,111.2,176,4,0],[139.7,111.2,196,4,0],[139.8,109.5,227,4,0],[146.2,116.5,224,4,0],[124.8,132.8,63,3,0],[129.2,104.9,50,3,0],[189.8,103.5,35,3,0],[189.8,103.5,11,0,0],[177.1,146.0,52,3,0],[183.7,153.5,30,3,0],[190.6,108.5,49,0,0],[190.6,108.5,51,0,0],[190.6,108.5,18,0,0],[190.6,108.5,34,0,0],[188.3,101.9,52,3,0],[188.3,101.9,20,0,0],[188.3,101.9,25,0,0],[188.5,154.8,6,0,0],[188.5,154.8,18,3,0],[191.3,110.6,40,3,0],[171.0,154.7,19,0,0],[171.0,154.7,23,0,0],[188.7,109.0,82,4,0],[187.7,107.4,58,4,0],[190.5,111.7,25,3,0],[723.8,145.6,23,0,0],[723.0,146.2,36,0,0],[723.0,146.2,64,0,0],[700.9,153.3,97,4,0],[705.7,128.5,63,0,0],[706.0,147.8,101,4,0],[702.7,159.5,186,4,0],[706.3,182.0,58,0,0],[706.3,182.0,34,0,0],[707.5,182.3,32,0,0],[704.9,138.8,46,0,0],[703.2,161.8,143,4,0],[735.4,114.0,42,0,0],[735.8,114.5,38,0,0],[808.9,290.1,80,4,0],[840.7,371.8,29,1,0],[803.6,294.5,50,4,0],[799.4,310.6,76,4,0],[797.7,277.2,56,0,0],[793.1,286.7,142,4,0],[853.2,380.2,42,0,0],[801.5,307.6,80,4,0],[800.7,285.5,37,0,0],[800.7,285.5,28,0,0],[800.0,278.9,22,0,0],[814.8,292.5,26,4,0],[818.4,299.5,16,4,0],[815.5,293.8,18,4,0],[370.3,18.5,7,0,0],[419.0,47.2,48,3,0],[424.0,44.1,15,0,0],[391.9,43.7,24,3,0],[317.9,37.7,20,3,0],[426.8,29.1,35,4,0],[421.2,40.4,24,3,0],[395.6,28.4,207,4,0],[355.2,87.6,21,0,0],[355.2,87.6,11,0,0],[396.3,21.9,77,4,0],[363.7,14.6,25,0,0],[460.4,63.8,37,3,0],[422.8,43.2,33,0,0],[423.1,26.0,37,4,0],[382.2,13.5,23,0,0],[446.1,42.9,40,0,0],[446.1,42.9,23,0,0],[418.3,40.6,62,4,0],[417.0,38.9,62,0,0],[377.7,15.2,50,3,0],[417.4,49.1,43,3,0],[390.5,53.6,18,3,0],[430.6,37.2,16,0,0],[429.7,32.7,32,3,0],[434.7,60.0,66,3,0],[385.9,16.6,38,0,0],[391.5,31.2,44,3,0],[425.8,47.4,27,3,0],[425.4,53.5,41,4,0],[395.2,24.7,12,0,0],[406.9,46.3,11,3,0],[429.6,69.7,30,0,0],[317.3,24.5,16,0,0],[419.7,45.9,33,3,0],[387.9,34.1,86,4,0],[438.3,52.3,301,4,0],[434.8,40.5,210,4,0],[370.7,12.2,71,4,0],[387.7,29.1,152,4,0],[416.3,66.2,18,0,0],[407.2,40.9,54,0,0],[439.4,59.4,43,0,0],[370.1,17.6,40,3,0],[390.6,32.2,54,0,0],[334.6,29.0,20,0,0],[334.6,29.0,10,0,0],[334.6,29.0,50,3,0],[426.8,36.0,45,0,0],[407.1,46.7,17,0,0],[370.3,19.7,50,0,0],[362.8,41.3,34,3,0],[422.2,54.7,75,4,0],[371.8,44.3,34,3,0],[332.6,32.0,65,3,0],[669.8,826.6,25,0,0],[637.2,878.9,57,4,0],[697.9,878.6,30,4,0],[728.8,868.4,40,4,0],[639.1,882.4,18,4,0],[642.5,881.8,36,4,0],[641.8,886.5,26,4,0],[655.3,876.2,35,4,0],[666.6,805.6,7,0,0],[666.6,805.6,31,0,0],[646.1,883.6,44,4,0],[139.6,606.7,28,3,0],[139.6,606.7,10,0,0],[139.6,606.7,10,1,0],[135.0,552.0,12,1,0],[342.0,714.5,14,0,0],[350.0,712.2,23,0,0],[306.6,713.7,21,0,0],[359.5,699.8,40,0,0],[359.5,699.8,9,0,0],[299.3,689.1,39,4,0],[306.6,713.7,8,0,0],[306.6,713.7,54,0,0],[324.8,720.0,2,0,0],[366.7,683.7,2,0,0],[105.9,298.0,31,0,0],[95.3,235.1,16,0,0],[72.4,323.1,25,0,0],[73.3,273.3,32,0,0],[73.8,274.0,17,0,0],[73.3,272.5,43,0,0],[74.1,273.0,45,0,0],[79.5,301.9,16,1,0],[57.2,290.6,40,0,0],[97.0,234.8,60,0,0],[125.4,285.1,36,0,0],[200.3,188.8,13,0,0],[37.8,381.2,24,0,0],[179.9,188.5,31,0,0],[128.9,294.9,42,0,0],[161.3,192.5,85,3,0],[81.6,306.6,28,0,0],[88.0,307.4,8,0,0],[116.5,195.0,6,1,0],[82.6,245.1,5,0,0],[96.1,235.1,8,0,0],[93.1,365.3,21,0,0],[86.9,273.5,14,0,0],[86.9,273.5,12,0,0],[86.9,273.5,18,1,0],[98.2,232.6,24,0,0],[78.8,263.6,259,4,0],[86.7,364.1,19,0,0],[12.8,302.8,21,0,0],[90.6,364.5,12,0,0],[90.6,364.5,6,0,0],[90.6,364.5,17,0,0],[92.6,234.4,25,0,0],[104.0,225.4,12,4,0],[82.3,306.8,18,0,0],[82.3,306.8,9,0,0],[91.3,364.6,12,0,0],[74.5,269.8,14,0,0],[435.1,816.7,16,4,0],[435.1,816.7,19,4,0],[435.1,816.7,11,4,0],[425.0,798.9,11,0,0],[495.1,840.7,19,3,0],[495.1,840.7,7,0,0],[472.2,825.4,57,0,0],[452.0,820.6,57,0,0],[451.1,822.2,26,3,0],[451.1,822.2,17,0,0],[451.1,822.2,18,0,0],[451.1,822.2,23,0,0],[396.9,740.2,18,0,0],[395.7,740.9,50,0,0],[389.5,736.9,83,4,0],[417.3,805.5,40,0,0],[442.1,819.5,188,4,0],[497.2,80.4,12,0,0],[527.0,49.9,20,3,0],[534.1,48.2,20,0,0],[515.4,128.8,42,1,0],[515.4,128.8,21,0,0],[546.7,49.6,38,4,0],[503.2,73.8,52,3,0],[487.7,66.6,2,3,0],[487.7,66.6,1,0,0],[473.7,67.2,40,0,0],[489.4,91.2,6,3,0],[489.4,91.2,3,0,0],[503.1,82.5,12,0,0],[503.1,82.5,35,3,0],[546.7,49.6,125,4,0],[473.1,71.4,20,0,0],[471.2,71.3,68,3,0],[529.4,45.2,87,4,0],[619.1,56.1,34,0,0],[657.2,137.1,24,0,0],[680.4,105.8,35,0,0],[636.8,69.9,39,0,0],[597.5,91.7,36,0,0],[588.2,97.3,32,0,0],[684.1,106.3,43,0,0],[478.6,670.1,28,0,0],[483.1,694.9,39,0,0],[482.6,691.5,24,0,0],[474.9,690.7,40,4,0],[482.1,708.8,15,0,0],[523.7,705.7,38,4,0],[491.1,714.9,25,0,0],[479.9,700.2,35,0,0],[479.9,700.2,43,0,0],[470.1,715.1,14,0,0],[486.1,704.6,31,0,0],[476.5,695.6,20,0,0],[476.5,695.6,36,0,0],[472.5,682.8,18,0,0],[472.5,682.8,36,0,0],[472.5,682.8,34,0,0],[472.5,682.8,17,0,0],[472.5,682.8,5,0,0],[467.5,691.6,78,0,0],[464.3,697.3,83,4,0],[488.4,699.5,46,0,0],[488.4,699.5,30,0,0],[464.8,698.2,86,4,0],[494.1,707.8,12,0,0],[484.1,709.4,19,0,0],[496.4,674.1,35,0,0],[470.1,715.1,18,0,0],[472.2,684.4,45,0,0],[493.9,684.9,12,0,0],[482.1,708.8,18,0,0],[482.3,691.8,31,0,0],[496.9,708.9,56,0,0],[496.9,708.9,64,0,0],[480.4,689.0,25,0,0],[480.4,689.0,22,0,0],[477.4,704.7,30,0,0],[483.1,707.0,30,0,0],[483.1,707.0,93,0,0],[497.3,700.8,32,0,0],[497.3,700.8,28,0,0],[491.2,700.0,78,0,0],[457.6,672.5,44,0,0],[472.5,682.8,87,0,0],[515.8,760.9,24,0,0],[496.1,704.9,28,0,0],[496.1,704.9,25,0,0],[120.2,411.4,44,0,0],[754.6,215.1,24,0,0],[133.5,111.5,160,4,0],[129.2,104.9,6,1,0],[124.7,114.9,25,0,0],[184.6,139.6,125,4,0],[735.4,114.0,49,0,0],[735.4,114.0,13,0,0],[735.4,114.0,40,0,0],[447.4,47.3,18,0,0],[650.9,875.2,10,3,0],[650.9,875.2,10,0,0],[132.1,555.7,22,0,0],[132.1,555.7,9,0,0],[60.3,406.2,28,4,0],[90.9,361.5,58,0,0],[391.3,807.0,41,4,0],[503.1,81.7,78,3,0],[503.2,80.8,76,3,0],[495.2,77.4,11,0,0],[657.2,137.1,24,0,0],[472.5,682.8,34,0,0],[472.5,682.8,48,0,0],[472.5,682.8,48,0,0],[472.5,682.8,48,0,0],[472.5,682.8,40,0,0],[471.3,711.8,11,0,0],[515.8,760.9,24,0,0],[515.8,760.9,26,0,0],[704.9,138.8,12,0,0],[473.9,680.7,5,0,0],[473.9,680.7,40,0,0],[471.3,711.8,13,0,0],[124.8,114.7,32,0,0],[190.6,108.5,34,3,0],[190.6,108.5,17,0,0],[199.0,95.4,24,0,0],[729.1,143.1,62,0,0],[72.3,262.6,18,3,0],[72.3,262.6,24,0,0],[72.3,262.6,24,0,0],[85.6,243.8,17,0,0],[85.6,243.8,41,0,0],[85.6,243.8,44,3,0],[85.6,243.8,23,0,0],[91.0,362.9,28,3,0],[91.0,362.9,29,3,0],[516.4,126.5,20,3,0],[516.4,126.5,38,0,0],[516.4,126.5,18,0,0],[110.1,411.5,19,0,0],[390.0,31.6,26,0,0],[254.9,704.1,25,0,0],[844.9,371.2,40,0,0],[801.8,283.3,21,0,0],[801.8,283.3,59,0,0],[801.8,283.3,85,0,0],[413.8,62.3,13,3,0],[697.4,879.7,32,4,0],[162.9,191.5,30,0,0],[73.7,249.4,11,0,0],[73.7,249.4,21,0,0],[149.1,319.2,30,0,0],[149.1,319.2,16,0,0],[149.1,319.2,6,0,0],[488.1,105.4,8,0,0],[245.2,681.1,70,3,0],[245.2,681.1,52,0,0],[660.7,159.4,25,1,0],[695.6,164.0,165,4,0],[661.5,158.3,12,0,0],[661.5,158.3,33,0,0],[661.1,158.9,14,3,0],[661.1,158.9,5,0,0],[782.4,315.7,19,0,0],[821.5,421.6,26,0,0],[413.4,91.7,19,0,0],[698.5,881.3,36,0,0],[159.3,193.2,48,0,0],[587.8,101.3,39,0,0],[587.8,101.3,22,0,0],[661.9,138.0,36,0,0],[460.1,670.3,16,0,0],[460.1,670.3,42,3,0],[460.7,670.9,49,0,0],[460.1,670.3,48,0,0],[460.1,670.3,44,0,0],[514.5,759.6,14,0,0],[132.4,118.9,73,0,0],[438.0,92.8,42,0,0],[190.3,571.7,13,0,0],[190.3,571.7,8,0,0],[190.3,571.7,12,0,0],[190.3,571.7,8,0,0],[347.2,700.8,40,0,0],[484.1,63.3,36,3,0],[485.8,652.0,28,0,0],[485.8,652.0,33,0,0],[451.7,687.7,65,0,0],[451.7,687.7,1,0,0],[484.7,705.1,42,0,0],[484.7,705.1,57,0,0],[484.7,705.1,16,0,0],[750.9,216.2,38,0,0],[181.7,154.8,30,3,0],[181.7,154.8,10,0,0],[176.7,145.2,19,0,0],[79.4,300.8,16,1,0],[79.4,300.8,38,0,0],[79.4,300.8,19,1,0],[431.0,805.1,8,0,0],[431.0,805.1,22,3,0],[669.6,122.7,32,0,0],[669.6,122.7,27,0,0],[550.6,614.3,53,0,0],[550.6,614.3,25,0,0],[184.5,627.9,18,0,0],[184.5,627.9,23,0,0],[184.5,627.9,14,1,0],[184.5,627.9,34,0,0],[246.6,666.5,16,0,0],[246.4,667.5,25,0,0],[183.8,153.5,10,0,0],[184.8,153.6,7,0,0],[184.8,153.6,21,3,0],[200.3,188.1,34,0,0],[503.0,673.7,21,0,0],[503.5,673.3,11,0,0],[470.1,715.1,25,0,0],[470.1,715.1,5,0,0],[93.8,362.9,24,0,0],[129.1,118.1,30,3,0],[88.6,238.1,32,0,0],[245.6,666.8,36,0,0],[193.9,111.3,31,0,0],[406.4,41.9,91,4,0],[894.6,844.1,16,0,0],[894.6,844.1,44,0,0],[485.0,721.5,51,0,0],[792.1,314.4,35,0,0],[150.9,285.3,1,1,1],[143.9,286.0,4,1,1],[546.1,611.3,51,3,1],[765.3,220.6,10,0,0],[517.4,846.1,19,0,0],[577.7,861.6,24,0,0],[553.9,820.9,71,4,0],[118.1,130.3,89,4,0],[160.7,153.6,23,0,0],[130.5,127.8,27,4,0],[127.9,115.9,29,0,0],[132.2,129.8,97,4,0],[126.4,109.1,32,0,0],[190.7,114.0,30,0,0],[179.0,162.6,31,0,0],[695.2,105.6,12,0,0],[701.8,157.6,71,0,0],[757.9,152.3,16,0,0],[809.8,285.8,96,4,0],[795.2,281.9,40,0,0],[794.3,280.9,10,0,0],[796.1,284.0,26,0,0],[389.5,38.6,60,4,0],[397.7,39.8,23,4,0],[368.2,52.2,41,3,0],[372.2,28.2,30,0,0],[430.9,48.5,24,0,0],[349.6,30.0,10,3,0],[424.6,38.7,31,0,0],[419.6,39.0,16,0,0],[380.6,33.8,11,3,0],[394.3,22.6,13,0,0],[399.2,21.2,48,4,0],[388.6,15.8,37,4,0],[433.1,44.1,8,0,0],[451.9,70.9,13,0,0],[419.5,51.2,14,3,0],[398.2,29.3,192,4,0],[657.0,862.1,28,0,0],[746.0,865.0,36,0,0],[139.4,610.7,8,0,0],[120.0,528.6,8,0,0],[137.1,552.7,13,0,0],[137.1,552.7,10,1,0],[302.3,659.7,23,0,0],[360.7,667.7,29,0,0],[364.6,676.3,12,0,0],[315.3,716.8,21,0,0],[364.0,692.0,55,0,0],[294.2,704.6,45,3,0],[299.3,713.0,54,0,0],[76.4,298.0,4,0,0],[114.6,261.7,40,0,0],[104.1,223.8,7,0,0],[93.8,361.5,12,0,0],[99.2,227.1,60,4,0],[95.4,235.7,24,1,0],[117.7,237.8,10,0,0],[92.8,231.2,5,0,0],[388.4,737.7,50,4,0],[431.1,806.8,43,0,0],[424.9,805.1,14,0,0],[407.9,725.1,10,0,0],[408.8,805.5,151,4,0],[414.7,709.2,20,3,0],[414.7,709.2,7,0,0],[436.0,823.1,10,3,0],[436.0,823.1,4,0,0],[412.3,807.2,15,0,0],[394.2,732.5,45,4,0],[567.0,42.1,61,0,0],[547.6,46.6,103,4,0],[476.5,80.2,36,0,0],[639.2,65.2,56,4,0],[503.9,713.6,12,0,0],[486.9,709.0,23,0,0],[485.6,708.7,6,0,0],[494.3,694.2,51,0,0],[485.6,734.0,13,0,0],[480.3,698.8,41,0,0],[490.8,712.8,20,4,0],[426.1,648.4,24,4,0],[558.4,834.5,12,0,0],[704.7,160.1,218,4,0],[412.8,799.9,4,0,0],[463.4,728.4,37,0,0],[530.0,48.6,42,4,0],[504.3,81.7,38,0,0],[753.3,229.1,66,4,0]];
+
+/* ============================================================
+   Récit de données — Observatoire de l'habitat, AGORAH
+   Rendu SVG maison : aucune dépendance externe.
+   ============================================================ */
+const NS = 'http://www.w3.org/2000/svg';
+const fr  = n => Math.round(n).toLocaleString('fr-FR');
+const pc1 = n => n.toLocaleString('fr-FR', {minimumFractionDigits:1, maximumFractionDigits:1}) + ' %';
+const pc0 = n => Math.round(n).toLocaleString('fr-FR') + ' %';
+
+function svgEl(tag, attrs, parent){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) if (attrs[k] !== null && attrs[k] !== undefined) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function text(parent, x, y, str, o){
+  o = o || {};
+  const t = svgEl('text', {
+    x, y,
+    'text-anchor': o.anchor || 'start',
+    'dominant-baseline': o.baseline || 'auto',
+    'font-size': o.size || 15,
+    'font-weight': o.weight || 500,
+    'letter-spacing': o.ls || 0,
+    fill: o.fill || 'var(--ink-2)',
+    'font-family': 'Inter, sans-serif'
+  }, parent);
+  if (o.tabular !== false) t.setAttribute('style', 'font-variant-numeric:tabular-nums');
+  t.textContent = str;
+  return t;
+}
+function clear(svg){ while (svg.firstChild) svg.removeChild(svg.firstChild); }
+
+/* ---------- Infobulle partagée ---------- */
+const tip = document.getElementById('tip');
+function showTip(evt, html){
+  tip.innerHTML = html;
+  tip.style.opacity = '1';
+  moveTip(evt);
+}
+function moveTip(evt){
+  const x = evt.clientX, y = evt.clientY;
+  tip.style.left = Math.max(130, Math.min(window.innerWidth - 130, x)) + 'px';
+  tip.style.top  = Math.max(70, y - 12) + 'px';
+}
+function hideTip(){ tip.style.opacity = '0'; }
+function hoverable(node, html){
+  node.addEventListener('mouseenter', e => showTip(e, html));
+  node.addEventListener('mousemove', moveTip);
+  node.addEventListener('mouseleave', hideTip);
+  node.setAttribute('tabindex', '0');
+  node.addEventListener('focus', e => {
+    const r = node.getBoundingClientRect();
+    showTip({clientX: r.left + r.width/2, clientY: r.top}, html);
+  });
+  node.addEventListener('blur', hideTip);
+}
+function legend(elId, items){
+  const box = document.getElementById(elId);
+  if (!box) return;
+  box.innerHTML = items.map(it =>
+    `<span><i style="background:${it.c};${it.dash ? 'outline:1px dashed var(--line-strong);outline-offset:1px;' : ''}"></i>${it.l}</span>`
+  ).join('');
+}
+function scrollWrap(svg){
+  const d = document.createElement('div');
+  d.className = 'chartscroll';
+  d.setAttribute('tabindex', '0');
+  d.setAttribute('role', 'group');
+  d.setAttribute('aria-label', 'Graphique défilable horizontalement');
+  svg.parentNode.insertBefore(d, svg);
+  d.appendChild(svg);
+  const hint = document.createElement('p');
+  hint.className = 'scrollhint';
+  hint.textContent = '↔ faites glisser le graphique pour voir la suite';
+  d.parentNode.insertBefore(hint, d.nextSibling);
+}
+function table(elId, head, rows){
+  const box = document.getElementById(elId);
+  if (!box) return;
+  box.innerHTML = '<table><thead><tr>' + head.map(h => `<th>${h}</th>`).join('') +
+    '</tr></thead><tbody>' + rows.map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('') +
+    '</tbody></table>';
+}
+
+/* ---------- Palettes ---------- */
+const GROUPS = [
+  {k:'ls',  l:'Locatif social',          c:'var(--teal)',   on:'var(--on-teal)'},
+  {k:'as',  l:'Accession sociale',       c:'var(--teal-3)', on:'var(--on-mark)'},
+  {k:'lli', l:'Locatif intermédiaire',   c:'var(--teal-4)', on:'var(--on-teal-4)'},
+  {k:'ml',  l:'Marché libre',            c:'var(--ramp-1)', on:'var(--on-ramp-1)'}
+];
+const RAMP = ['var(--ramp-0)','var(--ramp-1)','var(--ramp-2)','var(--ramp-3)','var(--ramp-4)'];
+const tauxColor = t => t === null || t === undefined ? 'var(--ramp-0)'
+  : (t < 50 ? 'var(--ind-low)' : (t < 100 ? 'var(--ind-ok)' : 'var(--ind-over)'));
+const YEARS = ['2020','2021','2022','2023','2024','2025'];
+
+/* ============================================================
+   1 · Carte d'ouverture : l'île et ses 736 opérations
+   ============================================================ */
+const OPCOL = ['var(--teal)','var(--teal-3)','var(--teal-4)','var(--teal-4)','var(--orange)','var(--ramp-2)'];
+function heroMap(){
+  const svg = document.getElementById('hero-map');
+  clear(svg);
+  svgEl('path', {d: MAP.island, fill:'var(--nodata)', stroke:'var(--nodata)', 'stroke-width':2.4}, svg);
+  const g = svgEl('g', {}, svg);
+  for (const code in MAP.paths){
+    svgEl('path', {d: MAP.paths[code], fill:'var(--ramp-0)', stroke:'var(--surface)', 'stroke-width':1.4}, g);
+  }
+  const pts = svgEl('g', {}, svg);
+  OPS.slice().sort((a,b) => b[2]-a[2]).forEach(p => {
+    const r = Math.max(2.6, Math.sqrt(p[2]) * 1.5);
+    svgEl('circle', {
+      cx:p[0], cy:p[1], r,
+      fill: OPCOL[p[3]], 'fill-opacity': 0.72,
+      stroke: 'var(--surface)', 'stroke-width': 0.9
+    }, pts);
+  });
+}
+
+/* ============================================================
+   2 · Production annuelle (barres empilées)
+   ============================================================ */
+function chartAnnees(){
+  const svg = document.getElementById('chart-annees');
+  clear(svg);
+  const W = 1000, H = 380, L = 66, R = 16, T = 18, B = 46;
+  const iw = W - L - R, ih = H - T - B;
+  const totals = YEARS.map(y => GROUPS.reduce((s,g) => s + DATA.annees[y][g.k], 0));
+  const max = 8000;
+  const y2 = v => T + ih - (v / max) * ih;
+
+  for (let v = 0; v <= max; v += 2000){
+    svgEl('line', {x1:L, x2:W-R, y1:y2(v), y2:y2(v), stroke:'var(--grid)', 'stroke-width':1}, svg);
+    text(svg, L - 10, y2(v) + 5, fr(v), {anchor:'end', size:14, fill:'var(--muted)'});
+  }
+  const bw = iw / YEARS.length;
+  const barW = Math.min(96, bw * 0.62);
+
+  YEARS.forEach((yr, i) => {
+    const cx = L + bw * i + bw / 2;
+    let acc = 0;
+    GROUPS.forEach(gr => {
+      const v = DATA.annees[yr][gr.k];
+      const y0 = y2(acc + v), y1 = y2(acc);
+      const h = Math.max(0, y1 - y0 - 2);
+      const rect = svgEl('rect', {
+        x: cx - barW/2, y: y0, width: barW, height: h,
+        fill: gr.c, rx: 1
+      }, svg);
+      hoverable(rect, `<b>${yr} · ${gr.l}</b>${fr(v)} logements<br><em>${pc0(v / totals[i] * 100)}</em> de la production de l'année`);
+      if (h > 26) text(svg, cx, y0 + h/2 + 5, fr(v), {anchor:'middle', size:15, weight:700, fill:gr.on});
+      acc += v;
+    });
+    text(svg, cx, y2(totals[i]) - 12, fr(totals[i]), {anchor:'middle', size:17, weight:800, fill:'var(--ink)'});
+    text(svg, cx, H - 16, yr, {anchor:'middle', size:15, weight:700, fill:'var(--ink-2)'});
+  });
+  svgEl('line', {x1:L, x2:W-R, y1:y2(0), y2:y2(0), stroke:'var(--line-strong)', 'stroke-width':1.5}, svg);
+
+  legend('legend-annees', GROUPS.map(g => ({c:g.c, l:g.l})));
+  table('table-annees',
+    ['Année'].concat(GROUPS.map(g => g.l)).concat(['Total neuf', 'Réhabilitation']),
+    YEARS.map(y => [y].concat(GROUPS.map(g => fr(DATA.annees[y][g.k])))
+      .concat([fr(GROUPS.reduce((s,g) => s + DATA.annees[y][g.k], 0)), fr(DATA.annees[y].reha)])));
+  scrollWrap(svg);
+}
+
+/* ============================================================
+   3 · Réhabilitation
+   ============================================================ */
+function chartReha(){
+  const svg = document.getElementById('chart-reha');
+  clear(svg);
+  const W = 1000, H = 170, L = 66, R = 16, T = 26, B = 36;
+  const iw = W - L - R, ih = H - T - B;
+  const max = 2200, y2 = v => T + ih - (v/max) * ih;
+  const bw = iw / YEARS.length, barW = Math.min(88, bw * 0.5);
+  YEARS.forEach((yr, i) => {
+    const v = DATA.annees[yr].reha;
+    const cx = L + bw * i + bw / 2;
+    const r = svgEl('rect', {x:cx - barW/2, y:y2(v), width:barW, height:y2(0)-y2(v), fill:'var(--orange)', rx:1}, svg);
+    hoverable(r, `<b>Réhabilitation ${yr}</b>${fr(v)} logements remis à niveau`);
+    text(svg, cx, y2(v) - 9, fr(v), {anchor:'middle', size:16, weight:800, fill:'var(--ink)'});
+    text(svg, cx, H - 12, yr, {anchor:'middle', size:15, weight:700, fill:'var(--ink-2)'});
+  });
+  svgEl('line', {x1:L, x2:W-R, y1:y2(0), y2:y2(0), stroke:'var(--line-strong)', 'stroke-width':1.5}, svg);
+  text(svg, L - 10, y2(0) + 5, '0', {anchor:'end', size:14, fill:'var(--muted)'});
+  text(svg, L - 10, y2(2000) + 5, fr(2000), {anchor:'end', size:14, fill:'var(--muted)'});
+  scrollWrap(svg);
+}
+
+/* ============================================================
+   4 · Réalisé / objectif PLH — Réunion
+   ============================================================ */
+const PLH_ROWS = [
+  {k:'locatif_social',    l:'Locatif social',    real: () => DATA.reunion.ls},
+  {k:'accession_sociale', l:'Accession sociale', real: () => DATA.reunion.as + DATA.reunion.ptz},
+  {k:'marche_libre',      l:'Marché libre',      real: () => DATA.reunion.ml}
+];
+function chartPLH(){
+  const svg = document.getElementById('chart-plh');
+  clear(svg);
+  const W = 1000, L = 200, R = 120, T = 22;
+  const iw = W - L - R, rowH = 66, maxPct = 160;
+  const x2 = p => L + Math.min(p, maxPct) / maxPct * iw;
+
+  PLH_ROWS.forEach((row, i) => {
+    const obj = DATA.reunion.obj.par_groupe[row.k];
+    const real = row.real();
+    const taux = real / obj * 100;
+    const y = T + i * rowH;
+    text(svg, L - 16, y + 24, row.l, {anchor:'end', size:16, weight:700, fill:'var(--ink)'});
+    text(svg, L - 16, y + 44, 'objectif ' + fr(obj), {anchor:'end', size:13, fill:'var(--muted)'});
+    svgEl('rect', {x:L, y:y + 6, width:x2(100) - L, height:34, fill:'var(--surface-2)', stroke:'var(--line)'}, svg);
+    const bar = svgEl('rect', {x:L, y:y + 10, width:Math.max(2, x2(taux) - L), height:26, fill:tauxColor(taux)}, svg);
+    hoverable(bar, `<b>${row.l}</b>${fr(real)} logements réalisés<br>objectif PLH : ${fr(obj)}<br><em>${pc1(taux)}</em> de l'objectif`);
+    text(svg, x2(taux) + 12, y + 29, pc1(taux), {size:19, weight:800, fill:'var(--ink)'});
+    text(svg, L + 12, y + 29, fr(real), {size:16, weight:700, fill: taux > 12 ? 'var(--on-mark)' : 'var(--ink)'});
+  });
+  const yEnd = T + PLH_ROWS.length * rowH;
+  svgEl('line', {x1:x2(100), x2:x2(100), y1:T - 6, y2:yEnd - 8, stroke:'var(--orange)', 'stroke-width':2.5}, svg);
+  text(svg, x2(100), yEnd + 10, 'objectif PLH atteint (100 %)', {anchor:'middle', size:13.5, weight:700, fill:'var(--orange)'});
+  svg.setAttribute('viewBox', `0 0 ${W} ${yEnd + 30}`);
+  scrollWrap(svg);
+}
+
+/* ============================================================
+   5 · Les cinq EPCI
+   ============================================================ */
+const EPCI_ORDER = ['CINOR','CIREST','TCO','CIVIS','CASUD'];
+const EPCI_LONG = {
+  CINOR:'Communauté intercommunale du Nord', CIREST:'Communauté intercommunale Réunion Est',
+  TCO:'Territoire de la Côte Ouest', CIVIS:'Communauté intercommunale des Villes solidaires',
+  CASUD:"Communauté d'agglomération du Sud"
+};
+const CATS = [
+  {k:'locatif_social',    s:'LS', l:'Locatif social',    real: r => r.ls},
+  {k:'accession_sociale', s:'AS', l:'Accession sociale', real: r => r.as + r.ptz},
+  {k:'marche_libre',      s:'ML', l:'Marché libre',      real: r => r.ml}
+];
+function chartEPCI(){
+  const svg = document.getElementById('chart-epci');
+  clear(svg);
+  const W = 1000, L = 196, R = 110, T = 26;
+  const iw = W - L - R, maxPct = 200, barH = 20, gap = 5, blockH = 3 * (barH + gap) + 34;
+  const x2 = p => L + Math.min(p, maxPct) / maxPct * iw;
+
+  EPCI_ORDER.forEach((ep, i) => {
+    const d = DATA.epci[ep];
+    const yTop = T + i * blockH;
+    text(svg, L - 16, yTop + 20, ep, {anchor:'end', size:17, weight:800, fill:'var(--ink)'});
+    text(svg, L - 16, yTop + 40, pc1(d.taux) + ' au total', {anchor:'end', size:13, fill:'var(--muted)'});
+    CATS.forEach((cat, j) => {
+      const obj = d.obj[cat.k];
+      const y = yTop + j * (barH + gap);
+      if (!obj) {
+        text(svg, L + 6, y + barH - 4, 'aucun objectif inscrit au PLH', {size:13, fill:'var(--muted)'});
+        text(svg, L - 26, y + barH - 5, cat.s, {anchor:'end', size:12.5, weight:700, fill:'var(--muted)'});
+        return;
+      }
+      const real = cat.real(d.r), taux = real / obj * 100;
+      svgEl('rect', {x:L, y, width:x2(100) - L, height:barH, fill:'var(--surface-2)', stroke:'var(--line)'}, svg);
+      const bar = svgEl('rect', {x:L, y, width:Math.max(2, x2(taux) - L), height:barH, fill:tauxColor(taux)}, svg);
+      hoverable(bar, `<b>${ep} · ${cat.l}</b>${fr(real)} réalisés / ${fr(obj)} programmés<br><em>${pc1(taux)}</em> de l'objectif`);
+      text(svg, L + 8, y + barH - 5, cat.s, {size:12.5, weight:800, fill: taux > 8 ? 'var(--on-mark)' : 'var(--ink-2)'});
+      text(svg, x2(taux) + 10, y + barH - 5, pc1(taux) + (taux > maxPct ? ' ▸' : ''), {size:14.5, weight:700, fill:'var(--ink)'});
+    });
+    svgEl('line', {x1:x2(100), x2:x2(100), y1:yTop - 4, y2:yTop + 3 * (barH + gap) - gap + 2, stroke:'var(--orange)', 'stroke-width':2}, svg);
+    if (i < EPCI_ORDER.length - 1)
+      svgEl('line', {x1:20, x2:W - 20, y1:yTop + blockH - 17, y2:yTop + blockH - 17, stroke:'var(--line)'}, svg);
+  });
+  const H = T + EPCI_ORDER.length * blockH + 6;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  legend('legend-epci', [
+    {c:'var(--ind-low)', l:'moins de 50 % de l\'objectif'},
+    {c:'var(--ind-ok)',  l:'50 à 99 %'},
+    {c:'var(--ind-over)',l:'objectif atteint ou dépassé'},
+    {c:'var(--orange)',  l:'repère des 100 %'}
+  ]);
+  table('table-epci',
+    ['EPCI','Locatif social','Accession sociale','Marché libre','Total réalisé','Objectif PLH','Atteinte'],
+    EPCI_ORDER.map(ep => {
+      const d = DATA.epci[ep];
+      return [`${ep} <span style="color:var(--muted)">${EPCI_LONG[ep]}</span>`,
+        `${fr(d.r.ls)} / ${fr(d.obj.locatif_social)}`,
+        `${fr(d.r.as + d.r.ptz)} / ${fr(d.obj.accession_sociale)}`,
+        d.obj.marche_libre ? `${fr(d.r.ml)} / ${fr(d.obj.marche_libre)}` : fr(d.r.ml) + ' / —',
+        fr(d.real), fr(d.objTotal), pc1(d.taux)];
+    }));
+  scrollWrap(svg);
+}
+
+/* ============================================================
+   6 · Carte narrative (4 lectures)
+   ============================================================ */
+const COMMUNE_BY_CODE = {};
+DATA.communes.forEach(c => COMMUNE_BY_CODE[c.c] = c);
+
+const VOL_BREAKS = [500, 1000, 2000, 4000];
+function volColor(v){
+  let i = 0;
+  while (i < VOL_BREAKS.length && v >= VOL_BREAKS[i]) i++;
+  return RAMP[i];
+}
+const MODES = {
+  volume: {
+    title: 'Les logements produits',
+    sub: 'Total des logements réalisés entre 2020 et 2025, toutes catégories suivies confondues.',
+    fill: c => volColor(c.real),
+    legend: [
+      {c:RAMP[0], l:'moins de 500'}, {c:RAMP[1], l:'500 à 999'}, {c:RAMP[2], l:'1 000 à 1 999'},
+      {c:RAMP[3], l:'2 000 à 3 999'}, {c:RAMP[4], l:'4 000 et plus'}
+    ]
+  },
+  taux: {
+    title: 'L\'atteinte des objectifs PLH',
+    sub: 'Logements réalisés rapportés aux objectifs du programme local de l\'habitat, toutes catégories.',
+    fill: c => tauxColor(c.taux),
+    legend: [
+      {c:'var(--ind-low)', l:'moins de 50 %'}, {c:'var(--ind-ok)', l:'50 à 99 %'},
+      {c:'var(--ind-over)', l:'100 % et plus'}
+    ]
+  },
+  social: {
+    title: 'L\'atteinte du seul locatif social',
+    sub: 'Logements locatifs sociaux réalisés rapportés à l\'objectif PLH de cette seule catégorie.',
+    fill: c => tauxColor(c.tauxLS),
+    legend: [
+      {c:'var(--ind-low)', l:'moins de 50 %'}, {c:'var(--ind-ok)', l:'50 à 99 %'},
+      {c:'var(--ind-over)', l:'100 % et plus'}
+    ]
+  },
+  semis: {
+    title: 'Les 736 opérations aidées',
+    sub: 'Une opération = un point, dimensionné par son nombre de logements et coloré par catégorie.',
+    fill: () => 'var(--ramp-0)',
+    legend: [
+      {c:'var(--teal)', l:'Locatif social'}, {c:'var(--teal-3)', l:'Accession sociale'},
+      {c:'var(--teal-4)', l:'Locatif intermédiaire'}, {c:'var(--orange)', l:'Réhabilitation'},
+      {c:'var(--ramp-1)', l:'localisation approchée', dash:true}
+    ]
+  }
+};
+let mapPaths = {}, mapPoints = null, currentMode = 'volume';
+
+function buildStoryMap(){
+  const svg = document.getElementById('story-map');
+  clear(svg);
+  svgEl('path', {d: MAP.island, fill:'var(--nodata)', stroke:'var(--nodata)', 'stroke-width':2.4}, svg);
+  const g = svgEl('g', {}, svg);
+  for (const code in MAP.paths){
+    const c = COMMUNE_BY_CODE[code];
+    const p = svgEl('path', {d: MAP.paths[code], class:'commune', fill:'var(--ramp-0)'}, g);
+    if (c) hoverable(p, `<b>${c.nom}</b>${c.epci}<br>${fr(c.real)} logements réalisés / ${fr(c.obj)} programmés<br>atteinte <em>${pc1(c.taux)}</em> · locatif social <em>${c.tauxLS === null ? '—' : pc1(c.tauxLS)}</em>`);
+    mapPaths[code] = p;
+  }
+  mapPoints = svgEl('g', {class:'oppt', opacity:0}, svg);
+  OPS.slice().sort((a,b) => b[2]-a[2]).forEach(p => {
+    const r = Math.max(2.8, Math.sqrt(p[2]) * 1.6);
+    svgEl('circle', {
+      cx:p[0], cy:p[1], r, fill:OPCOL[p[3]], 'fill-opacity':0.75,
+      stroke: p[4] ? 'var(--muted)' : 'var(--surface)',
+      'stroke-width': p[4] ? 1.1 : 0.9,
+      'stroke-dasharray': p[4] ? '2 2' : null
+    }, mapPoints);
+  });
+  setMode('volume');
+}
+function setMode(mode){
+  if (mode === currentMode && document.getElementById('map-legend').childNodes.length) return;
+  currentMode = mode;
+  const m = MODES[mode];
+  document.getElementById('map-title').textContent = m.title;
+  document.getElementById('map-sub').textContent = m.sub;
+  for (const code in mapPaths){
+    const c = COMMUNE_BY_CODE[code];
+    mapPaths[code].setAttribute('fill', c ? m.fill(c) : 'var(--ramp-0)');
+  }
+  mapPoints.setAttribute('opacity', mode === 'semis' ? 1 : 0);
+  legend('map-legend', m.legend);
+}
+function initScrolly(){
+  const steps = Array.from(document.querySelectorAll('.step'));
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting){
+        steps.forEach(s => s.classList.toggle('is-active', s === en.target));
+        setMode(en.target.dataset.mode);
+      }
+    });
+  }, {rootMargin: '-45% 0px -45% 0px', threshold: 0});
+  steps.forEach(s => io.observe(s));
+  steps[0].classList.add('is-active');
+}
+
+/* ============================================================
+   7 · Communes : haltères atteinte globale / locatif social
+   ============================================================ */
+function chartCommunes(){
+  const svg = document.getElementById('chart-communes');
+  clear(svg);
+  const W = 1000, L = 210, R = 96, T = 40, rowH = 27, maxPct = 200;
+  const rows = DATA.communes.slice().filter(c => c.taux !== null)
+    .sort((a,b) => (b.taux - (b.tauxLS||0)) - (a.taux - (a.tauxLS||0)));
+  const iw = W - L - R;
+  const x2 = p => L + Math.min(p, maxPct) / maxPct * iw;
+  const H = T + rows.length * rowH + 34;
+
+  for (let p = 0; p <= maxPct; p += 50){
+    svgEl('line', {x1:x2(p), x2:x2(p), y1:T - 14, y2:T + rows.length * rowH - 6,
+      stroke: p === 100 ? 'var(--orange)' : 'var(--grid)', 'stroke-width': p === 100 ? 2 : 1}, svg);
+    text(svg, x2(p), T - 20, pc0(p), {anchor:'middle', size:13.5, weight: p === 100 ? 700 : 500,
+      fill: p === 100 ? 'var(--orange)' : 'var(--muted)'});
+  }
+  rows.forEach((c, i) => {
+    const y = T + i * rowH + 12;
+    text(svg, L - 14, y + 5, c.nom, {anchor:'end', size:14.5, weight:600, fill:'var(--ink)'});
+    text(svg, L - 14, y + 5, '', {});
+    const xg = x2(c.taux), xs = x2(c.tauxLS === null ? 0 : c.tauxLS);
+    svgEl('line', {x1:Math.min(xg,xs), x2:Math.max(xg,xs), y1:y, y2:y, stroke:'var(--line-strong)', 'stroke-width':2.5}, svg);
+    const dLS = svgEl('circle', {cx:xs, cy:y, r:7, fill:'var(--teal)', stroke:'var(--surface)', 'stroke-width':2}, svg);
+    hoverable(dLS, `<b>${c.nom} · locatif social</b>${fr(c.r.ls)} logements / ${fr(c.objLS)} programmés<br><em>${c.tauxLS === null ? '—' : pc1(c.tauxLS)}</em> de l'objectif`);
+    const dG = svgEl('circle', {cx:xg, cy:y, r:7, fill:'var(--teal-4)', stroke:'var(--surface)', 'stroke-width':2}, svg);
+    hoverable(dG, `<b>${c.nom} · toutes catégories</b>${fr(c.real)} logements / ${fr(c.obj)} programmés<br><em>${pc1(c.taux)}</em> de l'objectif`);
+    if (c.taux > maxPct){
+      svgEl('path', {d:`M${x2(maxPct)+9},${y-6} L${x2(maxPct)+20},${y} L${x2(maxPct)+9},${y+6} Z`, fill:'var(--teal-4)'}, svg);
+      text(svg, x2(maxPct) + 26, y + 5, pc0(c.taux), {size:13.5, weight:700, fill:'var(--ink-2)'});
+    }
+  });
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  legend('legend-communes', [
+    {c:'var(--teal)',   l:'Atteinte de l\'objectif de locatif social'},
+    {c:'var(--teal-4)', l:'Atteinte de l\'objectif toutes catégories'},
+    {c:'var(--orange)', l:'repère des 100 %'}
+  ]);
+  table('table-communes',
+    ['Commune','EPCI','Locatif social','Accession sociale','Marché libre','Réalisé','Objectif','Atteinte','dont locatif social'],
+    rows.map(c => [c.nom, c.epci, fr(c.r.ls), fr(c.r.as + c.r.ptz), fr(c.r.ml), fr(c.real), fr(c.obj),
+      pc1(c.taux), c.tauxLS === null ? '—' : pc1(c.tauxLS)]));
+  scrollWrap(svg);
+}
+
+/* ============================================================
+   8 · Contrat de mixité sociale (CIVIS)
+   ============================================================ */
+function chartCMS(){
+  const svg = document.getElementById('chart-cms');
+  clear(svg);
+  const rows = Object.values(DATA.cms).sort((a,b) => b.manquant - a.manquant);
+  const W = 1000, L = 176, R = 120, T = 20, rowH = 44;
+  const iw = W - L - R, max = 1200;
+  const x2 = v => L + Math.min(v, max) / max * iw;
+  rows.forEach((r, i) => {
+    const y = T + i * rowH;
+    text(svg, L - 14, y + 20, r.commune, {anchor:'end', size:15, weight:600, fill:'var(--ink)'});
+    const b1 = svgEl('rect', {x:L, y:y + 2, width:Math.max(2, x2(r.manquant) - L), height:14, fill:'var(--teal-4)'}, svg);
+    hoverable(b1, `<b>${r.commune}</b>${fr(r.manquant)} logements locatifs sociaux manquants au 1ᵉʳ janvier 2022`);
+    const b2 = svgEl('rect', {x:L, y:y + 19, width:Math.max(2, x2(r.objectif) - L), height:14, fill:'var(--teal)'}, svg);
+    hoverable(b2, `<b>${r.commune}</b>objectif triennal 2023-2025 : ${fr(r.objectif)} logements<br>taux de rattrapage <em>${pc0(r.taux_rattrapage * 100)}</em>`);
+    text(svg, x2(r.manquant) + 10, y + 14, fr(r.manquant), {size:14, weight:700, fill:'var(--ink-2)'});
+    text(svg, x2(r.objectif) + 10, y + 31, fr(r.objectif) + '  (' + pc0(r.taux_rattrapage * 100) + ')', {size:14, weight:700, fill:'var(--teal)'});
+  });
+  const H = T + rows.length * rowH + 16;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  legend('legend-cms', [
+    {c:'var(--teal-4)', l:'Logements sociaux manquants (1ᵉʳ janvier 2022)'},
+    {c:'var(--teal)',   l:'Objectif triennal 2023-2025 (taux de rattrapage)'}
+  ]);
+  scrollWrap(svg);
+}
+
+/* ============================================================
+   9 · Emplacements réservés par EPCI
+   ============================================================ */
+function chartER(){
+  const svg = document.getElementById('chart-er');
+  clear(svg);
+  const rows = EPCI_ORDER.map(ep => Object.assign({ep}, DATA.er.par_epci[ep])).sort((a,b) => b.pot - a.pot);
+  const W = 1000, L = 120, R = 250, T = 18, rowH = 46;
+  const iw = W - L - R, max = 2000;
+  const x2 = v => L + v / max * iw;
+  rows.forEach((r, i) => {
+    const y = T + i * rowH;
+    text(svg, L - 14, y + 24, r.ep, {anchor:'end', size:16, weight:800, fill:'var(--ink)'});
+    const b = svgEl('rect', {x:L, y:y + 6, width:Math.max(2, x2(r.pot) - L), height:26, fill:RAMP[4 - i % 2 - 1] || 'var(--ramp-3)'}, svg);
+    b.setAttribute('fill', 'var(--ramp-3)');
+    hoverable(b, `<b>${r.ep}</b>${r.n} emplacements réservés · ${r.ha.toLocaleString('fr-FR')} ha<br>potentiel estimé <em>${fr(r.pot)}</em> logements`);
+    const wide = x2(r.pot) - L > 260;
+    const detail = r.n + ' emplacements · ' + r.ha.toLocaleString('fr-FR') + ' ha';
+    text(svg, x2(r.pot) + 12, y + 25, fr(r.pot) + ' logements', {size:15, weight:700, fill:'var(--ink)'});
+    if (wide) text(svg, L + 12, y + 25, detail, {size:13.5, weight:600, fill:'var(--on-mark)'});
+    else text(svg, x2(r.pot) + 146, y + 25, detail, {size:13.5, weight:500, fill:'var(--muted)'});
+  });
+  const H = T + rows.length * rowH + 10;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  scrollWrap(svg);
+}
+
+/* ============================================================
+   10 · Programmation pluriannuelle CINOR
+   ============================================================ */
+function chartPPA(){
+  const svg = document.getElementById('chart-ppa');
+  clear(svg);
+  const order = ['prog2026','preprog2027','pec','abandon'];
+  const cols = {prog2026:'var(--teal)', preprog2027:'var(--teal-3)', pec:'var(--teal-4)', abandon:'var(--alert)'};
+  const W = 1000, L = 230, R = 140, T = 18, rowH = 52;
+  const iw = W - L - R, max = 2000, x2 = v => L + v / max * iw;
+  order.forEach((k, i) => {
+    const t = DATA.ppa[k], meta = DATA.ppa_meta[k], y = T + i * rowH;
+    text(svg, L - 14, y + 22, meta.label, {anchor:'end', size:15.5, weight:700, fill:'var(--ink)'});
+    text(svg, L - 14, y + 40, t.nb_op + ' opérations', {anchor:'end', size:13, fill:'var(--muted)'});
+    const b = svgEl('rect', {x:L, y:y + 6, width:Math.max(2, x2(t.nb_logts) - L), height:28, fill:cols[k]}, svg);
+    hoverable(b, `<b>${meta.label}</b>${fr(t.nb_logts)} logements · ${t.nb_op} opérations`);
+    text(svg, x2(t.nb_logts) + 12, y + 26, fr(t.nb_logts) + ' logements', {size:15.5, weight:700, fill:'var(--ink)'});
+  });
+  const H = T + order.length * rowH + 10;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  scrollWrap(svg);
+}
+
+/* ============================================================
+   11 · Précision de localisation
+   ============================================================ */
+function chartLoc(){
+  const svg = document.getElementById('chart-loc');
+  clear(svg);
+  const cats = [
+    {k:'Parcelle', l:'Parcelle cadastrale', c:'var(--teal)',   on:'var(--on-mark)'},
+    {k:'Adresse',  l:'Adresse',             c:'var(--teal-3)', on:'var(--on-mark)'},
+    {k:'Rue',      l:'Rue',                 c:'var(--teal-4)', on:'var(--on-teal-4)'},
+    {k:'commune',  l:'Centre de la commune (approché)', c:'var(--ramp-1)', on:'var(--on-ramp-1)'}
+  ];
+  const series = [
+    {t:'736 opérations', d:DATA.loc_ops,   u:'opérations'},
+    {t:'20 313 logements', d:DATA.loc_logts, u:'logements'}
+  ];
+  const W = 1000, L = 210, R = 24, T = 26, rowH = 84, barH = 44;
+  const iw = W - L - R;
+  series.forEach((s, i) => {
+    const total = cats.reduce((a, c) => a + (s.d[c.k] || 0), 0);
+    const y = T + i * rowH;
+    text(svg, L - 16, y + barH / 2 + 6, s.t, {anchor:'end', size:16, weight:700, fill:'var(--ink)'});
+    let x = L;
+    cats.forEach(c => {
+      const v = s.d[c.k] || 0, w = v / total * iw;
+      const r = svgEl('rect', {x, y, width:Math.max(0, w - 2), height:barH, fill:c.c}, svg);
+      hoverable(r, `<b>${c.l}</b>${fr(v)} ${s.u} · <em>${pc1(v / total * 100)}</em>`);
+      if (w > 74) text(svg, x + w / 2 - 1, y + barH / 2 + 6, pc0(v / total * 100), {anchor:'middle', size:15, weight:700, fill:c.on});
+      else if (w > 14) text(svg, x + w / 2 - 1, y - 8, pc0(v / total * 100), {anchor:'middle', size:13, weight:700, fill:'var(--ink-2)'});
+      x += w;
+    });
+  });
+  svg.setAttribute('viewBox', `0 0 ${W} ${T + series.length * rowH}`);
+  legend('legend-loc', cats.map(c => ({c:c.c, l:c.l})));
+  scrollWrap(svg);
+}
+
+/* ============================================================
+   12 · Opérateurs
+   ============================================================ */
+function chartOpe(){
+  const svg = document.getElementById('chart-ope');
+  clear(svg);
+  const rows = DATA.operateurs_split.slice(0, 8);
+  const W = 1000, L = 230, R = 170, T = 20, rowH = 38;
+  const iw = W - L - R, max = 8000, x2 = v => L + v / max * iw;
+  rows.forEach((r, i) => {
+    const [nom, nbop, neuf, reha] = r;
+    const y = T + i * rowH;
+    text(svg, L - 14, y + 20, nom, {anchor:'end', size:14.5, weight:600, fill:'var(--ink)'});
+    const b1 = svgEl('rect', {x:L, y:y + 4, width:Math.max(1, x2(neuf) - L), height:24, fill:'var(--teal)'}, svg);
+    hoverable(b1, `<b>${nom}</b>${fr(neuf)} logements neufs · ${nbop} opérations`);
+    const w2 = reha / max * iw;
+    if (reha > 0){
+      const b2 = svgEl('rect', {x:x2(neuf) + 2, y:y + 4, width:Math.max(1, w2 - 2), height:24, fill:'var(--orange)'}, svg);
+      hoverable(b2, `<b>${nom}</b>${fr(reha)} logements réhabilités`);
+    }
+    text(svg, x2(neuf + reha) + 12, y + 21, fr(neuf + reha), {size:14.5, weight:700, fill:'var(--ink)'});
+  });
+  svg.setAttribute('viewBox', `0 0 ${W} ${T + rows.length * rowH + 8}`);
+  legend('legend-ope', [
+    {c:'var(--teal)',   l:'Construction neuve'},
+    {c:'var(--orange)', l:'Réhabilitation'}
+  ]);
+  scrollWrap(svg);
+}
+
+/* ============================================================
+   Amorçage
+   ============================================================ */
+function start(){
+  heroMap();
+  chartAnnees();
+  chartReha();
+  chartPLH();
+  chartEPCI();
+  buildStoryMap();
+  chartCommunes();
+  chartCMS();
+  chartER();
+  chartPPA();
+  chartLoc();
+  chartOpe();
+  initScrolly();
+  window.addEventListener('scroll', hideTip, {passive:true});
+}
+start();
+
+</script>
+
+</body>
+</html>
