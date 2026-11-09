@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Logements à La Réunion</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Tableau de bord opéré, pas lu : barre de territoire collante, rangée de chiffres-clés,
+   puis cartes thématiques en grille. Palette ODH AGORAH (teal structurel, orange accent). */
+:root{
+  --paper:#f1f3f4; --surface:#ffffff; --surface-2:#f7f9fa;
+  --ink:#1a1a1a; --ink-2:#3d4a51; --muted:#6b7780;
+  --line:#e2e7ea; --line-strong:#c8d0d4; --grid:#e6ebee;
+  --teal:#15495a; --teal-2:#1f6478; --teal-deep:#0f3645; --on-teal:#ffffff;
+  --orange:#f39200; --orange-ink:#8a5200;
+  --bar:#1f6478; --bar-mid:#7a9fac; --bar-soft:#c9d8de; --track:#eef2f4;
+  --hl:#f39200; --ref:#1a1a1a;
+  --c1:#008aa5; --c2:#da7f00; --c3:#974391; --c4:#25984d;
+  --focus:#1f6478;
+  --shadow:0 1px 2px rgba(21,73,90,.06), 0 8px 24px rgba(21,73,90,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0d1a20; --surface:#13242c; --surface-2:#182d36;
+    --ink:#eaf1f4; --ink-2:#c2d2d9; --muted:#93a6ae;
+    --line:#23414d; --line-strong:#2f5464; --grid:#1e3b46;
+    --teal:#5aa3bc; --teal-2:#4e97b0; --teal-deep:#0a2630; --on-teal:#06222c;
+    --orange:#f5a623; --orange-ink:#f5a623;
+    --bar:#5aa3bc; --bar-mid:#317c95; --bar-soft:#21505f; --track:#1b333d;
+    --hl:#f5a623; --ref:#eaf1f4;
+    --c1:#13a5b2; --c2:#d37e01; --c3:#b761b1; --c4:#36a558;
+    --focus:#7cc0d3;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.28);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0d1a20; --surface:#13242c; --surface-2:#182d36;
+  --ink:#eaf1f4; --ink-2:#c2d2d9; --muted:#93a6ae;
+  --line:#23414d; --line-strong:#2f5464; --grid:#1e3b46;
+  --teal:#5aa3bc; --teal-2:#4e97b0; --teal-deep:#0a2630; --on-teal:#06222c;
+  --orange:#f5a623; --orange-ink:#f5a623;
+  --bar:#5aa3bc; --bar-mid:#317c95; --bar-soft:#21505f; --track:#1b333d;
+  --hl:#f5a623; --ref:#eaf1f4;
+  --c1:#13a5b2; --c2:#d37e01; --c3:#b761b1; --c4:#36a558;
+  --focus:#7cc0d3;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.28);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:60; background:var(--teal-deep)}
+.wrap{max-width:1240px; margin:0 auto; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px))}
+p{margin:0}
+a{color:var(--teal-2)}
+.num{font-variant-numeric:tabular-nums}
+button{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+/* ---------- Bandeau ---------- */
+.masthead{background:var(--teal-deep); color:#eaf3f6; border-bottom:3px solid #f39200}
+.masthead__in{
+  padding-block:9px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; font-weight:700;
+}
+.masthead__mark{display:flex; align-items:center; gap:9px}
+.masthead__sq{width:13px; height:13px; background:#f39200; display:block}
+.masthead__sep{color:#6f97a4; font-weight:400; letter-spacing:0}
+.masthead__right{margin-left:auto; color:#9fc0cb; letter-spacing:.1em}
+@media (max-width:640px){ .masthead__right{display:none} }
+
+/* ---------- En-tête ---------- */
+.head{padding-block:34px 18px}
+.eyebrow{font-size:11.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin:0 0 12px}
+.head__grid{display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr); gap:32px; align-items:end}
+@media (max-width:900px){ .head__grid{grid-template-columns:1fr; gap:18px} }
+h1{font-size:clamp(30px,4.6vw,46px); line-height:1.04; letter-spacing:-.02em; font-weight:800; margin:0; text-wrap:balance}
+h1 em{font-style:normal; color:var(--orange)}
+.rule{width:60px; height:3px; background:var(--orange); margin:16px 0 14px}
+.lede{color:var(--ink-2); max-width:62ch; font-size:15.5px}
+.sources-head{font-size:12.5px; color:var(--muted); line-height:1.5}
+.sources-head b{color:var(--ink-2); font-weight:600}
+
+/* ---------- Barre de territoire ---------- */
+.scopebar{position:sticky; top:env(safe-area-inset-top,0px); z-index:50; background:var(--surface); border-block:1px solid var(--line); box-shadow:0 6px 18px -14px rgba(0,0,0,.35)}
+.scopebar__in{display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; padding-block:10px}
+.scopebar__lab{font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-right:2px}
+.chips{display:flex; gap:6px; flex-wrap:wrap}
+.chip{border:1px solid var(--line-strong); background:transparent; color:var(--ink-2); border-radius:999px; padding:6px 12px; font-size:13px; font-weight:600; cursor:pointer; line-height:1.2; transition:background .15s,color .15s,border-color .15s}
+.chip:hover{border-color:var(--teal); color:var(--teal)}
+.chip[aria-pressed="true"]{background:var(--teal); border-color:var(--teal); color:var(--on-teal)}
+.chip[data-parent="true"]{border-color:var(--teal); color:var(--teal)}
+.select{display:flex; align-items:center; gap:8px}
+.select select{font:inherit; font-size:13px; font-weight:600; color:var(--ink); background:var(--surface-2); border:1px solid var(--line-strong); border-radius:8px; padding:6px 30px 6px 10px; max-width:100%;
+  appearance:none; -webkit-appearance:none; background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%); background-position:calc(100% - 15px) 55%,calc(100% - 10px) 55%; background-size:5px 5px,5px 5px; background-repeat:no-repeat}
+.scopebar__cur{margin-left:auto; font-size:13px; color:var(--ink-2)}
+.scopebar__cur b{color:var(--ink); font-weight:700}
+@media (max-width:720px){ .scopebar__cur{display:none} }
+
+/* ---------- KPI ---------- */
+.kpis{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px; margin:22px 0 8px}
+@media (max-width:1100px){ .kpis{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:560px){ .kpis{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.kpi{background:var(--surface-2); border:1px solid var(--line); padding:14px 14px 13px; min-width:0; border-radius:4px}
+.kpi--lead{background:var(--teal); color:var(--on-teal); border-color:var(--teal)}
+.kpi__k{font-size:11.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); line-height:1.3}
+.kpi--lead .kpi__k{color:var(--on-teal); opacity:.82}
+.kpi__v{font-size:clamp(24px,2.6vw,32px); font-weight:800; letter-spacing:-.02em; line-height:1.05; margin:8px 0 6px; color:var(--ink)}
+.kpi--lead .kpi__v{color:var(--on-teal)}
+.kpi__s{font-size:12px; color:var(--ink-2); line-height:1.35}
+.kpi--lead .kpi__s{color:var(--on-teal); opacity:.85}
+.kpi__ref{font-size:11.5px; color:var(--muted); margin-top:4px}
+.kpi--lead .kpi__ref{color:var(--on-teal); opacity:.72}
+.kpi__ref:empty{display:none}
+
+/* ---------- Sections ---------- */
+.section{padding-block:30px 8px}
+.section__head{display:flex; align-items:center; justify-content:space-between; gap:14px; border-top:2px solid var(--teal); padding-top:12px; margin-bottom:14px}
+.section__num{font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--teal)}
+.section__num span{color:var(--muted); font-weight:600; margin-left:10px; letter-spacing:.14em}
+.badge{font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; background:var(--teal); color:var(--on-teal); padding:4px 9px; border-radius:2px; white-space:nowrap}
+.section__intro{color:var(--ink-2); max-width:72ch; margin-bottom:16px; font-size:14.5px}
+.grid{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:14px}
+.card{grid-column:span 4; background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:16px 16px 14px; min-width:0; display:flex; flex-direction:column; gap:10px}
+.card--6{grid-column:span 6}
+.card--8{grid-column:span 8}
+.card--12{grid-column:span 12}
+@media (max-width:1000px){ .card,.card--6,.card--8{grid-column:span 6} }
+@media (max-width:640px){ .card,.card--6,.card--8,.card--12{grid-column:span 12} }
+.card__h{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap}
+.card__t{font-size:15px; font-weight:700; letter-spacing:-.01em; margin:0}
+.card__u{font-size:12px; color:var(--muted)}
+.card__body{flex:1}
+.card__foot{font-size:11.5px; color:var(--muted); line-height:1.4; border-top:1px solid var(--line); padding-top:8px}
+
+/* légende */
+.legend{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12px; color:var(--ink-2)}
+.legend i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px}
+.legend .ref i{width:2px; height:12px; background:var(--ref); border-radius:0; vertical-align:-2px}
+
+/* barres horizontales */
+.hb{display:grid; grid-template-columns:minmax(84px,34%) 1fr auto; gap:7px 10px; align-items:center; font-size:13px}
+.hb__l{color:var(--ink-2); text-align:right; line-height:1.25}
+.hb__t{position:relative; height:16px; background:var(--track); border-radius:0 3px 3px 0; overflow:visible}
+.hb__b{position:absolute; left:0; top:0; bottom:0; width:0; background:var(--bar); border-radius:0 3px 3px 0; transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.hb__r{position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--ref); margin-left:-1px; opacity:.9}
+.hb__v{font-weight:600; min-width:48px; text-align:right}
+.hb__v small{color:var(--muted); font-weight:500; margin-left:4px}
+.hb--sel .hb__b{background:var(--hl)}
+.hb--mid .hb__b{background:var(--bar-mid)}
+.hb--soft .hb__b{background:var(--bar-soft)}
+.hb--tight{gap:4px 10px; font-size:12.5px}
+.hb--tight .hb__t{height:12px}
+.hb__l button{background:none; border:0; padding:0; color:inherit; cursor:pointer; text-align:right; font:inherit}
+.hb__l button:hover{color:var(--teal); text-decoration:underline}
+.hb--sel .hb__l{color:var(--ink); font-weight:700}
+
+/* barre empilée (paire territoire / La Réunion) */
+.sp{display:grid; gap:8px}
+.sp__row{display:grid; grid-template-columns:minmax(72px,22%) 1fr; gap:10px; align-items:center; font-size:12.5px}
+.sp__l{color:var(--ink-2); text-align:right; line-height:1.2}
+.sp__row--cur .sp__l{color:var(--ink); font-weight:700}
+.sp__bar{display:flex; height:26px; gap:2px; border-radius:3px; overflow:hidden; background:var(--track)}
+.sp__row--ref .sp__bar{height:14px; opacity:.85}
+.sp__seg{position:relative; min-width:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:11.5px; font-weight:700; overflow:hidden; white-space:nowrap; transition:flex-basis .5s cubic-bezier(.2,.7,.2,1)}
+.sp__seg span{padding:0 4px; text-shadow:0 1px 1px rgba(0,0,0,.35)}
+.sp__row--ref .sp__seg span{display:none}
+
+/* colonnes SVG */
+.cols{width:100%; height:auto; display:block; overflow:visible}
+.cols text{font-family:inherit; fill:var(--muted); font-size:11px}
+.cols .grid line{stroke:var(--grid); stroke-width:1}
+.cols .bar{fill:var(--bar)}
+.cols .bar.partial{fill:var(--bar-soft)}
+.cols .lbl{fill:var(--ink-2); font-weight:600}
+
+/* jauges de confort */
+.meters{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 18px}
+@media (max-width:420px){ .meters{grid-template-columns:1fr} }
+.meter{min-width:0}
+.meter__h{display:flex; justify-content:space-between; gap:8px; font-size:12.5px; color:var(--ink-2)}
+.meter__v{font-weight:700; color:var(--ink)}
+.meter__t{position:relative; height:8px; background:var(--track); border-radius:4px; margin-top:5px}
+.meter__b{position:absolute; left:0; top:0; bottom:0; border-radius:4px; background:var(--bar); transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.meter__r{position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--ref); margin-left:-1px}
+.meter__s{font-size:11px; color:var(--muted); margin-top:3px}
+
+/* sélecteur d'indicateur */
+.indic{display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:13px; color:var(--ink-2)}
+.indic select{font:inherit; font-size:13px; font-weight:600; color:var(--ink); background:var(--surface-2); border:1px solid var(--line-strong); border-radius:8px; padding:6px 10px; max-width:100%}
+
+/* tableau */
+.tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:6px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:980px; font-size:12.5px}
+th,td{padding:7px 10px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap}
+th:first-child,td:first-child{text-align:left; position:sticky; left:0; background:var(--surface); z-index:1}
+th{font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); background:var(--surface-2); cursor:pointer; user-select:none; vertical-align:bottom}
+th:first-child{background:var(--surface-2)}
+th[aria-sort="ascending"]::after{content:" ▲"; font-size:9px}
+th[aria-sort="descending"]::after{content:" ▼"; font-size:9px}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:var(--surface-2)}
+tbody tr.sel td{background:color-mix(in srgb,var(--orange) 14%,var(--surface)); font-weight:600}
+tr.tot td{font-weight:700; border-top:2px solid var(--line-strong); background:var(--surface-2)}
+tr.epci td{color:var(--teal); font-weight:600; background:var(--surface-2)}
+td.name{text-align:left; font-weight:600}
+td small{color:var(--muted); font-weight:500; margin-left:6px}
+.tools{display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:12.5px; color:var(--muted)}
+.btn{border:1px solid var(--line-strong); background:var(--surface); color:var(--ink-2); border-radius:8px; padding:6px 12px; font-size:13px; font-weight:600; cursor:pointer}
+.btn:hover{border-color:var(--teal); color:var(--teal)}
+
+/* méthode */
+.method{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px 28px; font-size:13.5px; color:var(--ink-2)}
+.method h3{font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); margin:0 0 6px}
+.method ul{margin:0; padding-left:18px}
+.method li{margin-bottom:4px}
+.foot{margin:34px 0 40px; padding-top:14px; border-top:1px solid var(--line); font-size:12.5px; color:var(--muted); font-style:italic; display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap}
+
+/* infobulle */
+.tip{position:fixed; z-index:80; pointer-events:none; background:var(--ink); color:var(--paper); font-size:12px; line-height:1.4; padding:7px 10px; border-radius:6px; box-shadow:0 6px 20px rgba(0,0,0,.25); max-width:260px; opacity:0; transform:translateY(3px); transition:opacity .12s,transform .12s}
+.tip.on{opacity:1; transform:none}
+.tip b{font-weight:700}
+
+@media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} html{scroll-behavior:auto} }
+</style>
+
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap masthead__in">
+    <span class="masthead__mark"><span class="masthead__sq" aria-hidden="true"></span>AGORAH</span>
+    <span class="masthead__sep">/</span>
+    <span>Observatoire de l'habitat</span>
+    <span class="masthead__sep">/</span>
+    <span>Logements</span>
+    <span class="masthead__right">Recensement 2017 · La Réunion</span>
+  </div>
+</header>
+
+<section class="head wrap">
+  <p class="eyebrow">Tableau de bord · Habitat · 4 — Logements</p>
+  <div class="head__grid">
+    <div>
+      <h1>Le parc de logements<br>de <em>La Réunion</em></h1>
+      <div class="rule" aria-hidden="true"></div>
+      <p class="lede">Structure du parc, occupation, taille, confort et ménages, lus à l'échelle du département, des cinq intercommunalités et des 24 communes. Choisissez un territoire : chaque indicateur se recalcule et reste comparé à La Réunion.</p>
+    </div>
+    <p class="sources-head"><b>Source</b> : INSEE, recensement de la population 2017, fichier détail « Logements ordinaires » (159 811 logements enquêtés, pondérés à 369 900 logements). Les effectifs sont des estimations pondérées arrondies. Traitements AGORAH.</p>
+  </div>
+</section>
+
+<nav class="scopebar" aria-label="Choix du territoire">
+  <div class="wrap scopebar__in">
+    <span class="scopebar__lab">Territoire</span>
+    <div class="chips" id="chips" role="group" aria-label="Département et intercommunalités"></div>
+    <label class="select"><span class="sr">Commune</span>
+      <select id="commune" aria-label="Choisir une commune"><option value="">Commune…</option></select>
+    </label>
+    <span class="scopebar__cur" id="cur"></span>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div class="kpis" id="kpis" aria-live="polite"></div>
+
+  <!-- 01 -->
+  <section class="section" id="parc">
+    <div class="section__head"><div class="section__num">01 <span>Le parc de logements</span></div><span class="badge">Habitat</span></div>
+    <p class="section__intro">Catégorie, type et ancienneté du parc. Les catégories distinguent les résidences principales des résidences secondaires, logements occasionnels et logements vacants ; le taux de vacance rapporte les logements vacants à l'ensemble du parc.</p>
+    <div class="grid">
+      <div class="card card--6">
+        <div class="card__h"><h2 class="card__t">Catégorie de logement</h2><span class="card__u">% du parc</span></div>
+        <div class="card__body" id="c-cat"></div>
+        <div class="card__foot">Résidences secondaires et logements occasionnels regroupés. Le taux de vacance mesuré au recensement inclut la vacance frictionnelle de courte durée.</div>
+      </div>
+      <div class="card card--6">
+        <div class="card__h"><h2 class="card__t">Type de logement</h2><span class="card__u">% du parc</span></div>
+        <div class="card__body" id="c-typ"></div>
+        <div class="card__foot">« Autres » : logements-foyers, chambres d'hôtel, habitations de fortune et pièces indépendantes.</div>
+      </div>
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Aspect du bâti</h2><span class="card__u">% des résidences principales</span></div>
+        <div class="card__body" id="c-bati"></div>
+        <div class="card__foot">Variable propre aux DOM. L'habitat précaire regroupe cases traditionnelles en bois ou tôle et habitations de fortune.</div>
+      </div>
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Époque de construction</h2><span class="card__u">% du parc</span></div>
+        <div class="card__body" id="c-achl"></div>
+        <div class="card__foot">Année d'achèvement déclarée, ensemble du parc.</div>
+      </div>
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Logements achevés par année</h2><span class="card__u">2006 – 2019</span></div>
+        <div class="card__body" id="c-an"></div>
+        <div class="card__foot">Le millésime 2017 cumule les enquêtes 2015-2019 : les logements achevés à partir de 2017 (barres claires) ne sont que partiellement recensés.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="section" id="occupation">
+    <div class="section__head"><div class="section__num">02 <span>Occupation du parc</span></div><span class="badge">Habitat</span></div>
+    <p class="section__intro">Statut d'occupation des résidences principales, ancienneté d'emménagement des ménages et mobilité résidentielle sur un an. Le logement social correspond aux logements déclarés HLM par les ménages.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Statut d'occupation</h2><span class="card__u">% des résidences principales</span></div>
+        <div class="card__body" id="c-stat"></div>
+        <div class="card__foot">Locataires du parc privé : logements vides ou meublés hors HLM. Logés gratuitement hors HLM.</div>
+      </div>
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Ancienneté d'emménagement</h2><span class="card__u">% des ménages</span></div>
+        <div class="card__body" id="c-anem"></div>
+        <div class="card__foot">Durée depuis l'emménagement de la personne de référence dans le logement.</div>
+      </div>
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Résidence un an auparavant</h2><span class="card__u">% des ménages</span></div>
+        <div class="card__body" id="c-iran"></div>
+        <div class="card__foot">Lieu de résidence de la personne de référence un an avant l'enquête.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="section" id="confort">
+    <div class="section__head"><div class="section__num">03 <span>Taille, confort et équipement</span></div><span class="badge">Habitat</span></div>
+    <p class="section__intro">Nombre de pièces, surface et niveau d'équipement des résidences principales. La densité d'occupation rapporte le nombre de personnes au nombre de pièces du logement.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Nombre de pièces</h2><span class="card__u">% des résidences principales</span></div>
+        <div class="card__body" id="c-nbpi"></div>
+        <div class="card__foot" id="f-nbpi"></div>
+      </div>
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Surface habitable</h2><span class="card__u">% des résidences principales</span></div>
+        <div class="card__body" id="c-surf"></div>
+        <div class="card__foot">Surface déclarée par le ménage, en tranches.</div>
+      </div>
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Motorisation des ménages</h2><span class="card__u">% des ménages</span></div>
+        <div class="card__body" id="c-voit"></div>
+        <div class="card__foot" id="f-voit"></div>
+      </div>
+      <div class="card card--8">
+        <div class="card__h"><h2 class="card__t">Confort et équipement</h2><span class="card__u">% des résidences principales</span></div>
+        <div class="card__body" id="c-conf"></div>
+        <div class="card__foot">Sanitaires complets : baignoire ou douche et WC à l'intérieur du logement. Ascenseur : part des appartements situés dans un immeuble avec ascenseur. Repère vertical : valeur de La Réunion.</div>
+      </div>
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Densité d'occupation</h2><span class="card__u">résidences principales</span></div>
+        <div class="card__body" id="c-dense"></div>
+        <div class="card__foot">Indicateur simplifié : logements comptant plus d'une personne par pièce. Il ne reproduit pas la définition INSEE du surpeuplement, qui tient compte de l'âge et de la composition du ménage.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="section" id="menages">
+    <div class="section__head"><div class="section__num">04 <span>Les ménages</span></div><span class="badge">Habitat</span></div>
+    <p class="section__intro">Taille des ménages et profil de la personne de référence : âge, activité, lieu de naissance et diplôme. Chaque résidence principale correspond à un ménage.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Taille des ménages</h2><span class="card__u">% des ménages</span></div>
+        <div class="card__body" id="c-inper"></div>
+        <div class="card__foot" id="f-inper"></div>
+      </div>
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Âge de la personne de référence</h2><span class="card__u">% des ménages</span></div>
+        <div class="card__body" id="c-age"></div>
+        <div class="card__foot">Personne de référence du ménage au sens du recensement.</div>
+      </div>
+      <div class="card">
+        <div class="card__h"><h2 class="card__t">Activité de la personne de référence</h2><span class="card__u">% des ménages</span></div>
+        <div class="card__body" id="c-tact"></div>
+        <div class="card__foot">Chômage au sens du recensement (déclaratif). Autres inactifs : élèves et étudiants, personnes au foyer, autres.</div>
+      </div>
+      <div class="card card--6">
+        <div class="card__h"><h2 class="card__t">Lieu de naissance de la personne de référence</h2><span class="card__u">% des ménages</span></div>
+        <div class="card__body" id="c-naiss"></div>
+        <div class="card__foot">Né(e) à La Réunion, dans l'Hexagone, dans un autre département ou une collectivité d'outre-mer, ou à l'étranger.</div>
+      </div>
+      <div class="card card--6">
+        <div class="card__h"><h2 class="card__t">Diplôme de la personne de référence</h2><span class="card__u">% des ménages</span></div>
+        <div class="card__body" id="c-dipl"></div>
+        <div class="card__foot">Plus haut diplôme obtenu. « Sans diplôme » inclut les personnes n'ayant pas dépassé le collège sans diplôme.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="section" id="comparaison">
+    <div class="section__head"><div class="section__num">05 <span>Comparaison territoriale</span></div><span class="badge">Habitat</span></div>
+    <p class="section__intro">Un même indicateur lu pour les cinq intercommunalités et les 24 communes. Le territoire sélectionné est en orange, les communes de son intercommunalité en teal soutenu. Cliquer un nom sélectionne le territoire.</p>
+    <div class="grid">
+      <div class="card card--12" style="padding-bottom:10px">
+        <div class="indic"><label for="indic">Indicateur</label><select id="indic"></select><span id="indic-def"></span></div>
+      </div>
+      <div class="card card--4">
+        <div class="card__h"><h2 class="card__t">Intercommunalités</h2><span class="card__u" id="u-epci"></span></div>
+        <div class="card__body" id="c-epci"></div>
+        <div class="card__foot">La Réunion en repère.</div>
+      </div>
+      <div class="card card--8">
+        <div class="card__h"><h2 class="card__t">Communes</h2><span class="card__u" id="u-comm"></span></div>
+        <div class="card__body" id="c-comm"></div>
+        <div class="card__foot">Classement décroissant. Les communes de moins de 3 000 logements (Salazie, Cilaos, Saint-Philippe, Sainte-Rose, Les Trois-Bassins) reposent sur des échantillons plus réduits.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="section" id="tableau">
+    <div class="section__head"><div class="section__num">06 <span>Tableau communal</span></div><span class="badge">Habitat</span></div>
+    <div class="tools" style="margin-bottom:10px">
+      <span>Cliquer un en-tête pour trier, une ligne pour sélectionner le territoire.</span>
+      <button class="btn" id="copy" type="button">Copier le tableau</button><span id="copy-msg" aria-live="polite"></span>
+    </div>
+    <div class="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+  </section>
+
+  <!-- 07 -->
+  <section class="section" id="methode">
+    <div class="section__head"><div class="section__num">07 <span>Méthode et sources</span></div><span class="badge">Habitat</span></div>
+    <div class="method">
+      <div><h3>Données</h3>
+        <ul><li>INSEE, recensement de la population, millésime 2017, fichier détail « Logements ordinaires » pour La Réunion (log_974_2017). Un enregistrement par logement enquêté, 159 811 lignes, 69 variables.</li>
+        <li>Les logements des communautés (foyers, internats, maisons de retraite) et les habitations mobiles ne font pas partie du champ.</li></ul></div>
+      <div><h3>Pondération</h3>
+        <ul><li>Chaque logement est affecté de son poids IPONDL ; tous les effectifs présentés sont des sommes de poids, arrondies à l'unité. Le total pondéré s'établit à 369 895 logements, dont 328 195 résidences principales.</li>
+        <li>Le millésime 2017 agrège cinq enquêtes annuelles (2015 à 2019) ; les constructions récentes sont sous-représentées.</li></ul></div>
+      <div><h3>Définitions</h3>
+        <ul><li>Taux de vacance : logements vacants / ensemble du parc. Part de maisons : maisons / ensemble du parc.</li>
+        <li>Logement social : résidences principales déclarées HLM (variable HLML). Propriétaires, locataires et logés gratuitement selon le statut d'occupation (STOCD).</li>
+        <li>Les indicateurs de ménages portent sur la personne de référence du ménage. Le découpage intercommunal est celui en vigueur (CINOR, CIREST, TCO, CIVIS, CASUD).</li></ul></div>
+      <div><h3>Lecture</h3>
+        <ul><li>Le repère vertical noir des graphiques indique la valeur de La Réunion lorsque le territoire sélectionné est une intercommunalité ou une commune.</li>
+        <li>Le territoire courant est mémorisé dans l'adresse de la page (par exemple <code>#97411</code> pour Saint-Denis) : l'adresse peut être partagée telle quelle.</li></ul></div>
+    </div>
+    <div class="foot"><span>Sources : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</span><span>Observatoire de l'habitat · AGORAH, agence d'urbanisme de La Réunion</span></div>
+  </section>
+</main>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+const D = {"meta":{"source":"INSEE, Recensement de la population 2017 — fichier détail « Logements ordinaires », La Réunion (log_974_2017)","n":159811,"tot":369895.0},"epci":["CINOR","CIREST","TCO","CIVIS","CASUD"],"communes":[{"c":"97401","n":"Les Avirons","e":"CIVIS"},{"c":"97402","n":"Bras-Panon","e":"CIREST"},{"c":"97403","n":"Entre-Deux","e":"CASUD"},{"c":"97404","n":"L'Étang-Salé","e":"CIVIS"},{"c":"97405","n":"Petite-Île","e":"CIVIS"},{"c":"97406","n":"La Plaine-des-Palmistes","e":"CIREST"},{"c":"97407","n":"Le Port","e":"TCO"},{"c":"97408","n":"La Possession","e":"TCO"},{"c":"97409","n":"Saint-André","e":"CIREST"},{"c":"97410","n":"Saint-Benoît","e":"CIREST"},{"c":"97411","n":"Saint-Denis","e":"CINOR"},{"c":"97412","n":"Saint-Joseph","e":"CASUD"},{"c":"97413","n":"Saint-Leu","e":"TCO"},{"c":"97414","n":"Saint-Louis","e":"CIVIS"},{"c":"97415","n":"Saint-Paul","e":"TCO"},{"c":"97416","n":"Saint-Pierre","e":"CIVIS"},{"c":"97417","n":"Saint-Philippe","e":"CASUD"},{"c":"97418","n":"Sainte-Marie","e":"CINOR"},{"c":"97419","n":"Sainte-Rose","e":"CIREST"},{"c":"97420","n":"Sainte-Suzanne","e":"CINOR"},{"c":"97421","n":"Salazie","e":"CIREST"},{"c":"97422","n":"Le Tampon","e":"CASUD"},{"c":"97423","n":"Les Trois-Bassins","e":"TCO"},{"c":"97424","n":"Cilaos","e":"CIVIS"}],"t":{"R":{"tot":369895.0,"rp":328195.0,"n":159811,"cat":[328195.0,9512.0,32188.0],"typ":[245568.0,121905.0,2422.0],"typ_rp":[220186.0,106355.0,1653.0],"bati":[291931.0,14009.0,20146.0,2108.0],"stat":[166841.0,92136.0,55915.0,13302.0],"nbpi":[13668.0,36354.0,77691.0,102788.0,61720.0,35974.0],"surf":[11475.0,19656.0,54336.0,90568.0,83299.0,40851.0,28009.0],"pieces_moy":3.88,"pers_moy":2.58,"dense":32899.0,"achl":[5122.0,36708.0,105479.0,135574.0,71924.0,15088.0],"achl_an":[8211.0,8888.0,9903.0,7750.0,8229.0,6250.0,7389.0,7485.0,7818.0,5680.0,4758.0,2809.0,1683.0,159.0],"anem":[44242.0,67282.0,54864.0,66695.0,46676.0,48435.0],"iran":[293638.0,19148.0,10987.0,4421.0],"conf":{"eauch":297287.0,"eau0":958.0,"clim":85415.0,"chos":162705.0,"sani":321718.0,"egout":161892.0,"elec0":1818.0,"garl":236453.0,"cuis0":5876.0,"chau":25271.0,"apt":106355.0,"ascen":25492.0},"voit":[91059.0,158358.0,67075.0,11702.0],"derou":34734.0,"inper":[91124.0,91269.0,63194.0,50021.0,32586.0],"age":[15250.0,78114.0,116124.0,62802.0,42831.0,13073.0],"tact":[163385.0,75454.0,57025.0,32330.0],"naiss":[261367.0,45076.0,2851.0,18900.0],"dipl":[118934.0,94292.0,49034.0,65933.0],"conj":[124311.0,44214.0,159670.0],"sexe":[181032.0,147163.0]},"CINOR":{"tot":95009.0,"rp":84414.0,"n":38087,"cat":[84414.0,1090.0,9505.0],"typ":[41390.0,53064.0,555.0],"typ_rp":[37642.0,46339.0,432.0],"bati":[79005.0,2030.0,2980.0,399.0],"stat":[30689.0,31121.0,19812.0,2791.0],"nbpi":[6945.0,13149.0,21047.0,22257.0,12985.0,8030.0],"surf":[5410.0,6521.0,16237.0,22806.0,18418.0,8767.0,6254.0],"pieces_moy":3.59,"pers_moy":2.4,"dense":8400.0,"achl":[1164.0,11800.0,28121.0,32521.0,17868.0,3535.0],"achl_an":[1878.0,1995.0,3070.0,2119.0,1880.0,1575.0,1561.0,1988.0,1802.0,1450.0,1227.0,537.0,294.0,26.0],"anem":[13403.0,19299.0,13810.0,15752.0,10630.0,11520.0],"iran":[73648.0,5844.0,3266.0,1656.0],"conf":{"eauch":77163.0,"eau0":112.0,"clim":29452.0,"chos":31322.0,"sani":83396.0,"egout":58727.0,"elec0":258.0,"garl":59673.0,"cuis0":858.0,"chau":5594.0,"apt":46339.0,"ascen":17739.0},"voit":[24562.0,40251.0,16246.0,3355.0],"derou":9089.0,"inper":[28445.0,23394.0,14469.0,10963.0,7143.0],"age":[5669.0,20428.0,28145.0,15981.0,10929.0,3262.0],"tact":[44708.0,16702.0,14333.0,8670.0],"naiss":[63359.0,11771.0,1004.0,8280.0],"dipl":[25955.0,22649.0,14892.0,20918.0],"conj":[29033.0,10032.0,45349.0],"sexe":[43770.0,40644.0]},"CIREST":{"tot":52012.0,"rp":45866.0,"n":26207,"cat":[45866.0,1348.0,4798.0],"typ":[38672.0,12987.0,353.0],"typ_rp":[34471.0,11184.0,211.0],"bati":[39682.0,2308.0,3466.0,410.0],"stat":[24867.0,10650.0,8498.0,1850.0],"nbpi":[1122.0,3822.0,10297.0,15681.0,9511.0,5433.0],"surf":[759.0,2324.0,6702.0,14021.0,12250.0,5713.0,4097.0],"pieces_moy":4.05,"pers_moy":2.75,"dense":5255.0,"achl":[818.0,4368.0,14267.0,18784.0,11518.0,2258.0],"achl_an":[1092.0,1323.0,1216.0,1244.0,1226.0,1138.0,1378.0,1432.0,1468.0,1016.0,613.0,341.0,273.0,15.0],"anem":[5906.0,9030.0,7579.0,9496.0,6982.0,6873.0],"iran":[41471.0,2539.0,1600.0,256.0],"conf":{"eauch":41703.0,"eau0":162.0,"clim":10543.0,"chos":25737.0,"sani":45190.0,"egout":19521.0,"elec0":230.0,"garl":35484.0,"cuis0":729.0,"chau":3156.0,"apt":11184.0,"ascen":1224.0},"voit":[13979.0,21629.0,8776.0,1482.0],"derou":3576.0,"inper":[10858.0,12204.0,9498.0,7672.0,5634.0],"age":[2102.0,11241.0,16307.0,8926.0,5606.0,1684.0],"tact":[21622.0,11309.0,7226.0,5710.0],"naiss":[41106.0,2512.0,458.0,1789.0],"dipl":[18898.0,14319.0,6565.0,6084.0],"conj":[17405.0,6660.0,21801.0],"sexe":[25424.0,20443.0]},"TCO":{"tot":89654.0,"rp":78441.0,"n":37461,"cat":[78441.0,3574.0,7639.0],"typ":[62615.0,26382.0,657.0],"typ_rp":[55653.0,22356.0,432.0],"bati":[67440.0,3685.0,6664.0,652.0],"stat":[44124.0,17987.0,13286.0,3044.0],"nbpi":[2103.0,8323.0,19765.0,26407.0,14251.0,7592.0],"surf":[2125.0,4806.0,13464.0,22723.0,20021.0,9432.0,5871.0],"pieces_moy":3.88,"pers_moy":2.69,"dense":9399.0,"achl":[1375.0,8714.0,27688.0,31729.0,16326.0,3822.0],"achl_an":[1840.0,1757.0,2274.0,1513.0,2064.0,1413.0,1699.0,1825.0,1942.0,1163.0,1348.0,858.0,393.0,59.0],"anem":[9177.0,14983.0,12722.0,16340.0,11791.0,13428.0],"iran":[71479.0,3768.0,2211.0,984.0],"conf":{"eauch":69094.0,"eau0":350.0,"clim":22211.0,"chos":38875.0,"sani":75806.0,"egout":42449.0,"elec0":566.0,"garl":53162.0,"cuis0":2204.0,"chau":5010.0,"apt":22356.0,"ascen":3088.0},"voit":[20711.0,37987.0,17075.0,2668.0],"derou":8553.0,"inper":[19566.0,21493.0,15751.0,12892.0,8739.0],"age":[2379.0,18198.0,29650.0,15407.0,9846.0,2961.0],"tact":[41033.0,17692.0,12817.0,6900.0],"naiss":[59609.0,14204.0,452.0,4176.0],"dipl":[28290.0,22109.0,10564.0,17478.0],"conj":[30305.0,11542.0,36594.0],"sexe":[44916.0,33525.0]},"CIVIS":{"tot":77274.0,"rp":68718.0,"n":32678,"cat":[68718.0,2027.0,6529.0],"typ":[58015.0,18705.0,553.0],"typ_rp":[51778.0,16568.0,373.0],"bati":[60879.0,3427.0,3987.0,425.0],"stat":[38928.0,17079.0,9706.0,3005.0],"nbpi":[1768.0,6408.0,16086.0,22419.0,14042.0,7995.0],"surf":[1723.0,3583.0,10766.0,18560.0,18437.0,9119.0,6529.0],"pieces_moy":4.0,"pers_moy":2.6,"dense":6298.0,"achl":[1101.0,6589.0,20789.0,30151.0,15600.0,3044.0],"achl_an":[2002.0,1847.0,1963.0,1821.0,1897.0,1341.0,1756.0,1427.0,1547.0,1278.0,952.0,433.0,368.0,13.0],"anem":[8695.0,13607.0,11981.0,14356.0,9942.0,10138.0],"iran":[61881.0,3555.0,2301.0,981.0],"conf":{"eauch":61700.0,"eau0":250.0,"clim":17026.0,"chos":38058.0,"sani":67237.0,"egout":29945.0,"elec0":379.0,"garl":49034.0,"cuis0":1363.0,"chau":4852.0,"apt":16568.0,"ascen":1915.0},"voit":[18865.0,33724.0,13787.0,2342.0],"derou":7944.0,"inper":[18081.0,19618.0,13560.0,10705.0,6754.0],"age":[2632.0,16542.0,24709.0,12914.0,9061.0,2860.0],"tact":[33485.0,16630.0,12225.0,6378.0],"naiss":[54516.0,10612.0,596.0,2994.0],"dipl":[25626.0,19887.0,9608.0,13596.0],"conj":[27246.0,9209.0,32263.0],"sexe":[38147.0,30571.0]},"CASUD":{"tot":55945.0,"rp":50755.0,"n":25378,"cat":[50755.0,1473.0,3717.0],"typ":[44876.0,10766.0,304.0],"typ_rp":[40642.0,9909.0,204.0],"bati":[44924.0,2560.0,3050.0,222.0],"stat":[28233.0,15298.0,4613.0,2611.0],"nbpi":[1730.0,4651.0,10496.0,16024.0,10931.0,6924.0],"surf":[1458.0,2423.0,7166.0,12459.0,14172.0,7820.0,5257.0],"pieces_moy":4.07,"pers_moy":2.52,"dense":3548.0,"achl":[665.0,5237.0,14613.0,22390.0,10611.0,2429.0],"achl_an":[1398.0,1967.0,1380.0,1053.0,1163.0,783.0,995.0,813.0,1059.0,773.0,618.0,639.0,354.0,44.0],"anem":[7062.0,10364.0,8772.0,10751.0,7331.0,6477.0],"iran":[45159.0,3443.0,1609.0,544.0],"conf":{"eauch":47627.0,"eau0":83.0,"clim":6183.0,"chos":28714.0,"sani":50090.0,"egout":11249.0,"elec0":384.0,"garl":39100.0,"cuis0":723.0,"chau":6659.0,"apt":9909.0,"ascen":1525.0},"voit":[12943.0,24767.0,11190.0,1856.0],"derou":5572.0,"inper":[14175.0,14560.0,9915.0,7790.0,4316.0],"age":[2467.0,11706.0,17313.0,9575.0,7388.0,2307.0],"tact":[22538.0,13121.0,10424.0,4672.0],"naiss":[42777.0,5977.0,340.0,1661.0],"dipl":[20164.0,15328.0,7405.0,7857.0],"conj":[20321.0,6772.0,23663.0],"sexe":[28775.0,21980.0]},"97401":{"tot":4944.0,"rp":4409.0,"n":1939,"cat":[4409.0,170.0,365.0],"typ":[3952.0,954.0,38.0],"typ_rp":[3509.0,884.0,15.0],"bati":[3766.0,306.0,309.0,28.0],"stat":[2729.0,1140.0,363.0,177.0],"nbpi":[80.0,450.0,852.0,1370.0,962.0,696.0],"surf":[89.0,184.0,632.0,989.0,1213.0,657.0,645.0],"pieces_moy":4.19,"pers_moy":2.57,"dense":314.0,"achl":[64.0,324.0,974.0,2181.0,1186.0,216.0],"achl_an":[206.0,162.0,146.0,105.0,189.0,94.0,105.0,87.0,92.0,89.0,44.0,57.0,20.0,6.0],"anem":[558.0,974.0,753.0,1048.0,575.0,501.0],"iran":[3961.0,190.0,183.0,75.0],"conf":{"eauch":4186.0,"eau0":25.0,"clim":853.0,"chos":2490.0,"sani":4307.0,"egout":1598.0,"elec0":31.0,"garl":3326.0,"cuis0":79.0,"chau":445.0,"apt":884.0,"ascen":84.0},"voit":[851.0,2131.0,1220.0,207.0],"derou":562.0,"inper":[1094.0,1329.0,911.0,732.0,343.0],"age":[98.0,948.0,1692.0,857.0,580.0,234.0],"tact":[2450.0,825.0,855.0,279.0],"naiss":[3200.0,1013.0,21.0,175.0],"dipl":[1337.0,1251.0,678.0,1143.0],"conj":[1871.0,597.0,1941.0],"sexe":[2489.0,1920.0]},"97402":{"tot":5353.0,"rp":4883.0,"n":2116,"cat":[4883.0,60.0,409.0],"typ":[3537.0,1803.0,13.0],"typ_rp":[3270.0,1603.0,10.0],"bati":[4088.0,225.0,537.0,33.0],"stat":[2613.0,1012.0,1066.0,192.0],"nbpi":[98.0,599.0,895.0,1585.0,1040.0,665.0],"surf":[69.0,182.0,687.0,1551.0,1275.0,579.0,541.0],"pieces_moy":4.07,"pers_moy":2.61,"dense":397.0,"achl":[44.0,435.0,1316.0,1940.0,1322.0,297.0],"achl_an":[173.0,134.0,89.0,231.0,136.0,98.0,211.0,121.0,129.0,127.0,94.0,63.0,13.0,0.0],"anem":[675.0,988.0,769.0,970.0,708.0,774.0],"iran":[4316.0,227.0,313.0,26.0],"conf":{"eauch":4315.0,"eau0":49.0,"clim":1539.0,"chos":2871.0,"sani":4791.0,"egout":3240.0,"elec0":18.0,"garl":3915.0,"cuis0":123.0,"chau":262.0,"apt":1603.0,"ascen":87.0},"voit":[1202.0,2337.0,1163.0,182.0],"derou":447.0,"inper":[1220.0,1393.0,1063.0,770.0,437.0],"age":[170.0,1278.0,1750.0,956.0,581.0,148.0],"tact":[2603.0,1210.0,749.0,321.0],"naiss":[4398.0,364.0,10.0,111.0],"dipl":[1645.0,1670.0,695.0,873.0],"conj":[1861.0,662.0,2360.0],"sexe":[2715.0,2169.0]},"97403":{"tot":3118.0,"rp":2744.0,"n":3139,"cat":[2744.0,156.0,217.0],"typ":[2761.0,333.0,24.0],"typ_rp":[2412.0,320.0,12.0],"bati":[2398.0,204.0,136.0,6.0],"stat":[1768.0,682.0,127.0,167.0],"nbpi":[36.0,213.0,631.0,933.0,580.0,352.0],"surf":[41.0,135.0,379.0,672.0,812.0,412.0,294.0],"pieces_moy":4.12,"pers_moy":2.49,"dense":193.0,"achl":[67.0,274.0,800.0,1113.0,572.0,290.0],"achl_an":[93.0,67.0,71.0,78.0,49.0,28.0,41.0,79.0,68.0,68.0,60.0,75.0,69.0,20.0],"anem":[331.0,541.0,443.0,629.0,402.0,399.0],"iran":[2484.0,124.0,104.0,33.0],"conf":{"eauch":2633.0,"eau0":11.0,"clim":259.0,"chos":1871.0,"sani":2704.0,"egout":1185.0,"elec0":18.0,"garl":2139.0,"cuis0":48.0,"chau":158.0,"apt":320.0,"ascen":0.0},"voit":[577.0,1308.0,741.0,118.0],"derou":386.0,"inper":[779.0,782.0,544.0,434.0,204.0],"age":[60.0,549.0,960.0,590.0,427.0,157.0],"tact":[1417.0,523.0,622.0,182.0],"naiss":[2176.0,475.0,7.0,86.0],"dipl":[846.0,877.0,441.0,580.0],"conj":[1143.0,415.0,1186.0],"sexe":[1585.0,1159.0]},"97404":{"tot":6109.0,"rp":5384.0,"n":2444,"cat":[5384.0,248.0,477.0],"typ":[4935.0,1120.0,54.0],"typ_rp":[4359.0,988.0,37.0],"bati":[4637.0,368.0,344.0,35.0],"stat":[3371.0,1056.0,724.0,233.0],"nbpi":[71.0,390.0,1057.0,1687.0,1317.0,861.0],"surf":[105.0,194.0,729.0,1418.0,1322.0,908.0,707.0],"pieces_moy":4.27,"pers_moy":2.58,"dense":390.0,"achl":[92.0,584.0,1600.0,2507.0,902.0,424.0],"achl_an":[119.0,160.0,129.0,84.0,107.0,56.0,72.0,66.0,110.0,242.0,106.0,29.0,46.0,1.0],"anem":[702.0,867.0,789.0,1252.0,922.0,852.0],"iran":[4741.0,263.0,298.0,81.0],"conf":{"eauch":5041.0,"eau0":18.0,"clim":2086.0,"chos":3316.0,"sani":5272.0,"egout":2240.0,"elec0":38.0,"garl":4119.0,"cuis0":95.0,"chau":236.0,"apt":988.0,"ascen":36.0},"voit":[1050.0,2514.0,1554.0,265.0],"derou":795.0,"inper":[1325.0,1663.0,1033.0,867.0,496.0],"age":[114.0,1183.0,2014.0,1106.0,727.0,240.0],"tact":[3061.0,979.0,1035.0,309.0],"naiss":[3837.0,1309.0,15.0,222.0],"dipl":[1559.0,1534.0,710.0,1581.0],"conj":[2405.0,794.0,2185.0],"sexe":[3219.0,2165.0]},"97405":{"tot":5366.0,"rp":4839.0,"n":2168,"cat":[4839.0,110.0,417.0],"typ":[4786.0,524.0,56.0],"typ_rp":[4326.0,469.0,43.0],"bati":[4201.0,242.0,349.0,47.0],"stat":[3269.0,1138.0,162.0,270.0],"nbpi":[127.0,251.0,931.0,1735.0,1078.0,716.0],"surf":[87.0,229.0,571.0,1239.0,1453.0,715.0,545.0],"pieces_moy":4.22,"pers_moy":2.51,"dense":284.0,"achl":[67.0,553.0,1384.0,2325.0,888.0,148.0],"achl_an":[117.0,94.0,115.0,80.0,94.0,112.0,75.0,95.0,106.0,66.0,47.0,20.0,15.0,0.0],"anem":[482.0,830.0,698.0,1046.0,820.0,963.0],"iran":[4413.0,172.0,194.0,59.0],"conf":{"eauch":4543.0,"eau0":7.0,"clim":771.0,"chos":3026.0,"sani":4764.0,"egout":114.0,"elec0":35.0,"garl":3884.0,"cuis0":80.0,"chau":338.0,"apt":469.0,"ascen":0.0},"voit":[1070.0,2384.0,1191.0,194.0],"derou":535.0,"inper":[1195.0,1642.0,916.0,718.0,368.0],"age":[122.0,979.0,1593.0,1019.0,822.0,304.0],"tact":[2297.0,972.0,1197.0,373.0],"naiss":[4054.0,643.0,5.0,137.0],"dipl":[2089.0,1321.0,645.0,784.0],"conj":[2224.0,699.0,1917.0],"sexe":[2898.0,1941.0]},"97406":{"tot":3350.0,"rp":2318.0,"n":3243,"cat":[2318.0,694.0,338.0],"typ":[3211.0,118.0,22.0],"typ_rp":[2212.0,96.0,10.0],"bati":[1681.0,463.0,163.0,11.0],"stat":[1457.0,532.0,220.0,110.0],"nbpi":[12.0,115.0,396.0,861.0,543.0,390.0],"surf":[20.0,56.0,195.0,561.0,801.0,363.0,321.0],"pieces_moy":4.4,"pers_moy":2.81,"dense":226.0,"achl":[89.0,430.0,683.0,1037.0,1023.0,88.0],"achl_an":[126.0,122.0,88.0,84.0,109.0,114.0,175.0,137.0,69.0,71.0,17.0,0.0,0.0,0.0],"anem":[321.0,541.0,459.0,515.0,261.0,220.0],"iran":[2068.0,100.0,136.0,13.0],"conf":{"eauch":2246.0,"eau0":13.0,"clim":33.0,"chos":1298.0,"sani":2283.0,"egout":108.0,"elec0":11.0,"garl":1842.0,"cuis0":25.0,"chau":893.0,"apt":96.0,"ascen":0.0},"voit":[444.0,1221.0,582.0,71.0],"derou":141.0,"inper":[502.0,633.0,471.0,388.0,324.0],"age":[65.0,538.0,841.0,462.0,301.0,111.0],"tact":[1203.0,502.0,465.0,149.0],"naiss":[2134.0,137.0,6.0,40.0],"dipl":[782.0,854.0,373.0,309.0],"conj":[1025.0,353.0,940.0],"sexe":[1312.0,1006.0]},"97407":{"tot":12819.0,"rp":12099.0,"n":5072,"cat":[12099.0,25.0,694.0],"typ":[6456.0,6295.0,67.0],"typ_rp":[6123.0,5909.0,67.0],"bati":[11340.0,142.0,535.0,82.0],"stat":[4154.0,1784.0,5904.0,256.0],"nbpi":[484.0,1639.0,3665.0,3747.0,1818.0,746.0],"surf":[496.0,1170.0,2820.0,3839.0,2474.0,834.0,466.0],"pieces_moy":3.61,"pers_moy":2.76,"dense":2083.0,"achl":[157.0,2076.0,5347.0,3542.0,1300.0,397.0],"achl_an":[175.0,107.0,147.0,122.0,172.0,147.0,83.0,145.0,200.0,92.0,260.0,41.0,4.0,0.0],"anem":[1087.0,1810.0,2067.0,2899.0,1784.0,2451.0],"iran":[11376.0,486.0,186.0,51.0],"conf":{"eauch":9851.0,"eau0":85.0,"clim":2927.0,"chos":5477.0,"sani":11835.0,"egout":11171.0,"elec0":18.0,"garl":5619.0,"cuis0":228.0,"chau":1135.0,"apt":5909.0,"ascen":720.0},"voit":[5113.0,5275.0,1384.0,327.0],"derou":1108.0,"inper":[3153.0,3085.0,2383.0,1777.0,1701.0],"age":[551.0,2546.0,4349.0,2573.0,1528.0,551.0],"tact":[4812.0,3774.0,1997.0,1517.0],"naiss":[10090.0,565.0,128.0,1316.0],"dipl":[5882.0,3961.0,1309.0,947.0],"conj":[3773.0,1312.0,7014.0],"sexe":[6109.0,5990.0]},"97408":{"tot":13456.0,"rp":12280.0,"n":5295,"cat":[12280.0,201.0,976.0],"typ":[7980.0,5388.0,87.0],"typ_rp":[7432.0,4778.0,69.0],"bati":[10609.0,529.0,1017.0,125.0],"stat":[6218.0,3078.0,2664.0,319.0],"nbpi":[319.0,1603.0,2594.0,4066.0,2420.0,1277.0],"surf":[226.0,607.0,1893.0,3180.0,3266.0,1837.0,1270.0],"pieces_moy":3.91,"pers_moy":2.68,"dense":1226.0,"achl":[64.0,584.0,3500.0,5216.0,3411.0,680.0],"achl_an":[323.0,324.0,544.0,409.0,401.0,194.0,407.0,273.0,535.0,268.0,175.0,159.0,77.0,1.0],"anem":[1993.0,2975.0,1983.0,2467.0,1551.0,1311.0],"iran":[10604.0,754.0,717.0,205.0],"conf":{"eauch":11301.0,"eau0":73.0,"clim":4866.0,"chos":6476.0,"sani":12028.0,"egout":8181.0,"elec0":65.0,"garl":8725.0,"cuis0":198.0,"chau":1049.0,"apt":4778.0,"ascen":1305.0},"voit":[2146.0,6029.0,3540.0,565.0],"derou":1503.0,"inper":[2786.0,3535.0,2578.0,2191.0,1190.0],"age":[432.0,3676.0,4434.0,2219.0,1198.0,321.0],"tact":[7723.0,2076.0,1653.0,827.0],"naiss":[9066.0,2351.0,150.0,713.0],"dipl":[3135.0,3444.0,2144.0,3556.0],"conj":[5199.0,1878.0,5203.0],"sexe":[7088.0,5192.0]},"97409":{"tot":21985.0,"rp":20132.0,"n":8780,"cat":[20132.0,285.0,1568.0],"typ":[15633.0,6228.0,124.0],"typ_rp":[14542.0,5523.0,66.0],"bati":[18060.0,664.0,1226.0,182.0],"stat":[9784.0,5625.0,3944.0,778.0],"nbpi":[448.0,1522.0,4695.0,7177.0,4241.0,2048.0],"surf":[301.0,1192.0,3004.0,6052.0,5230.0,2607.0,1745.0],"pieces_moy":4.02,"pers_moy":2.78,"dense":2309.0,"achl":[260.0,1526.0,5776.0,8391.0,5206.0,825.0],"achl_an":[541.0,614.0,674.0,474.0,470.0,454.0,662.0,392.0,926.0,452.0,131.0,110.0,131.0,1.0],"anem":[2695.0,4086.0,3466.0,4383.0,2622.0,2879.0],"iran":[17945.0,1447.0,639.0,101.0],"conf":{"eauch":18453.0,"eau0":40.0,"clim":5738.0,"chos":10932.0,"sani":19893.0,"egout":9148.0,"elec0":69.0,"garl":16560.0,"cuis0":209.0,"chau":1138.0,"apt":5523.0,"ascen":720.0},"voit":[5943.0,9570.0,3928.0,690.0],"derou":1566.0,"inper":[4682.0,5207.0,4299.0,3544.0,2399.0],"age":[1039.0,5084.0,7315.0,3787.0,2279.0,626.0],"tact":[9645.0,4879.0,2916.0,2691.0],"naiss":[17752.0,1025.0,251.0,1104.0],"dipl":[7796.0,6372.0,3099.0,2865.0],"conj":[7562.0,2940.0,9630.0],"sexe":[10986.0,9146.0]},"97410":{"tot":15407.0,"rp":13568.0,"n":6174,"cat":[13568.0,93.0,1746.0],"typ":[10625.0,4666.0,115.0],"typ_rp":[9673.0,3826.0,69.0],"bati":[12278.0,523.0,701.0,65.0],"stat":[7394.0,2679.0,3064.0,432.0],"nbpi":[520.0,1362.0,3496.0,4477.0,2426.0,1287.0],"surf":[289.0,718.0,2341.0,4518.0,3338.0,1396.0,969.0],"pieces_moy":3.85,"pers_moy":2.76,"dense":1889.0,"achl":[297.0,1461.0,4753.0,5277.0,3026.0,593.0],"achl_an":[164.0,282.0,259.0,344.0,369.0,353.0,255.0,704.0,295.0,263.0,233.0,47.0,48.0,3.0],"anem":[1710.0,2785.0,2134.0,2579.0,2309.0,2052.0],"iran":[12464.0,589.0,422.0,94.0],"conf":{"eauch":12183.0,"eau0":40.0,"clim":2737.0,"chos":7650.0,"sani":13412.0,"egout":6335.0,"elec0":60.0,"garl":10248.0,"cuis0":192.0,"chau":604.0,"apt":3826.0,"ascen":417.0},"voit":[4719.0,6211.0,2289.0,349.0],"derou":913.0,"inper":[3269.0,3665.0,2684.0,2159.0,1790.0],"age":[664.0,3341.0,4626.0,2678.0,1727.0,532.0],"tact":[6097.0,3401.0,2146.0,1925.0],"naiss":[12114.0,812.0,179.0,463.0],"dipl":[5992.0,3950.0,1916.0,1711.0],"conj":[4871.0,1890.0,6807.0],"sexe":[7335.0,6233.0]},"97411":{"tot":72467.0,"rp":63655.0,"n":29077,"cat":[63655.0,929.0,7882.0],"typ":[25229.0,46771.0,466.0],"typ_rp":[22612.0,40685.0,359.0],"bati":[60021.0,1300.0,2005.0,330.0],"stat":[19399.0,26332.0,16133.0,1792.0],"nbpi":[6497.0,11355.0,16920.0,15326.0,8401.0,5156.0],"surf":[5026.0,5715.0,13574.0,17321.0,12023.0,5699.0,4297.0],"pieces_moy":3.41,"pers_moy":2.29,"dense":6315.0,"achl":[982.0,10228.0,22742.0,22964.0,13590.0,1961.0],"achl_an":[1407.0,1669.0,2682.0,1811.0,1523.0,1256.0,1071.0,1138.0,1033.0,681.0,773.0,326.0,165.0,16.0],"anem":[10734.0,15205.0,10543.0,11203.0,7217.0,8753.0],"iran":[55185.0,4892.0,2200.0,1378.0],"conf":{"eauch":58544.0,"eau0":28.0,"clim":23796.0,"chos":19699.0,"sani":63078.0,"egout":48354.0,"elec0":185.0,"garl":44073.0,"cuis0":499.0,"chau":4682.0,"apt":40685.0,"ascen":16581.0},"voit":[19812.0,30914.0,10556.0,2373.0],"derou":6926.0,"inper":[23795.0,17676.0,10076.0,7368.0,4739.0],"age":[4936.0,15306.0,20230.0,12030.0,8514.0,2639.0],"tact":[33024.0,12301.0,11188.0,7143.0],"naiss":[45778.0,9668.0,842.0,7367.0],"dipl":[18839.0,16230.0,11643.0,16943.0],"conj":[20261.0,7060.0,36334.0],"sexe":[31873.0,31782.0]},"97412":{"tot":16157.0,"rp":14671.0,"n":6446,"cat":[14671.0,302.0,1184.0],"typ":[13566.0,2507.0,83.0],"typ_rp":[12345.0,2270.0,55.0],"bati":[12642.0,706.0,1169.0,154.0],"stat":[9039.0,3630.0,1187.0,815.0],"nbpi":[208.0,1271.0,2881.0,4813.0,3357.0,2140.0],"surf":[195.0,632.0,2142.0,3896.0,4125.0,2343.0,1338.0],"pieces_moy":4.18,"pers_moy":2.55,"dense":911.0,"achl":[197.0,1408.0,3834.0,7048.0,2949.0,720.0],"achl_an":[305.0,416.0,426.0,312.0,374.0,182.0,444.0,239.0,253.0,161.0,232.0,237.0,86.0,4.0],"anem":[1947.0,2608.0,2514.0,3443.0,2293.0,1865.0],"iran":[13172.0,1053.0,302.0,144.0],"conf":{"eauch":13267.0,"eau0":40.0,"clim":3220.0,"chos":7684.0,"sani":14410.0,"egout":2292.0,"elec0":141.0,"garl":10557.0,"cuis0":275.0,"chau":813.0,"apt":2270.0,"ascen":292.0},"voit":[4263.0,6998.0,2968.0,442.0],"derou":1679.0,"inper":[3845.0,4310.0,2942.0,2325.0,1249.0],"age":[479.0,3244.0,5142.0,2888.0,2179.0,739.0],"tact":[5806.0,4295.0,3230.0,1340.0],"naiss":[12808.0,1471.0,95.0,295.0],"dipl":[6486.0,4762.0,1787.0,1636.0],"conj":[6168.0,2027.0,6476.0],"sexe":[8556.0,6115.0]},"97413":{"tot":14767.0,"rp":12914.0,"n":5873,"cat":[12914.0,579.0,1273.0],"typ":[11812.0,2864.0,92.0],"typ_rp":[10395.0,2442.0,78.0],"bati":[10761.0,832.0,1271.0,51.0],"stat":[8102.0,3144.0,975.0,693.0],"nbpi":[201.0,1316.0,3178.0,4360.0,2397.0,1462.0],"surf":[332.0,862.0,2155.0,3213.0,3470.0,1848.0,1035.0],"pieces_moy":3.98,"pers_moy":2.6,"dense":1249.0,"achl":[316.0,1281.0,3452.0,5927.0,3115.0,675.0],"achl_an":[370.0,307.0,326.0,237.0,375.0,309.0,423.0,419.0,350.0,256.0,250.0,59.0,96.0,15.0],"anem":[1622.0,2569.0,2144.0,2769.0,1856.0,1955.0],"iran":[11600.0,652.0,472.0,191.0],"conf":{"eauch":11244.0,"eau0":77.0,"clim":3036.0,"chos":6863.0,"sani":12480.0,"egout":4544.0,"elec0":126.0,"garl":9054.0,"cuis0":416.0,"chau":860.0,"apt":2442.0,"ascen":44.0},"voit":[3328.0,6059.0,3052.0,476.0],"derou":1574.0,"inper":[3447.0,3608.0,2526.0,2055.0,1278.0],"age":[325.0,3021.0,4861.0,2530.0,1676.0,501.0],"tact":[6368.0,3310.0,2237.0,999.0],"naiss":[9605.0,2812.0,33.0,466.0],"dipl":[4775.0,3591.0,1558.0,2990.0],"conj":[4996.0,2088.0,5831.0],"sexe":[7483.0,5431.0]},"97414":{"tot":21417.0,"rp":19027.0,"n":8590,"cat":[19027.0,439.0,1951.0],"typ":[17338.0,3942.0,137.0],"typ_rp":[15470.0,3480.0,77.0],"bati":[16321.0,1293.0,1327.0,85.0],"stat":[11266.0,4002.0,2823.0,936.0],"nbpi":[220.0,1263.0,4602.0,6640.0,4094.0,2209.0],"surf":[450.0,907.0,2968.0,5055.0,5660.0,2402.0,1585.0],"pieces_moy":4.1,"pers_moy":2.8,"dense":2245.0,"achl":[298.0,1685.0,5580.0,8381.0,4611.0,861.0],"achl_an":[603.0,551.0,739.0,483.0,643.0,301.0,395.0,366.0,532.0,336.0,275.0,122.0,126.0,3.0],"anem":[2253.0,3408.0,3455.0,4167.0,3073.0,2671.0],"iran":[17478.0,962.0,462.0,126.0],"conf":{"eauch":16047.0,"eau0":54.0,"clim":4091.0,"chos":10201.0,"sani":18571.0,"egout":8176.0,"elec0":145.0,"garl":12403.0,"cuis0":389.0,"chau":1744.0,"apt":3480.0,"ascen":199.0},"voit":[5949.0,9186.0,3343.0,549.0],"derou":1986.0,"inper":[4214.0,5172.0,4009.0,3246.0,2386.0],"age":[799.0,4554.0,7011.0,3432.0,2452.0,780.0],"tact":[8569.0,5018.0,3285.0,2156.0],"naiss":[16780.0,1469.0,186.0,592.0],"dipl":[8186.0,6062.0,2484.0,2296.0],"conj":[7714.0,2577.0,8736.0],"sexe":[10451.0,8576.0]},"97415":{"tot":45662.0,"rp":38628.0,"n":18341,"cat":[38628.0,2697.0,4338.0],"typ":[33648.0,11662.0,352.0],"typ_rp":[29385.0,9076.0,167.0],"bati":[32737.0,2054.0,3480.0,357.0],"stat":[23852.0,9532.0,3641.0,1602.0],"nbpi":[1068.0,3576.0,9763.0,13413.0,7055.0,3753.0],"surf":[983.0,2021.0,6229.0,11772.0,10117.0,4607.0,2900.0],"pieces_moy":3.91,"pers_moy":2.69,"dense":4534.0,"achl":[763.0,4392.0,14535.0,15950.0,7976.0,2047.0],"achl_an":[911.0,949.0,1213.0,645.0,1042.0,721.0,748.0,952.0,795.0,525.0,663.0,600.0,216.0,44.0],"anem":[4227.0,7301.0,6135.0,7664.0,6129.0,7172.0],"iran":[35568.0,1805.0,743.0,512.0],"conf":{"eauch":34556.0,"eau0":98.0,"clim":11186.0,"chos":18814.0,"sani":37124.0,"egout":18271.0,"elec0":313.0,"garl":28235.0,"cuis0":1199.0,"chau":1659.0,"apt":9076.0,"ascen":1020.0},"voit":[9349.0,19501.0,8592.0,1186.0],"derou":4100.0,"inper":[9612.0,10617.0,7758.0,6422.0,4219.0],"age":[998.0,8432.0,14987.0,7596.0,5144.0,1471.0],"tact":[20883.0,7866.0,6484.0,3395.0],"naiss":[28621.0,8247.0,139.0,1622.0],"dipl":[13364.0,10349.0,5252.0,9663.0],"conj":[15402.0,5834.0,17392.0],"sexe":[22738.0,15890.0]},"97416":{"tot":36506.0,"rp":32913.0,"n":14604,"cat":[32913.0,721.0,2872.0],"typ":[24183.0,12095.0,228.0],"typ_rp":[22051.0,10680.0,183.0],"bati":[29976.0,1132.0,1585.0,220.0],"stat":[16706.0,9361.0,5589.0,1257.0],"nbpi":[1238.0,3939.0,8305.0,10333.0,6019.0,3080.0],"surf":[934.0,1964.0,5579.0,9307.0,8115.0,4147.0,2868.0],"pieces_moy":3.82,"pers_moy":2.51,"dense":2911.0,"achl":[511.0,2907.0,10342.0,13794.0,7681.0,1271.0],"achl_an":[926.0,851.0,800.0,1030.0,812.0,755.0,1046.0,792.0,670.0,500.0,408.0,198.0,161.0,4.0],"anem":[4462.0,7257.0,5994.0,6418.0,4147.0,4636.0],"iran":[29305.0,1864.0,1120.0,625.0],"conf":{"eauch":29822.0,"eau0":145.0,"clim":9190.0,"chos":17685.0,"sani":32217.0,"egout":17205.0,"elec0":95.0,"garl":24086.0,"cuis0":688.0,"chau":1865.0,"apt":10680.0,"ascen":1595.0},"voit":[9087.0,16506.0,6226.0,1095.0],"derou":3879.0,"inper":[9612.0,9240.0,6275.0,4842.0,2945.0],"age":[1425.0,8419.0,11594.0,6101.0,4176.0,1198.0],"tact":[16304.0,8162.0,5432.0,3016.0],"naiss":[24645.0,6074.0,367.0,1827.0],"dipl":[11280.0,9081.0,4896.0,7656.0],"conj":[12227.0,4189.0,16497.0],"sexe":[17751.0,15163.0]},"97417":{"tot":2204.0,"rp":1979.0,"n":2083,"cat":[1979.0,49.0,177.0],"typ":[2043.0,114.0,48.0],"typ_rp":[1838.0,103.0,38.0],"bati":[1759.0,95.0,121.0,4.0],"stat":[1483.0,319.0,97.0,80.0],"nbpi":[18.0,138.0,424.0,614.0,493.0,292.0],"surf":[32.0,53.0,252.0,531.0,604.0,327.0,180.0],"pieces_moy":4.23,"pers_moy":2.66,"dense":145.0,"achl":[20.0,139.0,477.0,1130.0,435.0,2.0],"achl_an":[35.0,66.0,55.0,39.0,78.0,30.0,42.0,39.0,51.0,2.0,0.0,0.0,0.0,0.0],"anem":[236.0,280.0,322.0,498.0,417.0,226.0],"iran":[1830.0,83.0,44.0,22.0],"conf":{"eauch":1757.0,"eau0":10.0,"clim":355.0,"chos":953.0,"sani":1941.0,"egout":87.0,"elec0":38.0,"garl":1292.0,"cuis0":49.0,"chau":91.0,"apt":103.0,"ascen":0.0},"voit":[609.0,1040.0,299.0,31.0],"derou":183.0,"inper":[454.0,565.0,429.0,333.0,198.0],"age":[72.0,428.0,744.0,394.0,245.0,97.0],"tact":[840.0,544.0,371.0,225.0],"naiss":[1827.0,111.0,5.0,35.0],"dipl":[959.0,638.0,221.0,160.0],"conj":[837.0,333.0,809.0],"sexe":[1223.0,756.0]},"97418":{"tot":13491.0,"rp":12385.0,"n":5418,"cat":[12385.0,109.0,997.0],"typ":[9097.0,4339.0,55.0],"typ_rp":[8518.0,3825.0,43.0],"bati":[11369.0,392.0,597.0,28.0],"stat":[6431.0,3024.0,2288.0,641.0],"nbpi":[299.0,1219.0,2544.0,3993.0,2622.0,1709.0],"surf":[235.0,572.0,1819.0,3331.0,3458.0,1755.0,1214.0],"pieces_moy":4.09,"pers_moy":2.72,"dense":1207.0,"achl":[106.0,867.0,2889.0,5813.0,2906.0,910.0],"achl_an":[316.0,186.0,178.0,130.0,222.0,238.0,373.0,696.0,566.0,424.0,238.0,135.0,105.0,8.0],"anem":[1757.0,2515.0,2099.0,2571.0,1994.0,1448.0],"iran":[10843.0,617.0,724.0,200.0],"conf":{"eauch":11193.0,"eau0":77.0,"clim":3360.0,"chos":6848.0,"sani":12143.0,"egout":5914.0,"elec0":42.0,"garl":9360.0,"cuis0":224.0,"chau":650.0,"apt":3825.0,"ascen":1156.0},"voit":[2622.0,5689.0,3447.0,627.0],"derou":1447.0,"inper":[2880.0,3422.0,2612.0,2098.0,1373.0],"age":[422.0,3055.0,4689.0,2401.0,1465.0,353.0],"tact":[7117.0,2446.0,1861.0,960.0],"naiss":[10064.0,1551.0,108.0,661.0],"dipl":[4062.0,3666.0,1986.0,2671.0],"conj":[5318.0,1682.0,5385.0],"sexe":[7166.0,5219.0]},"97419":{"tot":2668.0,"rp":2342.0,"n":2668,"cat":[2342.0,27.0,299.0],"typ":[2525.0,108.0,35.0],"typ_rp":[2219.0,95.0,28.0],"bati":[1810.0,97.0,371.0,64.0],"stat":[1708.0,377.0,142.0,115.0],"nbpi":[20.0,123.0,398.0,762.0,566.0,473.0],"surf":[29.0,86.0,268.0,678.0,727.0,319.0,235.0],"pieces_moy":4.45,"pers_moy":2.74,"dense":204.0,"achl":[43.0,245.0,787.0,960.0,449.0,184.0],"achl_an":[39.0,95.0,62.0,54.0,44.0,71.0,28.0,36.0,20.0,64.0,93.0,27.0,0.0,0.0],"anem":[216.0,245.0,363.0,516.0,538.0,464.0],"iran":[2203.0,89.0,40.0,10.0],"conf":{"eauch":2055.0,"eau0":0.0,"clim":439.0,"chos":1389.0,"sani":2292.0,"egout":632.0,"elec0":19.0,"garl":1397.0,"cuis0":48.0,"chau":77.0,"apt":95.0,"ascen":0.0},"voit":[759.0,1102.0,397.0,84.0],"derou":277.0,"inper":[532.0,651.0,499.0,353.0,307.0],"age":[83.0,449.0,862.0,486.0,331.0,131.0],"tact":[981.0,637.0,447.0,277.0],"naiss":[2214.0,80.0,6.0,42.0],"dipl":[1223.0,749.0,217.0,153.0],"conj":[988.0,379.0,975.0],"sexe":[1417.0,925.0]},"97420":{"tot":9051.0,"rp":8374.0,"n":3592,"cat":[8374.0,51.0,626.0],"typ":[7064.0,1954.0,33.0],"typ_rp":[6513.0,1830.0,31.0],"bati":[7615.0,338.0,378.0,42.0],"stat":[4859.0,1765.0,1392.0,358.0],"nbpi":[150.0,576.0,1583.0,2938.0,1962.0,1164.0],"surf":[150.0,233.0,844.0,2154.0,2938.0,1313.0,742.0],"pieces_moy":4.2,"pers_moy":2.8,"dense":877.0,"achl":[76.0,706.0,2490.0,3744.0,1372.0,663.0],"achl_an":[155.0,140.0,210.0,178.0,135.0,80.0,117.0,154.0,202.0,345.0,216.0,76.0,23.0,3.0],"anem":[911.0,1579.0,1167.0,1978.0,1419.0,1318.0],"iran":[7619.0,334.0,342.0,79.0],"conf":{"eauch":7426.0,"eau0":8.0,"clim":2296.0,"chos":4775.0,"sani":8176.0,"egout":4459.0,"elec0":31.0,"garl":6241.0,"cuis0":135.0,"chau":263.0,"apt":1830.0,"ascen":2.0},"voit":[2128.0,3648.0,2243.0,355.0],"derou":715.0,"inper":[1770.0,2295.0,1781.0,1497.0,1031.0],"age":[312.0,2067.0,3226.0,1550.0,949.0,269.0],"tact":[4567.0,1955.0,1285.0,567.0],"naiss":[7517.0,551.0,53.0,252.0],"dipl":[3054.0,2753.0,1263.0,1304.0],"conj":[3454.0,1289.0,3630.0],"sexe":[4731.0,3643.0]},"97421":{"tot":3249.0,"rp":2623.0,"n":3226,"cat":[2623.0,188.0,438.0],"typ":[3141.0,64.0,45.0],"typ_rp":[2555.0,41.0,28.0],"bati":[1766.0,336.0,467.0,54.0],"stat":[1912.0,425.0,63.0,223.0],"nbpi":[24.0,101.0,416.0,819.0,695.0,569.0],"surf":[52.0,89.0,207.0,661.0,879.0,448.0,287.0],"pieces_moy":4.55,"pers_moy":2.79,"dense":230.0,"achl":[85.0,271.0,952.0,1178.0,491.0,272.0],"achl_an":[50.0,76.0,45.0,58.0,97.0,48.0,47.0,42.0,29.0,39.0,46.0,94.0,81.0,12.0],"anem":[289.0,384.0,389.0,533.0,544.0,484.0],"iran":[2475.0,87.0,50.0,11.0],"conf":{"eauch":2452.0,"eau0":19.0,"clim":57.0,"chos":1596.0,"sani":2519.0,"egout":57.0,"elec0":52.0,"garl":1522.0,"cuis0":133.0,"chau":182.0,"apt":41.0,"ascen":0.0},"voit":[912.0,1189.0,417.0,106.0],"derou":233.0,"inper":[652.0,655.0,482.0,458.0,377.0],"age":[81.0,551.0,913.0,556.0,386.0,135.0],"tact":[1092.0,680.0,503.0,347.0],"naiss":[2494.0,94.0,6.0,29.0],"dipl":[1460.0,725.0,264.0,173.0],"conj":[1098.0,437.0,1088.0],"sexe":[1659.0,964.0]},"97422":{"tot":34467.0,"rp":31362.0,"n":13710,"cat":[31362.0,966.0,2139.0],"typ":[26506.0,7811.0,149.0],"typ_rp":[24048.0,7215.0,99.0],"bati":[28124.0,1555.0,1625.0,58.0],"stat":[15943.0,10667.0,3203.0,1549.0],"nbpi":[1468.0,3029.0,6560.0,9664.0,6500.0,4140.0],"surf":[1190.0,1603.0,4393.0,7360.0,8631.0,4738.0,3446.0],"pieces_moy":4.0,"pers_moy":2.5,"dense":2299.0,"achl":[380.0,3416.0,9502.0,13099.0,6654.0,1416.0],"achl_an":[965.0,1418.0,829.0,625.0,663.0,543.0,468.0,457.0,688.0,543.0,326.0,327.0,200.0,21.0],"anem":[4548.0,6934.0,5492.0,6182.0,4219.0,3987.0],"iran":[27673.0,2184.0,1160.0,345.0],"conf":{"eauch":29970.0,"eau0":22.0,"clim":2350.0,"chos":18206.0,"sani":31034.0,"egout":7686.0,"elec0":188.0,"garl":25112.0,"cuis0":350.0,"chau":5597.0,"apt":7215.0,"ascen":1234.0},"voit":[7494.0,15421.0,7182.0,1265.0],"derou":3324.0,"inper":[9097.0,8903.0,6000.0,4698.0,2665.0],"age":[1857.0,7485.0,10466.0,5704.0,4536.0,1314.0],"tact":[14475.0,7759.0,6202.0,2925.0],"naiss":[25966.0,3919.0,233.0,1244.0],"dipl":[11873.0,9051.0,4957.0,5481.0],"conj":[12174.0,3996.0,15192.0],"sexe":[17411.0,13951.0]},"97423":{"tot":2950.0,"rp":2520.0,"n":2880,"cat":[2520.0,72.0,359.0],"typ":[2719.0,173.0,59.0],"typ_rp":[2319.0,150.0,51.0],"bati":[1994.0,128.0,361.0,37.0],"stat":[1797.0,449.0,101.0,173.0],"nbpi":[31.0,189.0,565.0,822.0,561.0,353.0],"surf":[88.0,147.0,367.0,718.0,694.0,307.0,200.0],"pieces_moy":4.16,"pers_moy":2.83,"dense":307.0,"achl":[76.0,380.0,853.0,1094.0,525.0,23.0],"achl_an":[60.0,70.0,44.0,101.0,73.0,41.0,38.0,36.0,63.0,23.0,0.0,0.0,0.0,0.0],"anem":[248.0,328.0,393.0,542.0,471.0,538.0],"iran":[2332.0,70.0,93.0,26.0],"conf":{"eauch":2142.0,"eau0":16.0,"clim":195.0,"chos":1245.0,"sani":2339.0,"egout":283.0,"elec0":45.0,"garl":1530.0,"cuis0":162.0,"chau":307.0,"apt":150.0,"ascen":0.0},"voit":[775.0,1124.0,508.0,113.0],"derou":268.0,"inper":[567.0,648.0,506.0,446.0,352.0],"age":[74.0,523.0,1018.0,488.0,300.0,117.0],"tact":[1246.0,665.0,445.0,163.0],"naiss":[2228.0,231.0,3.0,59.0],"dipl":[1134.0,764.0,300.0,322.0],"conj":[936.0,429.0,1155.0],"sexe":[1498.0,1022.0]},"97424":{"tot":2933.0,"rp":2146.0,"n":2933,"cat":[2146.0,340.0,447.0],"typ":[2822.0,71.0,40.0],"typ_rp":[2062.0,66.0,18.0],"bati":[1979.0,86.0,72.0,9.0],"stat":[1587.0,382.0,45.0,132.0],"nbpi":[32.0,116.0,339.0,654.0,572.0,433.0],"surf":[57.0,105.0,288.0,553.0,673.0,290.0,180.0],"pieces_moy":4.49,"pers_moy":2.54,"dense":154.0,"achl":[69.0,536.0,910.0,963.0,331.0,124.0],"achl_an":[32.0,29.0,36.0,39.0,52.0,23.0,63.0,20.0,37.0,45.0,72.0,7.0,0.0,0.0],"anem":[237.0,270.0,292.0,426.0,405.0,516.0],"iran":[1983.0,103.0,44.0,16.0],"conf":{"eauch":2062.0,"eau0":1.0,"clim":36.0,"chos":1339.0,"sani":2106.0,"egout":612.0,"elec0":35.0,"garl":1216.0,"cuis0":32.0,"chau":225.0,"apt":66.0,"ascen":0.0},"voit":[858.0,1003.0,253.0,32.0],"derou":188.0,"inper":[641.0,572.0,416.0,301.0,216.0],"age":[74.0,459.0,805.0,400.0,305.0,103.0],"tact":[805.0,674.0,421.0,246.0],"naiss":[2000.0,104.0,2.0,40.0],"dipl":[1175.0,638.0,196.0,137.0],"conj":[805.0,354.0,987.0],"sexe":[1338.0,808.0]}}};
+const T = D.t, EPCI = D.epci, COMM = D.communes;
+const byCode = Object.fromEntries(COMM.map(c => [c.c, c]));
+const nameOf = k => k === 'R' ? 'La Réunion' : EPCI.includes(k) ? k : (byCode[k] ? byCode[k].n : k);
+const kindOf = k => k === 'R' ? 'département' : EPCI.includes(k) ? 'intercommunalité' : 'commune';
+const fmtN = n => Math.round(n).toLocaleString('fr-FR').replace(/ |\s/g, ' ');
+const fmtP = (p, d = 1) => (p * 100).toLocaleString('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d }) + ' %';
+const fmtD = (x, d = 2) => x.toLocaleString('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d });
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+let scope = 'R';
+const R = T.R;
+
+/* ---------- infobulle ---------- */
+const tip = $('tip');
+function showTip(e, html) { tip.innerHTML = html; tip.classList.add('on'); moveTip(e); }
+function moveTip(e) {
+  const w = tip.offsetWidth, h = tip.offsetHeight, vw = window.innerWidth;
+  let x = e.clientX + 14, y = e.clientY - h - 10;
+  if (x + w > vw - 8) x = e.clientX - w - 14;
+  if (y < 8) y = e.clientY + 16;
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+}
+function hideTip() { tip.classList.remove('on'); }
+function hoverable(el, html) {
+  el.addEventListener('mouseenter', e => showTip(e, html()));
+  el.addEventListener('mousemove', moveTip);
+  el.addEventListener('mouseleave', hideTip);
+  el.addEventListener('focus', e => { const r = el.getBoundingClientRect(); showTip({ clientX: r.left + r.width / 2, clientY: r.top }, html()); });
+  el.addEventListener('blur', hideTip);
+}
+
+/* ---------- indicateurs dérivés ---------- */
+const IND = {
+  vac:   { l: 'Taux de vacance', f: 'pct', d: 'Logements vacants rapportés à l\'ensemble du parc', v: t => t.cat[2] / t.tot },
+  rs:    { l: 'Résidences secondaires et occasionnelles', f: 'pct', d: 'Part dans l\'ensemble du parc', v: t => t.cat[1] / t.tot },
+  maison:{ l: 'Part de maisons', f: 'pct', d: 'Maisons dans l\'ensemble du parc', v: t => t.typ[0] / t.tot },
+  apt:   { l: 'Part d\'appartements', f: 'pct', d: 'Appartements dans l\'ensemble du parc', v: t => t.typ[1] / t.tot },
+  precaire:{ l: 'Habitat précaire', f: 'pct', d: 'Cases traditionnelles et habitations de fortune, % des résidences principales', v: t => (t.bati[2] + t.bati[3]) / t.rp },
+  old:   { l: 'Parc construit avant 1991', f: 'pct', d: 'Part du parc achevé avant 1991', v: t => (t.achl[0] + t.achl[1] + t.achl[2]) / t.tot },
+  neuf:  { l: 'Parc construit depuis 2006', f: 'pct', d: 'Part du parc achevé en 2006 ou après', v: t => (t.achl[4] + t.achl[5]) / t.tot },
+  prop:  { l: 'Propriétaires occupants', f: 'pct', d: '% des résidences principales', v: t => t.stat[0] / t.rp },
+  locp:  { l: 'Locataires du parc privé', f: 'pct', d: '% des résidences principales', v: t => t.stat[1] / t.rp },
+  social:{ l: 'Logement social (HLM)', f: 'pct', d: '% des résidences principales', v: t => t.stat[2] / t.rp },
+  recent:{ l: 'Ménages emménagés depuis moins de 5 ans', f: 'pct', d: '% des ménages', v: t => (t.anem[0] + t.anem[1]) / t.rp },
+  mob:   { l: 'Ménages ayant changé de logement dans l\'année', f: 'pct', d: '% des ménages dont la personne de référence habitait ailleurs un an avant', v: t => 1 - t.iran[0] / t.rp },
+  petits:{ l: 'Logements de 1 ou 2 pièces', f: 'pct', d: '% des résidences principales', v: t => (t.nbpi[0] + t.nbpi[1]) / t.rp },
+  grands:{ l: 'Logements de 5 pièces ou plus', f: 'pct', d: '% des résidences principales', v: t => (t.nbpi[4] + t.nbpi[5]) / t.rp },
+  pieces:{ l: 'Nombre moyen de pièces', f: 'num', d: 'Résidences principales', v: t => t.pieces_moy },
+  pers:  { l: 'Personnes par ménage', f: 'num', d: 'Taille moyenne des ménages', v: t => t.pers_moy },
+  dense: { l: 'Plus d\'une personne par pièce', f: 'pct', d: '% des résidences principales', v: t => t.dense / t.rp },
+  seul:  { l: 'Ménages d\'une personne', f: 'pct', d: '% des ménages', v: t => t.inper[0] / t.rp },
+  grandsmen:{ l: 'Ménages de 5 personnes ou plus', f: 'pct', d: '% des ménages', v: t => t.inper[4] / t.rp },
+  age65: { l: 'Personne de référence de 65 ans ou plus', f: 'pct', d: '% des ménages', v: t => (t.age[4] + t.age[5]) / t.rp },
+  jeune: { l: 'Personne de référence de moins de 40 ans', f: 'pct', d: '% des ménages', v: t => (t.age[0] + t.age[1]) / t.rp },
+  chom:  { l: 'Personne de référence au chômage', f: 'pct', d: '% des ménages', v: t => t.tact[1] / t.rp },
+  retr:  { l: 'Personne de référence retraitée', f: 'pct', d: '% des ménages', v: t => t.tact[2] / t.rp },
+  natif: { l: 'Personne de référence née à La Réunion', f: 'pct', d: '% des ménages', v: t => t.naiss[0] / t.rp },
+  dipl:  { l: 'Personne de référence diplômée du supérieur', f: 'pct', d: 'Bac + 2 ou plus, % des ménages', v: t => t.dipl[3] / t.rp },
+  novoit:{ l: 'Ménages sans voiture', f: 'pct', d: '% des ménages', v: t => t.voit[0] / t.rp },
+  clim:  { l: 'Climatisation', f: 'pct', d: '% des résidences principales', v: t => t.conf.clim / t.rp },
+  chos:  { l: 'Chauffe-eau solaire', f: 'pct', d: '% des résidences principales', v: t => t.conf.chos / t.rp },
+  eauch: { l: 'Eau chaude', f: 'pct', d: '% des résidences principales', v: t => t.conf.eauch / t.rp },
+  nosani:{ l: 'Sans sanitaires complets', f: 'pct', d: 'Sans baignoire/douche ou sans WC intérieur, % des résidences principales', v: t => 1 - t.conf.sani / t.rp },
+  egout: { l: 'Raccordement au tout-à-l\'égout', f: 'pct', d: '% des résidences principales', v: t => t.conf.egout / t.rp },
+};
+const fmtInd = (k, x) => IND[k].f === 'pct' ? fmtP(x) : fmtD(x);
+
+/* ---------- barre de territoire ---------- */
+function buildScopebar() {
+  const chips = $('chips');
+  ['R', ...EPCI].forEach(k => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.dataset.k = k; b.textContent = nameOf(k);
+    b.addEventListener('click', () => setScope(k));
+    chips.appendChild(b);
+  });
+  const sel = $('commune');
+  EPCI.forEach(e => {
+    const og = document.createElement('optgroup'); og.label = e;
+    COMM.filter(c => c.e === e).forEach(c => { const o = document.createElement('option'); o.value = c.c; o.textContent = c.n; og.appendChild(o); });
+    sel.appendChild(og);
+  });
+  sel.addEventListener('change', () => { if (sel.value) setScope(sel.value); });
+}
+function syncScopebar() {
+  document.querySelectorAll('#chips .chip').forEach(b => {
+    b.setAttribute('aria-pressed', b.dataset.k === scope ? 'true' : 'false');
+    b.dataset.parent = (byCode[scope] && byCode[scope].e === b.dataset.k) ? 'true' : 'false';
+  });
+  $('commune').value = byCode[scope] ? scope : '';
+  const t = T[scope];
+  $('cur').innerHTML = `<b>${esc(nameOf(scope))}</b> · ${kindOf(scope)}${byCode[scope] ? ' · ' + byCode[scope].e : ''} · ${fmtN(t.tot)} logements`;
+}
+function setScope(k, push = true) {
+  if (!T[k]) k = 'R';
+  scope = k;
+  if (push && location.hash !== '#' + k) { try { history.replaceState(null, '', k === 'R' ? location.pathname + location.search : '#' + k); } catch (e) {} }
+  render();
+}
+window.addEventListener('hashchange', () => { const k = location.hash.replace('#', ''); if (T[k] && k !== scope) setScope(k, false); });
+
+/* ---------- composants ---------- */
+function hbars(el, rows, opts = {}) {
+  // rows: [{l, v (0-1), n (effectif), r (ref 0-1 ou null), cls, onclick}]
+  const max = opts.max || Math.max(...rows.map(r => Math.max(r.v, r.r || 0))) * 1.08 || 1;
+  const g = document.createElement('div'); g.className = 'hb' + (opts.tight ? ' hb--tight' : '');
+  g.setAttribute('role', 'list');
+  rows.forEach(r => {
+    const l = document.createElement('div'); l.className = 'hb__l';
+    if (r.onclick) { const b = document.createElement('button'); b.type = 'button'; b.textContent = r.l; b.addEventListener('click', r.onclick); l.appendChild(b); }
+    else l.textContent = r.l;
+    const t = document.createElement('div'); t.className = 'hb__t';
+    const b = document.createElement('div'); b.className = 'hb__b'; b.style.width = Math.min(100, r.v / max * 100) + '%'; t.appendChild(b);
+    if (r.r != null && scope !== 'R' && !opts.noref) { const m = document.createElement('div'); m.className = 'hb__r'; m.style.left = Math.min(100, r.r / max * 100) + '%'; t.appendChild(m); }
+    const v = document.createElement('div'); v.className = 'hb__v num'; v.innerHTML = (r.fmt || fmtP)(r.v) + (r.n != null && opts.n !== false ? `<small>${fmtN(r.n)}</small>` : '');
+    const row = document.createElement('div'); row.style.display = 'contents'; row.setAttribute('role', 'listitem');
+    if (r.cls) [l, t, v].forEach(x => x.classList.add(r.cls));
+    row.append(l, t, v); g.appendChild(row);
+    hoverable(t, () => `<b>${esc(r.l)}</b><br>${esc(nameOf(scope))} : ${(r.fmt || fmtP)(r.v)}${r.n != null ? ' · ' + fmtN(r.n) : ''}${r.r != null && scope !== 'R' ? `<br>La Réunion : ${(r.fmt || fmtP)(r.r)}` : ''}${r.extra ? '<br>' + r.extra : ''}`);
+    t.tabIndex = 0;
+  });
+  el.replaceChildren(g);
+  if (scope !== 'R' && !opts.noref && rows.some(r => r.r != null)) {
+    const lg = document.createElement('div'); lg.className = 'legend'; lg.style.marginTop = '10px';
+    lg.innerHTML = `<span><i style="background:var(--bar)"></i>${esc(nameOf(scope))}</span><span class="ref"><i></i>Repère La Réunion</span>`;
+    el.appendChild(lg);
+  }
+}
+const CAT = ['var(--c1)', 'var(--c2)', 'var(--c3)', 'var(--c4)'];
+function stackedPair(el, labels, cur, ref, total, totalRef) {
+  // cur/ref: effectifs par segment
+  const wrap = document.createElement('div'); wrap.className = 'sp';
+  const mk = (vals, tot, cls, lab) => {
+    const row = document.createElement('div'); row.className = 'sp__row ' + cls;
+    const l = document.createElement('div'); l.className = 'sp__l'; l.textContent = lab;
+    const bar = document.createElement('div'); bar.className = 'sp__bar';
+    vals.forEach((v, i) => {
+      const s = document.createElement('div'); s.className = 'sp__seg'; s.style.flex = `0 0 calc(${(v / tot * 100).toFixed(2)}% - 2px)`; s.style.background = CAT[i];
+      const p = v / tot; s.innerHTML = p >= .08 ? `<span class="num">${fmtP(p, p >= .2 ? 1 : 0)}</span>` : '';
+      s.tabIndex = 0;
+      hoverable(s, () => `<b>${esc(labels[i])}</b><br>${esc(lab)} : ${fmtP(p)} · ${fmtN(v)}`);
+      bar.appendChild(s);
+    });
+    row.append(l, bar); return row;
+  };
+  wrap.appendChild(mk(cur, total, 'sp__row--cur', nameOf(scope)));
+  if (scope !== 'R') wrap.appendChild(mk(ref, totalRef, 'sp__row--ref', 'La Réunion'));
+  const lg = document.createElement('div'); lg.className = 'legend';
+  lg.innerHTML = labels.map((l, i) => `<span><i style="background:${CAT[i]}"></i>${esc(l)} <span class="num" style="color:var(--muted)">${fmtP(cur[i] / total)}</span></span>`).join('');
+  el.replaceChildren(wrap, lg);
+}
+function meters(el, items) {
+  const g = document.createElement('div'); g.className = 'meters';
+  items.forEach(it => {
+    const m = document.createElement('div'); m.className = 'meter';
+    const refTxt = scope !== 'R' ? `<div class="meter__s">La Réunion : <span class="num">${fmtP(it.r)}</span></div>` : `<div class="meter__s">${fmtN(it.n)} logements</div>`;
+    m.innerHTML = `<div class="meter__h"><span>${esc(it.l)}</span><span class="meter__v num">${fmtP(it.v)}</span></div>
+      <div class="meter__t"><div class="meter__b" style="width:${Math.min(100, it.v * 100)}%"></div>${scope !== 'R' ? `<div class="meter__r" style="left:${Math.min(100, it.r * 100)}%"></div>` : ''}</div>${refTxt}`;
+    m.tabIndex = 0;
+    hoverable(m, () => `<b>${esc(it.l)}</b><br>${esc(nameOf(scope))} : ${fmtP(it.v)} · ${fmtN(it.n)}${scope !== 'R' ? `<br>La Réunion : ${fmtP(it.r)}` : ''}`);
+    g.appendChild(m);
+  });
+  el.replaceChildren(g);
+}
+function columns(el, years, vals, partialFrom) {
+  const W = 520, H = 190, ml = 34, mr = 6, mt = 10, mb = 26;
+  const iw = W - ml - mr, ih = H - mt - mb;
+  const max = Math.max(...vals) * 1.1 || 1;
+  const step = Math.pow(10, Math.floor(Math.log10(max))); const tick = max / step > 5 ? step : max / step > 2.5 ? step / 2 : step / 5;
+  const n = years.length, bw = iw / n;
+  let s = `<svg class="cols" viewBox="0 0 ${W} ${H}" role="img" aria-label="Logements achevés par année, ${esc(nameOf(scope))}">`;
+  s += '<g class="grid">';
+  for (let y = 0; y <= max; y += tick) { const py = mt + ih - y / max * ih; s += `<line x1="${ml}" x2="${W - mr}" y1="${py.toFixed(1)}" y2="${py.toFixed(1)}"/><text x="${ml - 5}" y="${(py + 3.5).toFixed(1)}" text-anchor="end">${y >= 1000 ? (y / 1000).toLocaleString('fr-FR') + ' k' : y}</text>`; }
+  s += '</g>';
+  vals.forEach((v, i) => {
+    const h = v / max * ih, x = ml + i * bw + bw * .18, w = bw * .64, y = mt + ih - h;
+    s += `<rect class="bar${years[i] >= partialFrom ? ' partial' : ''}" data-i="${i}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="2" tabindex="0"/>`;
+    if (i % 2 === 0 || n <= 8) s += `<text x="${(x + w / 2).toFixed(1)}" y="${H - 8}" text-anchor="middle">${years[i]}</text>`;
+  });
+  s += '</svg>';
+  el.innerHTML = s;
+  el.querySelectorAll('rect.bar').forEach(r => { const i = +r.dataset.i; hoverable(r, () => `<b>${years[i]}</b><br>${fmtN(vals[i])} logements achevés${years[i] >= partialFrom ? '<br>Recensement partiel' : ''}`); });
+}
+
+/* ---------- rendu ---------- */
+function kpi(k, v, s, ref, lead) {
+  return `<div class="kpi${lead ? ' kpi--lead' : ''}"><div class="kpi__k">${k}</div><div class="kpi__v num">${v}</div><div class="kpi__s">${s}</div><div class="kpi__ref num">${ref || ''}</div></div>`;
+}
+function render() {
+  const t = T[scope], isR = scope === 'R';
+  syncScopebar();
+  const ref = (k) => isR ? '' : 'La Réunion : ' + fmtInd(k, IND[k].v(R));
+  $('kpis').innerHTML =
+    kpi('Logements', fmtN(t.tot), isR ? '24 communes · 5 EPCI' : fmtP(t.tot / R.tot) + ' du parc réunionnais', isR ? '' : `${fmtN(t.n)} logements enquêtés`, true) +
+    kpi('Résidences principales', fmtN(t.rp), fmtP(t.rp / t.tot) + ' du parc', ref('vac') && 'La Réunion : ' + fmtP(R.rp / R.tot) + ' du parc') +
+    kpi('Taux de vacance', fmtP(IND.vac.v(t)), fmtN(t.cat[2]) + ' logements vacants', ref('vac')) +
+    kpi('Logement social', fmtP(IND.social.v(t)), fmtN(t.stat[2]) + ' résidences principales HLM', ref('social')) +
+    kpi('Maisons', fmtP(IND.maison.v(t)), fmtN(t.typ[0]) + ' maisons', ref('maison')) +
+    kpi('Personnes par ménage', fmtD(t.pers_moy), fmtD(t.pieces_moy) + ' pièces par logement', ref('pers'));
+
+  stackedPair($('c-cat'), ['Résidences principales', 'Résidences secondaires et occasionnelles', 'Logements vacants'], t.cat, R.cat, t.tot, R.tot);
+  stackedPair($('c-typ'), ['Maisons', 'Appartements', 'Autres'], t.typ, R.typ, t.tot, R.tot);
+  stackedPair($('c-stat'), ['Propriétaires', 'Locataires du parc privé', 'Locataires HLM', 'Logés gratuitement'], t.stat, R.stat, t.rp, R.rp);
+
+  const dist = (arr, refArr, labels, tot, refTot, opts) => hbars(opts.el, labels.map((l, i) => ({ l, v: arr[i] / tot, n: arr[i], r: refArr[i] / refTot })), opts);
+  dist(t.bati, R.bati, ['Maison ou immeuble en dur', 'Maison ou immeuble en bois', 'Case traditionnelle (bois, tôle)', 'Habitation de fortune'], t.rp, R.rp, { el: $('c-bati') });
+  dist(t.achl, R.achl, ['Avant 1946', '1946 – 1970', '1971 – 1990', '1991 – 2005', '2006 – 2014', '2015 ou après'], t.tot, R.tot, { el: $('c-achl') });
+  columns($('c-an'), Array.from({ length: 14 }, (_, i) => 2006 + i), t.achl_an, 2017);
+  dist(t.anem, R.anem, ['Moins de 2 ans', '2 à 4 ans', '5 à 9 ans', '10 à 19 ans', '20 à 29 ans', '30 ans ou plus'], t.rp, R.rp, { el: $('c-anem') });
+  dist(t.iran, R.iran, ['Même logement', 'Autre logement, même commune', 'Autre commune de La Réunion', 'Hors de La Réunion'], t.rp, R.rp, { el: $('c-iran') });
+  dist(t.nbpi, R.nbpi, ['1 pièce', '2 pièces', '3 pièces', '4 pièces', '5 pièces', '6 pièces ou plus'], t.rp, R.rp, { el: $('c-nbpi') });
+  $('f-nbpi').textContent = `Nombre moyen de pièces : ${fmtD(t.pieces_moy)}${isR ? '' : ' (La Réunion : ' + fmtD(R.pieces_moy) + ')'}.`;
+  dist(t.surf, R.surf, ['Moins de 30 m²', '30 à 40 m²', '40 à 60 m²', '60 à 80 m²', '80 à 100 m²', '100 à 120 m²', '120 m² ou plus'], t.rp, R.rp, { el: $('c-surf') });
+  dist(t.voit, R.voit, ['Aucune voiture', '1 voiture', '2 voitures', '3 voitures ou plus'], t.rp, R.rp, { el: $('c-voit') });
+  $('f-voit').textContent = `Ménages disposant d'au moins un deux-roues motorisé : ${fmtP(t.derou / t.rp)}${isR ? '' : ' (La Réunion : ' + fmtP(R.derou / R.rp) + ')'}.`;
+  const C = t.conf, RC = R.conf;
+  meters($('c-conf'), [
+    { l: 'Eau chaude', v: C.eauch / t.rp, n: C.eauch, r: RC.eauch / R.rp },
+    { l: 'Chauffe-eau solaire', v: C.chos / t.rp, n: C.chos, r: RC.chos / R.rp },
+    { l: 'Climatisation', v: C.clim / t.rp, n: C.clim, r: RC.clim / R.rp },
+    { l: 'Sanitaires complets', v: C.sani / t.rp, n: C.sani, r: RC.sani / R.rp },
+    { l: 'Tout-à-l\'égout', v: C.egout / t.rp, n: C.egout, r: RC.egout / R.rp },
+    { l: 'Garage, box ou parking', v: C.garl / t.rp, n: C.garl, r: RC.garl / R.rp },
+    { l: 'Cuisine (pièce ou installation)', v: 1 - C.cuis0 / t.rp, n: t.rp - C.cuis0, r: 1 - RC.cuis0 / R.rp },
+    { l: 'Ascenseur (appartements)', v: C.apt ? C.ascen / C.apt : 0, n: C.ascen, r: RC.ascen / RC.apt },
+  ]);
+  $('c-dense').innerHTML = `
+    <div class="kpi" style="border:0;padding:0;background:transparent"><div class="kpi__k">Plus d'une personne par pièce</div><div class="kpi__v num" style="color:var(--orange-ink)">${fmtP(t.dense / t.rp)}</div><div class="kpi__s">${fmtN(t.dense)} résidences principales${isR ? '' : ' · La Réunion : ' + fmtP(R.dense / R.rp)}</div></div>
+    <div class="kpi" style="border:0;padding:0;background:transparent;margin-top:14px"><div class="kpi__k">Personnes par pièce</div><div class="kpi__v num" style="font-size:22px">${fmtD(t.pers_moy / t.pieces_moy)}</div><div class="kpi__s">${fmtD(t.pers_moy)} personnes pour ${fmtD(t.pieces_moy)} pièces en moyenne${isR ? '' : ' · La Réunion : ' + fmtD(R.pers_moy / R.pieces_moy)}</div></div>`;
+  dist(t.inper, R.inper, ['1 personne', '2 personnes', '3 personnes', '4 personnes', '5 personnes ou plus'], t.rp, R.rp, { el: $('c-inper') });
+  $('f-inper').textContent = `Taille moyenne des ménages : ${fmtD(t.pers_moy)}${isR ? '' : ' (La Réunion : ' + fmtD(R.pers_moy) + ')'}.`;
+  dist(t.age, R.age, ['Moins de 25 ans', '25 à 39 ans', '40 à 54 ans', '55 à 64 ans', '65 à 79 ans', '80 ans ou plus'], t.rp, R.rp, { el: $('c-age') });
+  dist(t.tact, R.tact, ['Actif ayant un emploi', 'Chômeur', 'Retraité', 'Autre inactif'], t.rp, R.rp, { el: $('c-tact') });
+  dist(t.naiss, R.naiss, ['La Réunion', 'Hexagone', 'Autre DOM ou COM', 'Étranger'], t.rp, R.rp, { el: $('c-naiss') });
+  dist(t.dipl, R.dipl, ['Sans diplôme', 'CEP, brevet, CAP, BEP', 'Baccalauréat', 'Bac + 2 ou plus'], t.rp, R.rp, { el: $('c-dipl') });
+
+  renderCompare();
+  renderTableSel();
+}
+
+/* ---------- comparaison ---------- */
+function buildIndic() {
+  const sel = $('indic');
+  Object.entries(IND).forEach(([k, d]) => { const o = document.createElement('option'); o.value = k; o.textContent = d.l; sel.appendChild(o); });
+  sel.value = 'vac';
+  sel.addEventListener('change', renderCompare);
+}
+function renderCompare() {
+  const k = $('indic').value, d = IND[k], fmt = x => fmtInd(k, x);
+  $('indic-def').textContent = '— ' + d.d;
+  $('u-epci').textContent = d.f === 'pct' ? '%' : 'moyenne'; $('u-comm').textContent = d.f === 'pct' ? '%' : 'moyenne';
+  const rv = d.v(R);
+  const parent = byCode[scope] ? byCode[scope].e : null;
+  const eRows = EPCI.map(e => ({ l: e, v: d.v(T[e]), r: rv, fmt, cls: e === scope ? 'hb--sel' : (e === parent ? 'hb--mid' : ''), onclick: () => setScope(e) }))
+    .sort((a, b) => b.v - a.v);
+  eRows.push({ l: 'La Réunion', v: rv, r: null, fmt, cls: scope === 'R' ? 'hb--sel' : 'hb--soft', onclick: () => setScope('R') });
+  const max = Math.max(...COMM.map(c => d.v(T[c.c])), ...eRows.map(r => r.v)) * 1.08;
+  hbars($('c-epci'), eRows, { n: false, max, noref: true });
+  const cRows = COMM.map(c => ({ l: c.n, v: d.v(T[c.c]), r: rv, fmt, extra: c.e, cls: c.c === scope ? 'hb--sel' : (c.e === scope || c.e === parent ? 'hb--mid' : 'hb--soft'), onclick: () => setScope(c.c) }))
+    .sort((a, b) => b.v - a.v);
+  hbars($('c-comm'), cRows, { n: false, max, tight: true, noref: scope === 'R' });
+}
+
+/* ---------- tableau ---------- */
+const COLS = [
+  { k: 'name', l: 'Territoire', f: null },
+  { k: 'tot', l: 'Logements', g: t => t.tot, f: fmtN },
+  { k: 'rp', l: 'Rés. principales', g: t => t.rp, f: fmtN },
+  { k: 'vac', l: 'Vacance', g: t => IND.vac.v(t), f: fmtP },
+  { k: 'rs', l: 'Rés. secondaires', g: t => IND.rs.v(t), f: fmtP },
+  { k: 'maison', l: 'Maisons', g: t => IND.maison.v(t), f: fmtP },
+  { k: 'prop', l: 'Propriétaires', g: t => IND.prop.v(t), f: fmtP },
+  { k: 'social', l: 'HLM', g: t => IND.social.v(t), f: fmtP },
+  { k: 'precaire', l: 'Habitat précaire', g: t => IND.precaire.v(t), f: fmtP },
+  { k: 'neuf', l: 'Construit dep. 2006', g: t => IND.neuf.v(t), f: fmtP },
+  { k: 'pieces', l: 'Pièces moy.', g: t => t.pieces_moy, f: x => fmtD(x) },
+  { k: 'pers', l: 'Pers./ménage', g: t => t.pers_moy, f: x => fmtD(x) },
+  { k: 'recent', l: 'Emménagés < 5 ans', g: t => IND.recent.v(t), f: fmtP },
+  { k: 'novoit', l: 'Sans voiture', g: t => IND.novoit.v(t), f: fmtP },
+  { k: 'clim', l: 'Climatisation', g: t => IND.clim.v(t), f: fmtP },
+];
+let sortK = 'name', sortDir = 1;
+function buildTable() {
+  const thead = $('tbl').querySelector('thead');
+  thead.innerHTML = '<tr>' + COLS.map(c => `<th data-k="${c.k}" scope="col">${c.l}</th>`).join('') + '</tr>';
+  thead.querySelectorAll('th').forEach(th => th.addEventListener('click', () => {
+    const k = th.dataset.k; if (sortK === k) sortDir = -sortDir; else { sortK = k; sortDir = k === 'name' ? 1 : -1; } renderTable();
+  }));
+  renderTable();
+}
+function renderTable() {
+  const col = COLS.find(c => c.k === sortK);
+  const rows = COMM.slice().sort((a, b) => sortK === 'name' ? sortDir * a.n.localeCompare(b.n, 'fr') : sortDir * (col.g(T[a.c]) - col.g(T[b.c])));
+  const cell = (c, t) => `<td class="num">${c.f(c.g(t))}</td>`;
+  let h = '';
+  EPCI.forEach(e => { h += `<tr class="epci" data-k="${e}"><td class="name">${e}</td>${COLS.slice(1).map(c => cell(c, T[e])).join('')}</tr>`; });
+  rows.forEach(c => { h += `<tr data-k="${c.c}"${c.c === scope ? ' class="sel"' : ''}><td class="name">${esc(c.n)}<small>${c.e}</small></td>${COLS.slice(1).map(cc => cell(cc, T[c.c])).join('')}</tr>`; });
+  h += `<tr class="tot" data-k="R"><td class="name">La Réunion</td>${COLS.slice(1).map(c => cell(c, R)).join('')}</tr>`;
+  const tb = $('tbl').querySelector('tbody'); tb.innerHTML = h;
+  tb.querySelectorAll('tr').forEach(tr => tr.addEventListener('click', () => { setScope(tr.dataset.k); $('kpis').scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
+  $('tbl').querySelectorAll('th').forEach(th => th.setAttribute('aria-sort', th.dataset.k === sortK ? (sortDir > 0 ? 'ascending' : 'descending') : 'none'));
+  renderTableSel();
+}
+function renderTableSel() { $('tbl').querySelectorAll('tbody tr').forEach(tr => tr.classList.toggle('sel', tr.dataset.k === scope)); }
+$('copy').addEventListener('click', async () => {
+  const lines = [COLS.map(c => c.l).join('\t')];
+  $('tbl').querySelectorAll('tbody tr').forEach(tr => lines.push([...tr.children].map(td => td.firstChild ? td.firstChild.textContent.trim() : td.textContent.trim()).join('\t')));
+  const txt = lines.join('\n'); const msg = $('copy-msg');
+  try { await navigator.clipboard.writeText(txt); msg.textContent = 'Tableau copié.'; }
+  catch (e) { const r = document.createRange(); r.selectNodeContents($('tbl')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent = 'Tableau sélectionné : copiez-le avec Ctrl+C.'; }
+  setTimeout(() => { msg.textContent = ''; }, 3500);
+});
+
+/* ---------- init ---------- */
+buildScopebar(); buildIndic(); buildTable();
+const h0 = location.hash.replace('#', '');
+setScope(T[h0] ? h0 : 'R', false);
+</script>
+
+</body>
+</html>

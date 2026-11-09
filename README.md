@@ -62,3 +62,27 @@ ne sont pas embarquées : elles sont interrogées en WFS sur
 l'explorateur. L'interrogation suppose que la page soit servie depuis un
 environnement autorisé à joindre le géoserveur ; à défaut, chaque carte affiche
 un état d'indisponibilité explicite.
+
+## Tableau de bord « Logements » (RP 2017)
+
+`logements.html` est un tableau de bord autonome construit sur le fichier détail
+INSEE « Logements ordinaires » du recensement 2017 pour La Réunion
+(`log_974_2017.csv`, 159 811 logements enquêtés, 369 895 logements pondérés).
+Il reprend la trame des tableaux de bord de l'observatoire de l'habitat
+publiés sur PEIGEO (série « 4 — Logements »).
+
+Sélecteur de territoire (La Réunion, 5 EPCI, 24 communes, mémorisé dans
+l'ancre de l'URL), six chiffres-clés, puis sept sections :
+
+| # | Section | Indicateurs |
+|---|---------|-------------|
+| 01 | Le parc de logements | catégories (RP / RS / vacants), types, aspect du bâti, époque de construction, logements achevés par année 2006-2019 |
+| 02 | Occupation du parc | statut d'occupation (propriétaires, parc privé, HLM, logés gratuitement), ancienneté d'emménagement, résidence un an auparavant |
+| 03 | Taille, confort et équipement | nombre de pièces, surface, motorisation, eau chaude, chauffe-eau solaire, climatisation, sanitaires, assainissement, stationnement, ascenseur, densité d'occupation |
+| 04 | Les ménages | taille, âge, activité, lieu de naissance et diplôme de la personne de référence |
+| 05 | Comparaison territoriale | 32 indicateurs au choix, lus pour les 5 EPCI et classés pour les 24 communes |
+| 06 | Tableau communal | tableau triable, copie presse-papiers |
+| 07 | Méthode et sources | champ, pondération IPONDL, définitions |
+
+Tous les effectifs sont des sommes de poids `IPONDL`. Les valeurs de chaque
+territoire sont comparées à La Réunion (repère vertical sur les graphiques).
