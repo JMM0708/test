@@ -98,10 +98,14 @@ des vues qui servent toutes de filtres, recalculées côté navigateur.
   territoire. Contours IRIS IGN (Géoplateforme) projetés dans le repère du fond
   de carte de `story.html` ; 330 des 331 codes IRIS du fichier sont appariés, La
   Plaine-des-Palmistes n'étant pas irisée.
-- **Filtres croisés** : catégorie, type, statut d'occupation, nombre de pièces,
-  époque de construction, taille des ménages, âge de la personne de référence.
-  Un clic sur une modalité filtre toutes les vues ; la barre claire conserve la
-  répartition du territoire sans les autres filtres.
+- **Vues-filtres** : anneaux (catégorie, type, statut d'occupation, avec
+  couronne externe de contexte), colonnes (époque, pièces, taille des ménages,
+  âge, colonne claire de contexte), barres empilées à 100 % par EPCI (type,
+  époque, statut, pièces), matrice pièces × personnes à filtre combiné, jauges
+  radiales de confort et de profil, classement des communes en sucettes avec
+  repère réunionnais. Un clic sur un segment, une colonne, une case ou une
+  commune filtre toutes les vues ; les filtres actifs s'affichent en puces
+  retirables.
 - **Cartes d'indicateurs** avec écart à La Réunion ; un clic cartographie
   l'indicateur.
 - **Pages** Parc, Ménages, Confort, Données (tableau communal triable et copiable,
