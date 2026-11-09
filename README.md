@@ -86,3 +86,28 @@ l'ancre de l'URL), six chiffres-clés, puis sept sections :
 
 Tous les effectifs sont des sommes de poids `IPONDL`. Les valeurs de chaque
 territoire sont comparées à La Réunion (repère vertical sur les graphiques).
+
+## Explorateur « Logements » (carte et filtres croisés)
+
+`explorateur.html` est la version décisionnelle du même jeu de données, sur le
+modèle des outils de tableaux de bord interactifs : une carte choroplèthe et
+des vues qui servent toutes de filtres, recalculées côté navigateur.
+
+- **Carte** à trois mailles (24 communes, 5 EPCI, 344 IRIS), 27 indicateurs
+  cartographiables en quintiles, zoom et déplacement, clic pour filtrer sur le
+  territoire. Contours IRIS IGN (Géoplateforme) projetés dans le repère du fond
+  de carte de `story.html` ; 330 des 331 codes IRIS du fichier sont appariés, La
+  Plaine-des-Palmistes n'étant pas irisée.
+- **Filtres croisés** : catégorie, type, statut d'occupation, nombre de pièces,
+  époque de construction, taille des ménages, âge de la personne de référence.
+  Un clic sur une modalité filtre toutes les vues ; la barre claire conserve la
+  répartition du territoire sans les autres filtres.
+- **Cartes d'indicateurs** avec écart à La Réunion ; un clic cartographie
+  l'indicateur.
+- **Pages** Parc, Ménages, Confort, Données (tableau communal triable et copiable,
+  méthode).
+
+Les données sont embarquées sous forme de deux cubes agrégés : commune × 7
+dimensions (32 282 cellules) et IRIS × 5 dimensions (26 749 cellules), avec les
+mesures de confort et de profil des ménages. Les poids IPONDL sont conservés à
+la décimale près par arrondi cumulatif, de sorte que les totaux sont exacts.
