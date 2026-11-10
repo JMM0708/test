@@ -87,34 +87,34 @@ l'ancre de l'URL), six chiffres-clés, puis sept sections :
 Tous les effectifs sont des sommes de poids `IPONDL`. Les valeurs de chaque
 territoire sont comparées à La Réunion (repère vertical sur les graphiques).
 
-## Explorateur « Logements » (carte et filtres croisés)
+## Explorateur « Logements » (modèle PEIGEO, RP 2017 et RP 2023)
 
-`explorateur.html` est la version décisionnelle du même jeu de données, sur le
-modèle des tableaux de bord Prompto (Datarocks) publiés sur PEIGEO : barre
-d'application et pages en onglets (Synthèse, Parc de logements, Occupation,
-Ménages, Confort, Données), barre de filtres en listes déroulantes, grille de
-widgets en cartes Material avec icônes de définition, d'export CSV et de plein
-écran, source sous chaque widget, carte synchronisée avec les filtres.
+`explorateur.html` reproduit, avec les fichiers détail INSEE 2017 et 2023, le
+tableau de bord Prompto « 4 — Logements » publié sur PEIGEO (feuille unique :
+logements, évolution annuelle entre deux millésimes, cartes par quartier PLH,
+EPCI et commune, anneaux statut / type / catégorie, colonnes pièces, barres
+superficie, lien vers les métadonnées GeoNetwork). La page d'origine compare
+2016 et 2022 ; celle-ci compare 2017 et 2023 (évolution annuelle moyenne sur six
+ans) et affiche 2017 en repère sur chaque vue (couronne externe des anneaux,
+colonne claire, trait des jauges).
 
-- **Carte** à trois mailles (24 communes, 5 EPCI, 344 IRIS), 27 indicateurs
-  cartographiables en quintiles, zoom et déplacement, clic pour filtrer sur le
-  territoire. Contours IRIS IGN (Géoplateforme) projetés dans le repère du fond
-  de carte de `story.html` ; 330 des 331 codes IRIS du fichier sont appariés, La
-  Plaine-des-Palmistes n'étant pas irisée.
-- **Vues-filtres** : anneaux (catégorie, type, statut d'occupation, avec
-  couronne externe de contexte), colonnes (époque, pièces, taille des ménages,
-  âge, colonne claire de contexte), barres empilées à 100 % par EPCI (type,
-  époque, statut, pièces), matrice pièces × personnes à filtre combiné, jauges
-  radiales de confort et de profil, classement des communes en sucettes avec
-  repère réunionnais. Un clic sur un segment, une colonne, une case ou une
-  commune filtre toutes les vues ; les filtres actifs s'affichent en puces
-  retirables.
-- **Cartes d'indicateurs** avec écart à La Réunion ; un clic cartographie
-  l'indicateur.
-- **Pages** Parc, Ménages, Confort, Données (tableau communal triable et copiable,
-  méthode).
+- **Pages** : Logements (reprise de la feuille PEIGEO), Parc et territoires
+  (époque, répartitions par EPCI), Ménages (taille, âge, matrice pièces ×
+  personnes, profil), Confort (jauges), Données (tableau, méthode).
+- **Filtres** en listes déroulantes à cases à cocher (catégorie, type, statut,
+  pièces, superficie, époque ; taille du ménage et âge sur la page Ménages),
+  sélecteurs d'EPCI et de commune, puces retirables, réinitialisation. Chaque
+  segment, colonne, barre, case ou commune est aussi un filtre.
+- **Carte** à quatre mailles : 24 communes, 5 EPCI, 124 quartiers PLH (IRIS
+  rattachés par centroïde), 344 IRIS (contours IGN). 29 indicateurs, quintiles,
+  zoom et déplacement, clic pour filtrer le territoire.
+- **Widgets** en cartes Material : définition, export CSV, plein écran, source.
 
-Les données sont embarquées sous forme de deux cubes agrégés : commune × 7
-dimensions (32 282 cellules) et IRIS × 5 dimensions (26 749 cellules), avec les
-mesures de confort et de profil des ménages. Les poids IPONDL sont conservés à
-la décimale près par arrondi cumulatif, de sorte que les totaux sont exacts.
+Trois cubes agrégés sont embarqués (3,3 Mo) : commune × catégorie × type ×
+statut × pièces × superficie × époque (20 306 cellules) ; IRIS × catégorie ×
+type × statut × pièces × superficie (35 666) ; commune × catégorie × type ×
+statut × pièces × taille du ménage × âge (18 346). Poids IPONDL des deux
+millésimes conservés à la décimale près (arrondi cumulatif) : 369 895 logements
+en 2017, 406 285 en 2023. Le dossier `_data` du tableau de bord Prompto a servi
+de référence pour la composition et pour les totaux 2016 (363 111) et 2022
+(400 595) cités dans la page.
