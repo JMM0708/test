@@ -3,27 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Explorateur Logements Réunion</title>
+<title>Logements La Réunion</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* Explorateur décisionnel : barre d'application, carte à gauche (collante), cartes d'indicateurs et
-   graphiques-filtres à droite. Toute vue est un filtre ; chaque clic recalcule l'ensemble. */
+/* Tableau de bord de type Prompto : barre d'application Material, pages en onglets, barre de filtres en
+   listes déroulantes, grille de widgets en cartes (titre, actions, source). Palette ODH AGORAH. */
 :root{
-  --paper:#eef1f3; --surface:#ffffff; --surface-2:#f6f8f9; --surface-3:#e9eef1;
-  --ink:#1a1a1a; --ink-2:#3d4a51; --muted:#6b7780;
-  --line:#dfe5e8; --line-strong:#c4ced3; --grid:#e6ebee;
+  --paper:#eceff1; --surface:#ffffff; --surface-2:#f5f7f8; --surface-3:#e8edf0;
+  --ink:#212121; --ink-2:#455a64; --muted:#78909c;
+  --line:#e0e5e8; --line-strong:#c5ced3; --grid:#e6ebee;
   --teal:#15495a; --teal-2:#1f6478; --teal-deep:#0f3645; --on-teal:#ffffff;
-  --orange:#f39200; --orange-ink:#8a5200; --on-orange:#1a1a1a;
+  --orange:#f39200; --orange-ink:#8a5200;
   --bar:#1f6478; --bar-ctx:#d5e0e5; --bar-dim:#9fb6bf; --track:#eef2f4;
   --r0:#e4ecef; --r1:#b4cbd3; --r2:#7a9fac; --r3:#3d7383; --r4:#15495a; --r5:#0b2c37;
-  --on-r0:#1a1a1a; --on-r3:#ffffff;
-  --sea:#eef1f3; --land:#f8fafb; --border:#ffffff; --border-com:#5d7681; --nodata:#dfe5e8; --hatch:#b6c3c9;
+  --on-r0:#212121; --on-r3:#ffffff;
+  --sea:#eceff1; --land:#f8fafb; --border:#ffffff; --border-com:#5d7681; --nodata:#dfe5e8; --hatch:#b6c3c9;
   --sel:#f39200; --focus:#1f6478;
   --c1:#008aa5; --c2:#da7f00; --c3:#974391; --c4:#25984d;
-  --shadow:0 1px 2px rgba(21,73,90,.06), 0 8px 24px rgba(21,73,90,.08);
+  --shadow:0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+  --shadow-4:0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.2);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -31,14 +32,15 @@
     --ink:#eaf1f4; --ink-2:#c2d2d9; --muted:#93a6ae;
     --line:#23414d; --line-strong:#2f5464; --grid:#1e3b46;
     --teal:#5aa3bc; --teal-2:#4e97b0; --teal-deep:#0a2630; --on-teal:#06222c;
-    --orange:#f5a623; --orange-ink:#f5a623; --on-orange:#1a1a1a;
+    --orange:#f5a623; --orange-ink:#f5a623;
     --bar:#5aa3bc; --bar-ctx:#24404b; --bar-dim:#3d6a7a; --track:#1b333d;
     --r0:#16303a; --r1:#21505f; --r2:#317c95; --r3:#55a6c0; --r4:#8ed2e6; --r5:#c3ecf7;
     --on-r0:#eaf1f4; --on-r3:#06222c;
     --sea:#0c171c; --land:#182d36; --border:#0c171c; --border-com:#9fc0cb; --nodata:#243b44; --hatch:#3a5a66;
     --sel:#f5a623; --focus:#7cc0d3;
     --c1:#13a5b2; --c2:#d37e01; --c3:#b761b1; --c4:#36a558;
-    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.28);
+    --shadow:0 2px 2px 0 rgba(0,0,0,.4), 0 3px 1px -2px rgba(0,0,0,.4), 0 1px 5px 0 rgba(0,0,0,.3);
+    --shadow-4:0 4px 5px 0 rgba(0,0,0,.4), 0 1px 10px 0 rgba(0,0,0,.3), 0 2px 4px -1px rgba(0,0,0,.4);
     color-scheme:dark;
   }
 }
@@ -47,18 +49,19 @@
   --ink:#eaf1f4; --ink-2:#c2d2d9; --muted:#93a6ae;
   --line:#23414d; --line-strong:#2f5464; --grid:#1e3b46;
   --teal:#5aa3bc; --teal-2:#4e97b0; --teal-deep:#0a2630; --on-teal:#06222c;
-  --orange:#f5a623; --orange-ink:#f5a623; --on-orange:#1a1a1a;
+  --orange:#f5a623; --orange-ink:#f5a623;
   --bar:#5aa3bc; --bar-ctx:#24404b; --bar-dim:#3d6a7a; --track:#1b333d;
   --r0:#16303a; --r1:#21505f; --r2:#317c95; --r3:#55a6c0; --r4:#8ed2e6; --r5:#c3ecf7;
   --on-r0:#eaf1f4; --on-r3:#06222c;
   --sea:#0c171c; --land:#182d36; --border:#0c171c; --border-com:#9fc0cb; --nodata:#243b44; --hatch:#3a5a66;
   --sel:#f5a623; --focus:#7cc0d3;
   --c1:#13a5b2; --c2:#d37e01; --c3:#b761b1; --c4:#36a558;
-  --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.28);
+  --shadow:0 2px 2px 0 rgba(0,0,0,.4), 0 3px 1px -2px rgba(0,0,0,.4), 0 1px 5px 0 rgba(0,0,0,.3);
+  --shadow-4:0 4px 5px 0 rgba(0,0,0,.4), 0 1px 10px 0 rgba(0,0,0,.3), 0 2px 4px -1px rgba(0,0,0,.4);
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:14px; line-height:1.45; -webkit-font-smoothing:antialiased}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:'Roboto','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:14px; line-height:1.45; -webkit-font-smoothing:antialiased}
 body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:90; background:var(--teal-deep)}
 button{font:inherit; color:inherit; cursor:pointer}
 select{font:inherit}
@@ -67,56 +70,108 @@ p{margin:0}
 :focus-visible{outline:2px solid var(--focus); outline-offset:2px}
 .sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
 .gutter{padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
 
 /* ---------- barre d'application ---------- */
-.appbar{position:sticky; top:env(safe-area-inset-top,0px); z-index:80; background:var(--teal-deep); color:#eaf3f6; border-bottom:3px solid #f39200}
-.appbar__in{display:flex; align-items:center; gap:14px; padding-block:8px; flex-wrap:wrap}
+.appbar{position:sticky; top:env(safe-area-inset-top,0px); z-index:80; background:var(--teal-deep); color:#eaf3f6; box-shadow:var(--shadow-4)}
+.appbar__row{display:flex; align-items:center; gap:14px; min-height:56px; flex-wrap:wrap; padding-block:6px}
 .brand{display:flex; align-items:center; gap:9px; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; white-space:nowrap}
 .brand i{width:13px; height:13px; background:#f39200; display:block}
 .brand span{color:#9fc0cb; font-weight:600}
-.apptitle{font-size:15px; font-weight:700; letter-spacing:-.01em; color:#fff}
-.apptitle small{display:block; font-size:11px; font-weight:500; color:#9fc0cb; letter-spacing:.04em}
+.apptitle{font-size:18px; font-weight:500; letter-spacing:.01em; color:#fff}
+.apptitle small{display:block; font-size:11.5px; font-weight:400; color:#9fc0cb; letter-spacing:.04em}
 .appbar__right{margin-left:auto; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
-.tabs{display:flex; gap:2px; background:rgba(255,255,255,.08); padding:3px; border-radius:9px}
-.tab{border:0; background:transparent; color:#cfe0e6; padding:6px 12px; border-radius:7px; font-size:13px; font-weight:600}
-.tab[aria-selected="true"]{background:#fff; color:var(--teal-deep)}
-.tab:hover:not([aria-selected="true"]){background:rgba(255,255,255,.12)}
-.reset{border:1px solid rgba(255,255,255,.35); background:transparent; color:#fff; padding:6px 11px; border-radius:7px; font-size:12.5px; font-weight:600}
+.reset{border:1px solid rgba(255,255,255,.4); background:transparent; color:#fff; padding:6px 12px; border-radius:2px; font-size:12.5px; font-weight:500; text-transform:uppercase; letter-spacing:.06em}
 .reset:hover{background:rgba(255,255,255,.12)}
 .reset[disabled]{opacity:.4; cursor:default}
+.tabs{display:flex; gap:0; overflow-x:auto; scrollbar-width:none; border-top:1px solid rgba(255,255,255,.08)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:0; background:transparent; color:#cfe0e6; padding:12px 18px; font-size:13.5px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; border-bottom:3px solid transparent; white-space:nowrap; opacity:.8}
+.tab:hover{opacity:1; background:rgba(255,255,255,.06)}
+.tab[aria-selected="true"]{color:#fff; border-bottom-color:#f39200; opacity:1}
 
-/* ---------- bandeau de filtres ---------- */
-.filters{background:var(--surface); border-bottom:1px solid var(--line)}
-.filters__in{display:flex; align-items:center; gap:8px 10px; padding-block:8px; flex-wrap:wrap; min-height:44px}
-.filters__lab{font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
-.fchip{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line-strong); background:var(--surface-2); border-radius:999px; padding:4px 6px 4px 10px; font-size:12.5px; color:var(--ink)}
-.fchip b{font-weight:700}
+/* ---------- barre de filtres ---------- */
+.filters{background:var(--surface); border-bottom:1px solid var(--line); box-shadow:var(--shadow)}
+.filters__in{display:flex; align-items:center; gap:8px 10px; padding-block:8px; flex-wrap:wrap}
+.filters__lab{font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-right:4px}
+.fsel{display:flex; flex-direction:column; gap:2px; min-width:0}
+.fsel label{font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.fsel select,.dd__btn{font:inherit; font-size:13px; font-weight:500; color:var(--ink); background:var(--surface); border:0; border-bottom:1px solid var(--line-strong); border-radius:0; padding:5px 22px 5px 2px; max-width:220px; min-width:120px; text-align:left; appearance:none; -webkit-appearance:none; background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%); background-position:calc(100% - 11px) 55%,calc(100% - 6px) 55%; background-size:5px 5px,5px 5px; background-repeat:no-repeat; cursor:pointer}
+.fsel select:hover,.dd__btn:hover{border-bottom-color:var(--teal)}
+.dd{position:relative}
+.dd__btn.active{color:var(--teal); border-bottom:2px solid var(--teal); font-weight:700}
+.dd__pop{position:absolute; top:calc(100% + 4px); left:0; z-index:85; background:var(--surface); box-shadow:var(--shadow-4); border-radius:2px; min-width:230px; padding:6px 0; max-height:320px; overflow:auto}
+.dd__pop label{display:flex; align-items:center; gap:10px; padding:7px 14px; font-size:13px; color:var(--ink); cursor:pointer; text-transform:none; letter-spacing:0; font-weight:400}
+.dd__pop label:hover{background:var(--surface-2)}
+.dd__pop input{accent-color:var(--teal); width:16px; height:16px; margin:0}
+.dd__pop .dd__all{border-top:1px solid var(--line); margin-top:4px; padding-top:8px; color:var(--teal); font-weight:500}
+.chipsrow{display:flex; align-items:center; gap:6px 8px; flex-wrap:wrap; padding-block:0 8px}
+.fchip{display:inline-flex; align-items:center; gap:6px; background:var(--surface-3); border-radius:16px; padding:4px 6px 4px 11px; font-size:12.5px; color:var(--ink)}
+.fchip b{font-weight:500}
 .fchip small{color:var(--muted); font-weight:600; letter-spacing:.04em; text-transform:uppercase; font-size:10px}
-.fchip button{border:0; background:var(--surface-3); color:var(--ink-2); width:18px; height:18px; border-radius:50%; font-size:12px; line-height:1; display:grid; place-items:center; padding:0}
+.fchip button{border:0; background:var(--line-strong); color:var(--ink); width:18px; height:18px; border-radius:50%; font-size:12px; line-height:1; display:grid; place-items:center; padding:0}
 .fchip button:hover{background:var(--teal); color:var(--on-teal)}
-.fchip--terr{border-color:var(--teal); background:var(--teal); color:var(--on-teal)}
+.fchip--terr{background:var(--teal); color:var(--on-teal)}
 .fchip--terr small{color:var(--on-teal); opacity:.75}
 .fchip--terr button{background:rgba(255,255,255,.25); color:var(--on-teal)}
 .filters__none{font-size:12.5px; color:var(--muted); font-style:italic}
-.terr-select{margin-left:auto; display:flex; gap:6px; align-items:center; flex-wrap:wrap}
-.terr-select select{font-size:12.5px; font-weight:600; color:var(--ink); background:var(--surface-2); border:1px solid var(--line-strong); border-radius:7px; padding:5px 26px 5px 9px; max-width:220px; appearance:none; -webkit-appearance:none; background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%); background-position:calc(100% - 13px) 55%,calc(100% - 8px) 55%; background-size:5px 5px,5px 5px; background-repeat:no-repeat}
 
-/* ---------- grille principale ---------- */
-.app{display:grid; grid-template-columns:minmax(360px,42%) minmax(0,1fr); gap:14px; padding-block:14px 30px; align-items:start}
-@media (max-width:980px){ .app{grid-template-columns:1fr} }
-.panel{background:var(--surface); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); min-width:0}
-.panel__h{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; border-bottom:1px solid var(--line); flex-wrap:wrap}
-.panel__t{font-size:13px; font-weight:700; letter-spacing:-.01em; margin:0}
-.panel__u{font-size:11.5px; color:var(--muted)}
-.mappanel{position:sticky; top:calc(env(safe-area-inset-top,0px) + 58px)}
-@media (max-width:980px){ .mappanel{position:static} }
-.mapctl{display:flex; gap:8px; align-items:center; flex-wrap:wrap; padding:10px 14px; border-bottom:1px solid var(--line)}
-.seg{display:inline-flex; background:var(--surface-3); border-radius:7px; padding:2px}
-.seg button{border:0; background:transparent; padding:5px 10px; border-radius:6px; font-size:12.5px; font-weight:600; color:var(--ink-2)}
-.seg button[aria-pressed="true"]{background:var(--surface); color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,.12)}
-.mapctl select{font-size:12.5px; font-weight:600; color:var(--ink); background:var(--surface-2); border:1px solid var(--line-strong); border-radius:7px; padding:5px 9px; max-width:100%; flex:1 1 180px; min-width:0}
-.mapwrap{position:relative; background:var(--sea); border-radius:0 0 8px 8px; overflow:hidden; touch-action:none}
-.mapwrap svg{display:block; width:100%; height:auto; aspect-ratio:1000/896; max-height:72vh; cursor:grab}
+/* ---------- pages et grille ---------- */
+.page{padding-block:14px 30px}
+.grid{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:14px; align-items:start}
+.map-slot{display:grid} .span-3{grid-column:span 3} .span-4{grid-column:span 4} .span-6{grid-column:span 6} .span-8{grid-column:span 8} .span-12{grid-column:span 12}
+@media (max-width:1180px){ .span-3{grid-column:span 6} .span-4{grid-column:span 6} .span-8{grid-column:span 12} }
+@media (max-width:760px){ .span-3,.span-4,.span-6,.span-8{grid-column:span 12} }
+
+/* cartes KPI */
+.cards{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-bottom:14px}
+@media (max-width:1180px){ .cards{grid-template-columns:repeat(4,minmax(0,1fr))} }
+@media (max-width:900px){ .cards{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.card{position:relative; background:var(--surface); border:0; border-radius:2px; padding:12px 14px 10px 16px; min-width:0; box-shadow:var(--shadow); cursor:pointer; transition:box-shadow .15s; text-align:left; border-left:4px solid var(--teal)}
+.card:hover{box-shadow:var(--shadow-4)}
+.card[aria-pressed="true"]{border-left-color:var(--orange)}
+.card__k{font-size:11px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); line-height:1.3}
+.card__v{font-size:clamp(22px,2vw,28px); font-weight:500; letter-spacing:-.01em; line-height:1.05; margin:6px 0 4px; color:var(--ink)}
+.card__s{font-size:11.5px; color:var(--ink-2); line-height:1.3}
+.card__d{display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:500; margin-top:6px; padding:1px 8px; border-radius:10px; background:var(--surface-3); color:var(--ink-2)}
+.card__d.up{background:color-mix(in srgb,var(--orange) 18%,var(--surface)); color:var(--orange-ink)}
+.card__d.down{background:color-mix(in srgb,var(--teal) 14%,var(--surface)); color:var(--teal)}
+.card--lead{background:var(--teal); border-left-color:var(--orange)}
+.card--lead .card__k,.card--lead .card__v,.card--lead .card__s{color:var(--on-teal)}
+.card--lead .card__k{opacity:.8}.card--lead .card__s{opacity:.85}
+.card--lead .card__d{background:rgba(255,255,255,.18); color:var(--on-teal)}
+.card[disabled]{cursor:default}
+
+/* widgets */
+.view{position:relative; scroll-margin-top:140px; background:var(--surface); border-radius:2px; box-shadow:var(--shadow); min-width:0; display:flex; flex-direction:column}
+.view__h{display:flex; align-items:center; gap:8px; padding:10px 8px 8px 16px; border-bottom:1px solid var(--line); flex-wrap:wrap}
+.view__t{font-size:15px; font-weight:500; margin:0; letter-spacing:.005em; color:var(--ink)}
+.view__u{font-size:11.5px; color:var(--muted)}
+.view__clear{border:0; background:transparent; color:var(--teal); font-size:11.5px; font-weight:500; padding:0 6px; text-transform:uppercase; letter-spacing:.06em}
+.view__clear:hover{text-decoration:underline}
+.view__acts{margin-left:auto; display:flex; gap:2px}
+.ic{width:30px; height:30px; border:0; background:transparent; border-radius:50%; color:var(--muted); display:grid; place-items:center; padding:0}
+.ic:hover{background:var(--surface-3); color:var(--teal)}
+.ic svg{width:18px; height:18px; fill:currentColor}
+.view__b{padding:12px 16px 10px; flex:1; min-width:0}
+.view__src{font-size:11px; color:var(--muted); padding:6px 16px 8px; border-top:1px solid var(--line); line-height:1.35}
+.view__foot{font-size:11px; color:var(--muted); margin-top:8px; line-height:1.35}
+.info{position:absolute; top:46px; right:8px; z-index:60; max-width:min(360px,calc(100% - 16px)); background:var(--ink); color:var(--paper); font-size:12.5px; line-height:1.45; padding:12px 14px; border-radius:2px; box-shadow:var(--shadow-4)}
+.info b{display:block; margin-bottom:4px}
+.view.full{position:fixed; inset:0; z-index:100; border-radius:0; overflow:auto; padding-top:env(safe-area-inset-top,0px)}
+.view.full .view__b{padding:18px max(24px,env(safe-area-inset-right,0px)) 18px max(24px,env(safe-area-inset-left,0px))}
+.view.full .mapwrap svg{max-height:calc(100vh - 170px)}
+.view.full .cols,.view.full .donut svg{max-width:900px}
+.msg{font-size:12px; color:var(--teal); margin-left:8px}
+
+/* carte */
+.mapctl{display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:8px 16px; border-bottom:1px solid var(--line)}
+.seg{display:inline-flex; background:var(--surface-3); border-radius:2px; padding:2px}
+.seg button{border:0; background:transparent; padding:5px 10px; border-radius:2px; font-size:12.5px; font-weight:500; color:var(--ink-2); text-transform:uppercase; letter-spacing:.04em}
+.seg button[aria-pressed="true"]{background:var(--teal); color:var(--on-teal)}
+.mapctl select{font-size:13px; font-weight:500; color:var(--ink); background:var(--surface); border:0; border-bottom:1px solid var(--line-strong); padding:5px 2px; flex:1 1 180px; min-width:0}
+.mapwrap{position:relative; background:var(--sea); overflow:hidden; touch-action:none}
+.mapwrap svg{display:block; width:100%; height:auto; aspect-ratio:1000/896; max-height:68vh; cursor:grab}
 .mapwrap svg.drag{cursor:grabbing}
 .island{fill:var(--land)}
 .zone{stroke:var(--border); stroke-width:.6; vector-effect:non-scaling-stroke; cursor:pointer; transition:fill .25s}
@@ -126,81 +181,31 @@ p{margin:0}
 .outline{fill:none; stroke:var(--border-com); stroke-width:.9; vector-effect:non-scaling-stroke; pointer-events:none}
 .outline.epci{stroke-width:1.6}
 .zoom{position:absolute; right:10px; top:10px; display:flex; flex-direction:column; gap:4px}
-.zoom button{width:30px; height:30px; border-radius:6px; border:1px solid var(--line-strong); background:var(--surface); color:var(--ink-2); font-size:16px; font-weight:600; display:grid; place-items:center; padding:0}
-.zoom button:hover{color:var(--teal); border-color:var(--teal)}
-.legend{position:absolute; left:10px; bottom:10px; background:color-mix(in srgb,var(--surface) 90%,transparent); border:1px solid var(--line); border-radius:7px; padding:8px 10px; font-size:11px; color:var(--ink-2); max-width:min(70%,260px)}
-.legend__t{font-weight:700; color:var(--ink); margin-bottom:5px; font-size:11.5px; line-height:1.25}
+.zoom button{width:30px; height:30px; border-radius:2px; border:0; background:var(--surface); color:var(--ink-2); font-size:16px; font-weight:500; display:grid; place-items:center; padding:0; box-shadow:var(--shadow)}
+.zoom button:hover{color:var(--teal)}
+.legend{position:absolute; left:10px; bottom:10px; background:color-mix(in srgb,var(--surface) 92%,transparent); border-radius:2px; box-shadow:var(--shadow); padding:8px 10px; font-size:11px; color:var(--ink-2); max-width:min(70%,260px)}
+.legend__t{font-weight:500; color:var(--ink); margin-bottom:5px; font-size:11.5px; line-height:1.25}
 .legend__row{display:flex; align-items:center; gap:7px; margin-top:3px}
-.legend__sw{width:16px; height:11px; border-radius:2px; flex:none; border:1px solid rgba(0,0,0,.08)}
+.legend__sw{width:16px; height:11px; border-radius:1px; flex:none; border:1px solid rgba(0,0,0,.08)}
 .legend__sw.nd{background:repeating-linear-gradient(45deg,var(--nodata) 0 3px,var(--hatch) 3px 4px)}
-.mapnote{padding:7px 14px; font-size:11.5px; color:var(--muted); border-top:1px solid var(--line); line-height:1.4}
+.mapnote{padding:7px 16px; font-size:11.5px; color:var(--orange-ink); border-top:1px solid var(--line); line-height:1.4}
 .mapnote:empty{display:none}
-.hint{padding:8px 14px 10px; font-size:11.5px; color:var(--muted); border-top:1px solid var(--line)}
 
-/* ---------- colonne droite ---------- */
-.right{display:grid; gap:14px; min-width:0}
-.cards{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px}
-@media (max-width:1300px){ .cards{grid-template-columns:repeat(4,minmax(0,1fr))} }
-@media (max-width:1180px){ .cards{grid-template-columns:repeat(2,minmax(0,1fr))} }
-@media (max-width:980px){ .cards{grid-template-columns:repeat(4,minmax(0,1fr))} }
-@media (max-width:760px){ .cards{grid-template-columns:repeat(2,minmax(0,1fr))} }
-.card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:12px 13px 11px; min-width:0; box-shadow:var(--shadow); cursor:pointer; transition:border-color .15s}
-.card:hover{border-color:var(--teal)}
-.card[aria-pressed="true"]{border-color:var(--orange); box-shadow:0 0 0 2px color-mix(in srgb,var(--orange) 35%,transparent)}
-.card__k{font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); line-height:1.3}
-.card__v{font-size:clamp(20px,2vw,26px); font-weight:800; letter-spacing:-.02em; line-height:1.05; margin:6px 0 4px; color:var(--ink)}
-.card__s{font-size:11.5px; color:var(--ink-2); line-height:1.3}
-.card__d{display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; margin-top:5px; padding:1px 7px; border-radius:999px; background:var(--surface-3); color:var(--ink-2)}
-.card__d.up{background:color-mix(in srgb,var(--orange) 18%,var(--surface)); color:var(--orange-ink)}
-.card__d.down{background:color-mix(in srgb,var(--teal) 14%,var(--surface)); color:var(--teal)}
-.card--lead{background:var(--teal); border-color:var(--teal)}
-.card--lead .card__k,.card--lead .card__v,.card--lead .card__s{color:var(--on-teal)}
-.card--lead .card__k{opacity:.8}.card--lead .card__s{opacity:.85}
-.card--lead .card__d{background:rgba(255,255,255,.18); color:var(--on-teal)}
-
-.views{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
-@media (max-width:1180px){ .views{grid-template-columns:1fr} }
-@media (max-width:980px){ .views{grid-template-columns:repeat(2,minmax(0,1fr))} }
-@media (max-width:700px){ .views{grid-template-columns:1fr} }
-.view{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:12px 14px 10px; min-width:0; box-shadow:var(--shadow)}
-.view--wide{grid-column:1/-1}
-.view__h{display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:8px; flex-wrap:wrap}
-.view__t{font-size:13px; font-weight:700; margin:0}
-.view__u{font-size:11px; color:var(--muted)}
-.view__clear{border:0; background:transparent; color:var(--teal); font-size:11.5px; font-weight:600; padding:0}
-.view__clear:hover{text-decoration:underline}
-.view__foot{font-size:11px; color:var(--muted); margin-top:8px; line-height:1.35}
-
-/* graphique-filtre */
-.fb{display:grid; gap:4px}
-.fb__row{display:grid; grid-template-columns:minmax(78px,32%) 1fr 54px; gap:8px; align-items:center; border:0; background:transparent; padding:2px 4px; border-radius:5px; text-align:left; width:100%; font-size:12.5px; color:var(--ink-2)}
-.fb__row:hover{background:var(--surface-2)}
-.fb__row[aria-pressed="true"]{color:var(--ink); font-weight:600}
-.fb__row.off{opacity:.55}
-.fb__l{text-align:right; line-height:1.2}
-.fb__t{position:relative; height:14px; background:var(--track); border-radius:0 3px 3px 0}
-.fb__ctx{position:absolute; left:0; top:0; bottom:0; background:var(--bar-ctx); border-radius:0 3px 3px 0}
-.fb__b{position:absolute; left:0; top:2px; bottom:2px; background:var(--bar); border-radius:0 2px 2px 0; transition:width .4s cubic-bezier(.2,.7,.2,1)}
-.fb__row.off .fb__b{background:var(--bar-dim)}
-.fb__row[aria-pressed="true"] .fb__b{background:var(--orange)}
-.fb__v{text-align:right; font-weight:600; color:var(--ink)}
-.fb__v small{display:block; font-weight:500; color:var(--muted); font-size:10.5px}
+/* jauges, méthode, infobulle, divers */
+.na{font-size:12px; color:var(--muted); font-style:italic; padding:8px 0}
 .leg{display:flex; gap:12px; font-size:11px; color:var(--muted); margin-top:8px; flex-wrap:wrap}
 .leg i{display:inline-block; width:10px; height:8px; border-radius:2px; margin-right:5px; vertical-align:0}
-
-/* jauges */
-.meters{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 18px}
-@media (max-width:480px){ .meters{grid-template-columns:1fr} }
-.meter__h{display:flex; justify-content:space-between; gap:8px; font-size:12.5px; color:var(--ink-2)}
-.meter__v{font-weight:700; color:var(--ink)}
-.meter__t{position:relative; height:8px; background:var(--track); border-radius:4px; margin-top:4px}
-.meter__b{position:absolute; left:0; top:0; bottom:0; border-radius:4px; background:var(--bar); transition:width .4s}
-.meter__r{position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--ink); margin-left:-1px}
-.meter__s{font-size:10.5px; color:var(--muted); margin-top:2px}
-
+.tools{display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:12px; color:var(--muted); margin-bottom:8px}
+.method{font-size:12.5px; color:var(--ink-2); line-height:1.5; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px 24px}
+.method h3{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--teal); margin:0 0 4px}
+.foot{font-size:12px; color:var(--muted); font-style:italic; padding-block:8px 2px}
+.tip{position:fixed; z-index:95; pointer-events:none; background:var(--ink); color:var(--paper); font-size:12px; line-height:1.4; padding:7px 10px; border-radius:2px; box-shadow:var(--shadow-4); max-width:280px; opacity:0; transform:translateY(3px); transition:opacity .12s,transform .12s}
+.tip.on{opacity:1; transform:none}
+.tip b{font-weight:500}
+.tip .k{color:#bcd; font-size:11px}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
 /* anneaux */
-.donut{display:grid; grid-template-columns:minmax(150px,190px) 1fr; gap:6px 14px; align-items:center}
-@media (max-width:420px){ .donut{grid-template-columns:1fr} }
+.donut{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:6px 14px; align-items:center}
 .donut svg{width:100%; max-width:210px; height:auto; display:block; overflow:visible; margin:0 auto}
 .seg{cursor:pointer; transition:opacity .2s}
 .seg.off{opacity:.3}
@@ -304,122 +309,186 @@ td small{color:var(--muted); font-weight:500; margin-left:6px}
 .btn{border:1px solid var(--line-strong); background:var(--surface); color:var(--ink-2); border-radius:7px; padding:5px 11px; font-size:12.5px; font-weight:600}
 .btn:hover{border-color:var(--teal); color:var(--teal)}
 
-.method{font-size:12.5px; color:var(--ink-2); line-height:1.5; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px 24px}
-.method h3{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--teal); margin:0 0 4px}
-.foot{font-size:12px; color:var(--muted); font-style:italic; padding-block:4px 10px}
-.tip{position:fixed; z-index:95; pointer-events:none; background:var(--ink); color:var(--paper); font-size:12px; line-height:1.4; padding:7px 10px; border-radius:6px; box-shadow:0 6px 20px rgba(0,0,0,.25); max-width:280px; opacity:0; transform:translateY(3px); transition:opacity .12s,transform .12s}
-.tip.on{opacity:1; transform:none}
-.tip b{font-weight:700}
-.tip .k{color:#bcd; font-size:11px}
-[hidden]{display:none!important}
-@media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
 </style>
 
 </head>
 <body>
 <header class="appbar">
-  <div class="gutter appbar__in">
-    <div class="brand"><i aria-hidden="true"></i>AGORAH <span>/ Observatoire de l'habitat</span></div>
-    <div class="apptitle">Explorateur Logements<small>Recensement 2017 · La Réunion</small></div>
-    <div class="appbar__right">
-      <div class="tabs" role="tablist" aria-label="Pages">
-        <button class="tab" role="tab" data-tab="parc" aria-selected="true">Parc</button>
-        <button class="tab" role="tab" data-tab="menages" aria-selected="false">Ménages</button>
-        <button class="tab" role="tab" data-tab="confort" aria-selected="false">Confort</button>
-        <button class="tab" role="tab" data-tab="donnees" aria-selected="false">Données</button>
-      </div>
-      <button class="reset" id="reset" type="button" disabled>Réinitialiser</button>
-    </div>
+  <div class="gutter appbar__row">
+    <div class="brand"><i aria-hidden="true"></i>AGORAH <span>/ PEIGEO</span></div>
+    <div class="apptitle">4 — Logements<small>Observatoire de l'habitat · Recensement 2017 · La Réunion</small></div>
+    <div class="appbar__right"><button class="reset" id="reset" type="button" disabled>Réinitialiser les filtres</button></div>
   </div>
+  <nav class="gutter tabs" role="tablist" aria-label="Pages">
+    <button class="tab" role="tab" data-tab="synthese" aria-selected="true">Synthèse</button>
+    <button class="tab" role="tab" data-tab="parc" aria-selected="false">Parc de logements</button>
+    <button class="tab" role="tab" data-tab="occupation" aria-selected="false">Occupation</button>
+    <button class="tab" role="tab" data-tab="menages" aria-selected="false">Ménages</button>
+    <button class="tab" role="tab" data-tab="confort" aria-selected="false">Confort</button>
+    <button class="tab" role="tab" data-tab="donnees" aria-selected="false">Données</button>
+  </nav>
 </header>
 
 <div class="filters">
-  <div class="gutter filters__in">
+  <div class="gutter filters__in" id="filterbar">
     <span class="filters__lab">Filtres</span>
-    <div id="fchips" style="display:contents"></div>
-    <div class="terr-select">
-      <label class="sr" for="terr-epci">Intercommunalité</label>
-      <select id="terr-epci"><option value="">EPCI…</option></select>
-      <label class="sr" for="terr-com">Commune</label>
-      <select id="terr-com"><option value="">Commune…</option></select>
-    </div>
+    <div class="fsel"><label for="terr-epci">Intercommunalité</label><select id="terr-epci"><option value="">Toutes</option></select></div>
+    <div class="fsel"><label for="terr-com">Commune</label><select id="terr-com"><option value="">Toutes</option></select></div>
+    <div id="dds" style="display:contents"></div>
   </div>
+  <div class="gutter chipsrow" id="fchips"></div>
 </div>
 
-<main class="gutter app">
-  <section class="panel mappanel" aria-label="Carte">
-    <div class="panel__h"><h2 class="panel__t" id="map-title">Carte</h2><span class="panel__u" id="map-sub"></span></div>
-    <div class="mapctl">
-      <div class="seg" role="group" aria-label="Maille">
-        <button type="button" data-level="com" aria-pressed="true">Communes</button>
-        <button type="button" data-level="epci" aria-pressed="false">EPCI</button>
-        <button type="button" data-level="iris" aria-pressed="false">IRIS</button>
-      </div>
-      <label class="sr" for="map-ind">Indicateur cartographié</label>
-      <select id="map-ind"></select>
-    </div>
-    <div class="mapwrap" id="mapwrap">
-      <svg id="map" viewBox="0 0 1000 896.2" role="img" aria-label="Carte de La Réunion">
-        <defs><pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="var(--nodata)"/><line x1="0" y1="0" x2="0" y2="5" stroke="var(--hatch)" stroke-width="1.6"/></pattern></defs>
-        <path class="island" id="island" d=""/>
-        <g id="zones"></g>
-        <g id="outlines"></g>
-      </svg>
-      <div class="zoom"><button type="button" id="z-in" aria-label="Zoom avant">+</button><button type="button" id="z-out" aria-label="Zoom arrière">−</button><button type="button" id="z-reset" aria-label="Vue entière" title="Vue entière">⌂</button></div>
-      <div class="legend" id="legend"></div>
-    </div>
-    <div class="mapnote" id="map-note"></div>
-    <div class="hint">Survol : valeurs détaillées. Clic : filtrer sur le territoire (nouveau clic pour retirer). Molette ou boutons : zoom ; glisser : déplacer.</div>
-  </section>
+<main class="gutter page">
+  <div class="cards" id="cards" aria-live="polite"></div>
 
-  <section class="right">
-    <div class="cards" id="cards" aria-live="polite"></div>
-
-    <div class="views" id="tab-parc" role="tabpanel">
-      <div class="view"><div class="view__h"><h3 class="view__t">Catégorie de logement</h3><span class="view__u">% du parc</span></div><div id="d-CAT"></div></div>
-      <div class="view"><div class="view__h"><h3 class="view__t">Type de logement</h3><span class="view__u">% du parc</span></div><div id="d-TYP"></div></div>
-      <div class="view view--wide"><div class="view__h"><h3 class="view__t">Époque de construction</h3><span class="view__u">% du parc · colonne claire : territoire sans les autres filtres</span></div><div id="c-ACH"></div></div>
-      <div class="view"><div class="view__h"><h3 class="view__t">Type de logement par intercommunalité</h3><span class="view__u">% du parc</span></div><div id="s-TYP"></div></div>
-      <div class="view"><div class="view__h"><h3 class="view__t">Époque de construction par intercommunalité</h3><span class="view__u">% du parc</span></div><div id="s-ACH"></div></div>
-      <div class="view view--wide"><div class="view__h"><h3 class="view__t">Classement des communes</h3><span class="view__u">sélection courante · repère : La Réunion</span></div><div class="lp__ctl"><label for="lp-ind">Indicateur</label><select id="lp-ind"></select><span id="lp-def"></span></div><div id="lp"></div>
-        <div class="view__foot">Cliquer une commune filtre le territoire. Les communes de la même intercommunalité que le territoire courant sont en teal soutenu.</div></div>
-    </div>
-
-    <div class="views" id="tab-menages" role="tabpanel" hidden>
-      <div class="view"><div class="view__h"><h3 class="view__t">Statut d'occupation</h3><span class="view__u">% des résidences principales</span></div><div id="d-STO"></div></div>
-      <div class="view"><div class="view__h"><h3 class="view__t">Statut d'occupation par intercommunalité</h3><span class="view__u">% des résidences principales</span></div><div id="s-STO"></div></div>
-      <div class="view view--wide"><div class="view__h"><h3 class="view__t">Pièces du logement × personnes du ménage</h3><span class="view__u">% des résidences principales</span></div><div id="heat"></div>
-        <div class="view__foot">Chaque case est un filtre combiné (taille du logement et du ménage) ; les en-têtes filtrent une seule dimension. Pointillés : plus d'une personne par pièce.</div></div>
-      <div class="view"><div class="view__h"><h3 class="view__t">Taille des ménages</h3><span class="view__u">% des ménages</span></div><div id="c-PER"></div></div>
-      <div class="view"><div class="view__h"><h3 class="view__t">Âge de la personne de référence</h3><span class="view__u">% des ménages</span></div><div id="c-AGE"></div></div>
-      <div class="view view--wide"><div class="view__h"><h3 class="view__t">Profil de la personne de référence</h3><span class="view__u">% des ménages · repère : La Réunion</span></div><div id="g-prof"></div></div>
-    </div>
-
-    <div class="views" id="tab-confort" role="tabpanel" hidden>
-      <div class="view view--wide"><div class="view__h"><h3 class="view__t">Confort et équipement des résidences principales</h3><span class="view__u">% des résidences principales · repère : La Réunion</span></div><div id="g-conf"></div>
-        <div class="view__foot">Sanitaires complets : baignoire ou douche et WC intérieurs. Densité : logements comptant plus d'une personne par pièce (indicateur simplifié). Ces jauges suivent les filtres mais ne sont pas elles-mêmes des filtres.</div></div>
-      <div class="view"><div class="view__h"><h3 class="view__t">Nombre de pièces</h3><span class="view__u">% des résidences principales</span></div><div id="c-PIE"></div></div>
-      <div class="view"><div class="view__h"><h3 class="view__t">Nombre de pièces par intercommunalité</h3><span class="view__u">% des résidences principales</span></div><div id="s-PIE"></div></div>
-    </div>
-
-    <div class="views" id="tab-donnees" role="tabpanel" hidden>
-      <div class="view view--wide">
-        <div class="view__h"><h3 class="view__t">Communes et intercommunalités — sélection courante</h3><span class="view__u">effectifs pondérés</span></div>
-        <div class="tools"><span>Trier par en-tête · cliquer une ligne pour filtrer le territoire.</span><button class="btn" id="copy" type="button">Copier le tableau</button><span id="copy-msg" aria-live="polite"></span></div>
-        <div class="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
-      </div>
-      <div class="view view--wide">
-        <div class="view__h"><h3 class="view__t">Méthode</h3></div>
-        <div class="method">
-          <div><h3>Source</h3>INSEE, recensement de la population 2017, fichier détail « Logements ordinaires » de La Réunion : 159 811 logements enquêtés, 369 895 logements après pondération (IPONDL). Hors communautés et habitations mobiles.</div>
-          <div><h3>Calcul</h3>Les données sont agrégées en deux cubes embarqués dans la page (commune × 7 dimensions ; IRIS × 5 dimensions). Chaque filtre recalcule les effectifs côté navigateur. Les poids sont conservés à la décimale près.</div>
-          <div><h3>Maille IRIS</h3>Contours IRIS IGN (Géoplateforme) appariés aux 331 codes IRIS du fichier ; La Plaine-des-Palmistes n'est pas irisée. Les filtres de taille des ménages et d'âge ne sont pas disponibles à cette maille. Hachures : aucun logement ou moins de 30 logements enquêtés.</div>
-          <div><h3>Définitions</h3>Taux de vacance : logements vacants / parc. Logement social : résidences principales déclarées HLM. Locataires privé : locataires hors HLM, meublés compris. Personne de référence : au sens du recensement.</div>
+  <div class="grid" id="page-synthese" role="tabpanel">
+    <div class="view span-6" id="w-map" data-export="map" data-title="Carte">
+        <div class="view__h"><h3 class="view__t" id="map-title">Carte</h3><span class="view__u" id="map-sub"></span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="mapctl">
+          <div class="seg" role="group" aria-label="Maille"><button type="button" data-level="com" aria-pressed="true">Communes</button><button type="button" data-level="epci" aria-pressed="false">EPCI</button><button type="button" data-level="iris" aria-pressed="false">IRIS</button></div>
+          <label class="sr" for="map-ind">Indicateur cartographié</label><select id="map-ind"></select>
         </div>
-        <p class="foot">Sources : INSEE RP 2017 (fichier détail Logements) · IGN Contours IRIS — traitements AGORAH</p>
+        <div class="mapwrap" id="mapwrap">
+          <svg id="map" viewBox="0 0 1000 896.2" role="img" aria-label="Carte de La Réunion">
+            <defs><pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="var(--nodata)"/><line x1="0" y1="0" x2="0" y2="5" stroke="var(--hatch)" stroke-width="1.6"/></pattern></defs>
+            <path class="island" id="island" d=""/><g id="zones"></g><g id="outlines"></g>
+          </svg>
+          <div class="zoom"><button type="button" id="z-in" aria-label="Zoom avant">+</button><button type="button" id="z-out" aria-label="Zoom arrière">−</button><button type="button" id="z-reset" aria-label="Vue entière" title="Vue entière">⌂</button></div>
+          <div class="legend" id="legend"></div>
+        </div>
+        <div class="mapnote" id="map-note"></div>
+        <div class="view__src">Survol : détail · clic : filtrer le territoire · molette ou boutons : zoom · glisser : déplacer. Classes en quintiles. Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH · IGN Contours IRIS</div>
+        <div class="info" hidden><b>Carte</b>Indicateur choisi, calculé pour chaque commune, EPCI ou IRIS à partir de la sélection courante (les filtres de dimension s'appliquent, le filtre territorial est ignoré pour garder le contexte). Classes en quintiles. Hachures : moins de 30 logements enquêtés.</div>
+      </div>
+    <div class="grid span-6" style="gap:14px">
+      <div class="view span-6 " id="w-cat" data-export="d-CAT" data-title="Catégorie de logement">
+        <div class="view__h"><h3 class="view__t">Catégorie de logement</h3><span class="view__u">% du parc</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="d-CAT"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Catégorie de logement</b>Résidences principales, résidences secondaires et logements occasionnels (regroupés), logements vacants. La couronne externe rappelle la répartition du territoire sans les autres filtres. Un clic sur un segment filtre toutes les vues.</div>
+      </div>
+      <div class="view span-6 " id="w-typ" data-export="d-TYP" data-title="Type de logement">
+        <div class="view__h"><h3 class="view__t">Type de logement</h3><span class="view__u">% du parc</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="d-TYP"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Type de logement</b>Maisons, appartements et autres (logements-foyers, chambres d'hôtel, habitations de fortune, pièces indépendantes).</div>
+      </div>
+      <div class="view span-12 " id="w-sto" data-export="d-STO" data-title="Statut d'occupation">
+        <div class="view__h"><h3 class="view__t">Statut d'occupation</h3><span class="view__u">% des résidences principales</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="d-STO"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Statut d'occupation</b>Propriétaires, locataires du parc privé (hors HLM, meublés compris), locataires HLM (logement social), logés gratuitement.</div>
       </div>
     </div>
-  </section>
+    <div class="view span-12 " id="w-lp" data-export="lp" data-title="Classement des communes">
+        <div class="view__h"><h3 class="view__t">Classement des communes</h3><span class="view__u">sélection courante · repère : La Réunion</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="lp"></div><div class="view__foot" style="padding:0 16px 8px"><div class="lp__ctl"><label for="lp-ind">Indicateur</label><select id="lp-ind"></select><span id="lp-def"></span></div></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Classement des communes</b>Valeur de l'indicateur choisi pour chaque commune, calculée sur la sélection courante (filtres de dimension appliqués). Communes de moins de 30 logements enquêtés non affichées. Un clic filtre le territoire.</div>
+      </div>
+  </div>
+
+  <div class="grid" id="page-parc" role="tabpanel" hidden>
+    <div class="map-slot span-6"></div>
+    <div class="grid span-6" style="gap:14px">
+    <div class="view span-12 " id="w-ach" data-export="c-ACH" data-title="Époque de construction">
+        <div class="view__h"><h3 class="view__t">Époque de construction</h3><span class="view__u">% du parc · colonne claire : contexte</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="c-ACH"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Époque de construction</b>Année d'achèvement déclarée, ensemble du parc. Le millésime 2017 cumulant les enquêtes 2015-2019, les logements achevés après 2015 sont partiellement recensés. Un clic sur une colonne filtre.</div>
+      </div>
+    <div class="view span-12 " id="w-styp" data-export="s-TYP" data-title="Type de logement par intercommunalité">
+        <div class="view__h"><h3 class="view__t">Type de logement par intercommunalité</h3><span class="view__u">% du parc</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="s-TYP"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Type de logement par intercommunalité</b>Répartition par type pour chaque EPCI et La Réunion, filtres de dimension appliqués. Un segment filtre le type, un libellé filtre l'EPCI.</div>
+      </div>
+    </div>
+    <div class="view span-6 " id="w-sach" data-export="s-ACH" data-title="Époque de construction par intercommunalité">
+        <div class="view__h"><h3 class="view__t">Époque de construction par intercommunalité</h3><span class="view__u">% du parc</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="s-ACH"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Époque de construction par intercommunalité</b>Répartition par époque d'achèvement pour chaque EPCI et La Réunion.</div>
+      </div>
+    <div class="view span-6 " id="w-pie" data-export="c-PIE" data-title="Nombre de pièces">
+        <div class="view__h"><h3 class="view__t">Nombre de pièces</h3><span class="view__u">% des résidences principales</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="c-PIE"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Nombre de pièces</b>Nombre de pièces d'habitation des résidences principales (cuisine comprise si elle fait plus de 12 m²).</div>
+      </div>
+    <div class="view span-6 " id="w-spie" data-export="s-PIE" data-title="Nombre de pièces par intercommunalité">
+        <div class="view__h"><h3 class="view__t">Nombre de pièces par intercommunalité</h3><span class="view__u">% des résidences principales</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="s-PIE"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Nombre de pièces par intercommunalité</b>Répartition par nombre de pièces pour chaque EPCI et La Réunion.</div>
+      </div>
+  </div>
+
+  <div class="grid" id="page-occupation" role="tabpanel" hidden>
+    <div class="map-slot span-6"></div>
+    <div class="view span-6 " id="w-ssto" data-export="s-STO" data-title="Statut d'occupation par intercommunalité">
+        <div class="view__h"><h3 class="view__t">Statut d'occupation par intercommunalité</h3><span class="view__u">% des résidences principales</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="s-STO"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Statut d'occupation par intercommunalité</b>Propriétaires, locataires privé, locataires HLM et logés gratuitement pour chaque EPCI et La Réunion.</div>
+      </div>
+    <div class="view span-12 " id="w-heat" data-export="heat" data-title="Pièces du logement × personnes du ménage">
+        <div class="view__h"><h3 class="view__t">Pièces du logement × personnes du ménage</h3><span class="view__u">% des résidences principales</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="heat"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Pièces du logement × personnes du ménage</b>Croisement du nombre de pièces et du nombre de personnes du ménage. Chaque case pose un filtre combiné ; les en-têtes filtrent une seule dimension. Les cases en pointillés comptent plus d'une personne par pièce (indicateur simplifié de densité).</div>
+      </div>
+  </div>
+
+  <div class="grid" id="page-menages" role="tabpanel" hidden>
+    <div class="view span-6 " id="w-per" data-export="c-PER" data-title="Taille des ménages">
+        <div class="view__h"><h3 class="view__t">Taille des ménages</h3><span class="view__u">% des ménages</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="c-PER"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Taille des ménages</b>Nombre de personnes du ménage occupant la résidence principale.</div>
+      </div>
+    <div class="view span-6 " id="w-age" data-export="c-AGE" data-title="Âge de la personne de référence">
+        <div class="view__h"><h3 class="view__t">Âge de la personne de référence</h3><span class="view__u">% des ménages</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="c-AGE"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Âge de la personne de référence</b>Âge de la personne de référence du ménage au sens du recensement.</div>
+      </div>
+    <div class="view span-12 " id="w-prof" data-export="g-prof" data-title="Profil de la personne de référence">
+        <div class="view__h"><h3 class="view__t">Profil de la personne de référence</h3><span class="view__u">% des ménages · repère : La Réunion</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="g-prof"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Profil de la personne de référence</b>Part des ménages emménagés depuis moins de 5 ans, dont la personne de référence est au chômage (au sens du recensement), diplômée du supérieur (bac + 2 ou plus) ou née à La Réunion. Jauges non filtrables ; le trait noir marque la valeur de La Réunion tous logements.</div>
+      </div>
+  </div>
+
+  <div class="grid" id="page-confort" role="tabpanel" hidden>
+    <div class="view span-12 " id="w-conf" data-export="g-conf" data-title="Confort et équipement des résidences principales">
+        <div class="view__h"><h3 class="view__t">Confort et équipement des résidences principales</h3><span class="view__u">% des résidences principales · repère : La Réunion</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+        <div class="view__b" id="g-conf"></div>
+        <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+        <div class="info" hidden><b>Confort et équipement des résidences principales</b>Climatisation, chauffe-eau solaire, sanitaires complets (baignoire ou douche et WC intérieurs), habitat précaire (cases traditionnelles et habitations de fortune), plus d'une personne par pièce, ménages sans voiture, eau chaude, raccordement au tout-à-l'égout. Jauges non filtrables ; le trait noir marque La Réunion.</div>
+      </div>
+  </div>
+
+  <div class="grid" id="page-donnees" role="tabpanel" hidden>
+    <div class="view span-12" id="w-tbl" data-export="tbl" data-title="Communes et intercommunalités">
+      <div class="view__h"><h3 class="view__t">Communes et intercommunalités — sélection courante</h3><span class="view__u">effectifs pondérés</span><span class="view__acts"><button class="ic" type="button" data-act="info" aria-label="Définition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg></button><button class="ic" type="button" data-act="csv" aria-label="Exporter les données (CSV)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button><button class="ic" type="button" data-act="full" aria-label="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button></span></div>
+      <div class="view__b"><div class="tools"><span>Trier par en-tête · cliquer une ligne pour filtrer le territoire.</span><span id="copy-msg" class="msg" aria-live="polite"></span></div><div class="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div></div>
+      <div class="view__src">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH</div>
+      <div class="info" hidden><b>Tableau</b>Effectifs et indicateurs par commune et EPCI sur la sélection courante (filtres de dimension appliqués, territoire ignoré). « % du parc du territoire » : poids de la sélection dans le parc total de chaque territoire.</div>
+    </div>
+    <div class="view span-12">
+      <div class="view__h"><h3 class="view__t">Méthode et sources</h3></div>
+      <div class="view__b"><div class="method">
+        <div><h3>Source</h3>INSEE, recensement de la population 2017, fichier détail « Logements ordinaires » de La Réunion : 159 811 logements enquêtés, 369 895 logements après pondération (IPONDL). Hors communautés et habitations mobiles.</div>
+        <div><h3>Calcul</h3>Les données sont agrégées en deux cubes embarqués dans la page (commune × 7 dimensions ; IRIS × 5 dimensions). Chaque filtre recalcule les effectifs dans le navigateur. Les poids sont conservés à la décimale près.</div>
+        <div><h3>Maille IRIS</h3>Contours IRIS IGN (Géoplateforme) appariés aux 331 codes IRIS du fichier ; La Plaine-des-Palmistes n'est pas irisée. Les filtres de taille des ménages et d'âge ne sont pas disponibles à cette maille.</div>
+        <div><h3>Définitions</h3>Taux de vacance : logements vacants / parc. Logement social : résidences principales déclarées HLM. Locataires privé : locataires hors HLM, meublés compris. Personne de référence : au sens du recensement.</div>
+        <div><h3>Export</h3>L'icône de téléchargement de chaque widget copie ses données au format CSV (tabulations) dans le presse-papiers et propose le fichier au téléchargement lorsque le navigateur l'autorise.</div>
+      </div><p class="foot">Source : INSEE, RP 2017, fichier détail Logements — traitements AGORAH · IGN Contours IRIS</p></div>
+    </div>
+  </div>
 </main>
 <div class="tip" id="tip" role="tooltip"></div>
 
@@ -645,6 +714,7 @@ function renderMap() {
   const activeNA = level === 'iris' && (F.PER.size || F.AGE.size);
   $('map-note').textContent = activeNA ? 'Les filtres « Taille du ménage » et « Âge de la personne de référence » ne s\'appliquent pas à la maille IRIS.' : '';
   mapAggs = aggs; mapVals = vals;
+  WDATA.map = [['Code', 'Territoire', d.l, 'Logements (sélection)', 'Logements enquêtés'], ...zones.map(z => { const a = aggs[z.id]; return [z.id, z.name, isFinite(vals[z.id]) ? (d.f === 'pct' ? (vals[z.id] * 100).toFixed(1) : vals[z.id].toFixed(2)) : '', a ? Math.round(a.w) : 0, a ? a.n : 0]; })];
 }
 let mapAggs = {}, mapVals = {};
 function tipZone(id) {
@@ -669,7 +739,7 @@ function toggleF(dim, i) { if (F[dim].has(i)) F[dim].delete(i); else F[dim].add(
 function stateCls(dim, i) { const on = F[dim].has(i); return on ? 'on' : (F[dim].size ? 'off' : ''); }
 function clearBtn(el, dim) {
   const head = el.closest('.view').querySelector('.view__h'); let clr = head.querySelector('.view__clear');
-  if (F[dim].size) { if (!clr) { clr = document.createElement('button'); clr.type = 'button'; clr.className = 'view__clear'; clr.textContent = 'Effacer'; clr.addEventListener('click', () => { F[dim].clear(); render(); }); head.appendChild(clr); } }
+  if (F[dim].size) { if (!clr) { clr = document.createElement('button'); clr.type = 'button'; clr.className = 'view__clear'; clr.textContent = 'Effacer'; clr.addEventListener('click', () => { F[dim].clear(); render(); }); head.insertBefore(clr, head.querySelector('.view__acts')); } }
   else if (clr) clr.remove();
 }
 const shares = arr => { const t = arr.reduce((s, v) => s + v, 0) || 1; return arr.map(v => v / t); };
@@ -693,6 +763,7 @@ function donut(el, dim, cur, ctx, centerLabel) {
   a = 0; sx.forEach((s, i) => { const a1 = a + s * Math.PI * 2; if (s > 0) svgH += `<path class="ctxseg" d="${arcPath(100, 100, 90, 96, a + (s > gap ? gap / 2 : 0), a1 - (s > gap ? gap / 2 : 0))}" fill="${cols[i]}"></path>`; a = a1; });
   svgH += `<text class="dcenter num" x="100" y="98" text-anchor="middle">${fmtN(tot)}</text><text class="dcenter2" x="100" y="114" text-anchor="middle">${esc(centerLabel)}</text></svg>`;
   const leg = `<div class="dleg" role="list">` + labels.map((l, i) => `<button type="button" role="listitem" class="${stateCls(dim, i)}" data-i="${i}" aria-pressed="${F[dim].has(i)}"><i style="background:${cols[i]}"></i><span>${esc(l)}</span><span class="v num">${fmtP(sc[i])}<small>${fmtN(cur[i])}</small></span></button>`).join('') + `</div>`;
+  WDATA[el.id] = [['Modalité', 'Sélection (%)', 'Sélection (effectif)', 'Contexte (%)', 'Contexte (effectif)', 'La Réunion (%)'], ...labels.map((l, i) => [l, (sc[i] * 100).toFixed(1), Math.round(cur[i]), (sx[i] * 100).toFixed(1), Math.round(ctx[i]), (refShare(dim, i) * 100).toFixed(1)])];
   el.innerHTML = `<div class="donut">${svgH}${leg}</div>`;
   el.querySelectorAll('[data-i]').forEach(n => { const i = +n.dataset.i; n.addEventListener('click', () => toggleF(dim, i)); hoverable(n, () => tipMod(dim, i, cur, ctx)); });
   clearBtn(el, dim);
@@ -712,6 +783,7 @@ function columns(el, dim, cur, ctx) {
     parts.forEach((pt, k) => { s += `<text x="${(x + bw / 2).toFixed(1)}" y="${H - mb + 13 + k * 11}" text-anchor="middle">${esc(pt)}</text>`; });
   });
   s += `<line class="base" x1="${ml}" x2="${W - mr}" y1="${mt + ih}" y2="${mt + ih}"/></svg>`;
+  WDATA[el.id] = [['Modalité', 'Sélection (%)', 'Sélection (effectif)', 'Contexte (%)', 'Contexte (effectif)', 'La Réunion (%)'], ...labels.map((l, i) => [l, (sc[i] * 100).toFixed(1), Math.round(cur[i]), (sx[i] * 100).toFixed(1), Math.round(ctx[i]), (refShare(dim, i) * 100).toFixed(1)])];
   el.innerHTML = s;
   el.querySelectorAll('rect.bar').forEach(r => { const i = +r.dataset.i; r.addEventListener('click', () => toggleF(dim, i)); hoverable(r, () => tipMod(dim, i, cur, ctx)); });
   clearBtn(el, dim);
@@ -734,6 +806,7 @@ function stacked(el, dim, rowsByEpci, refRow) {
     });
     row.append(l, bar); return row;
   };
+  WDATA[el.id] = [['Territoire', ...labels.map(l => l + ' (%)'), ...labels.map(l => l + ' (effectif)')], ...EPCI.map(e => { const v = labels.map((_, i) => rowsByEpci[e][key][i]), t = v.reduce((s, x) => s + x, 0) || 1; return [e, ...v.map(x => (x / t * 100).toFixed(1)), ...v.map(x => Math.round(x))]; }), (() => { const v = labels.map((_, i) => refRow[key][i]), t = v.reduce((s, x) => s + x, 0) || 1; return ['La Réunion', ...v.map(x => (x / t * 100).toFixed(1)), ...v.map(x => Math.round(x))]; })()];
   const wrap = document.createElement('div'); wrap.className = 'st';
   EPCI.forEach(e => { const a = rowsByEpci[e]; const vals = labels.map((_, i) => a[key][i]); wrap.appendChild(mk(e, vals, (terr.kind === 'epci' && terr.id === e) || (terr.kind !== 'R' && terr.kind !== 'epci' && COMM[[...terrComSet()][0]].e === e) ? 'st__row--cur' : '', () => setTerr(terr.kind === 'epci' && terr.id === e ? { kind: 'R' } : { kind: 'epci', id: e }))); });
   wrap.appendChild(mk('La Réunion', labels.map((_, i) => refRow[key][i]), 'st__row--ref', null));
@@ -745,6 +818,7 @@ function stacked(el, dim, rowsByEpci, refRow) {
 function heatmap(el, M) {
   const rows = DIM.PIE.labels, colsL = DIM.PER.labels, nr = rows.length, nc = colsL.length;
   const tot = M.flat().reduce((s, v) => s + v, 0) || 1, max = Math.max(...M.flat()) / tot || 1;
+  WDATA[el.id] = [['Pièces \\ Personnes', ...colsL], ...rows.map((r, i) => [r, ...colsL.map((_, j) => Math.round(M[i][j]))])];
   const g = document.createElement('div'); g.className = 'heat'; g.style.gridTemplateColumns = `minmax(76px,1.2fr) repeat(${nc},minmax(0,1fr))`;
   g.innerHTML = `<div class="heat__corner">pièces ↓ · personnes →</div>` + colsL.map((c, j) => `<button type="button" class="heat__h ${stateCls('PER', j)}" data-dim="PER" data-i="${j}">${esc(c.replace(' personnes', ' pers.').replace(' personne', ' pers.'))}</button>`).join('');
   rows.forEach((r, i) => {
@@ -765,6 +839,7 @@ function heatmap(el, M) {
 }
 /* jauges radiales */
 function gauges(el, items) {
+  WDATA[el.id] = [['Indicateur', 'Sélection (%)', 'Sélection (effectif)', 'La Réunion (%)'], ...items.map(it => [it.l, isFinite(it.v) ? (it.v * 100).toFixed(1) : '', Math.round(it.n), (it.r * 100).toFixed(1)])];
   const g = document.createElement('div'); g.className = 'gauges';
   const arc = (v) => { const a0 = -Math.PI / 2 * 1.5, a1 = a0 + Math.PI * 1.5 * Math.min(1, Math.max(0, v)); const p = a => [60 + 44 * Math.sin(a), 56 - 44 * Math.cos(a)]; const [x0, y0] = p(a0), [x1, y1] = p(a1); return `M${x0.toFixed(1)},${y0.toFixed(1)}A44,44 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${x1.toFixed(1)},${y1.toFixed(1)}`; };
   const refTick = (v) => { const a = -Math.PI / 2 * 1.5 + Math.PI * 1.5 * Math.min(1, v); const p = r => [60 + r * Math.sin(a), 56 - r * Math.cos(a)]; const [x0, y0] = p(37), [x1, y1] = p(51); return `<line class="ref" x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`; };
@@ -784,6 +859,7 @@ function lollipop(el, byC) {
   const rows = COMM.map((c, i) => { const a = byC[i]; return { c, i, a, v: a && a.n >= 30 ? d.v(a) : NaN }; }).filter(r => isFinite(r.v)).sort((x, y) => y.v - x.v);
   const max = Math.max(...rows.map(r => r.v), rv) * 1.06 || 1;
   const cur = terrComSet(), parentE = terr.kind === 'R' ? null : COMM[[...cur][0]].e;
+  WDATA[el.id] = [['Commune', 'EPCI', d.l, 'Logements (sélection)', 'Logements enquêtés'], ...rows.map(r => [r.c.n, r.c.e, d.f === 'pct' ? (r.v * 100).toFixed(1) : r.v.toFixed(2), Math.round(r.a.w), r.a.n])];
   const g = document.createElement('div'); g.className = 'lp';
   rows.forEach(r => {
     const b = document.createElement('button'); b.type = 'button'; b.className = 'lp__row' + (cur && cur.has(r.i) && terr.kind !== 'epci' ? ' cur' : (parentE === r.c.e ? ' sib' : ''));
@@ -796,7 +872,7 @@ function lollipop(el, byC) {
   if (rows.length < COMM.length) { const p = document.createElement('p'); p.className = 'na'; p.textContent = (COMM.length - rows.length) + ' commune(s) non affichée(s) : moins de 30 logements enquêtés dans la sélection.'; el.replaceChildren(g, p); } else el.replaceChildren(g);
 }
 Object.entries(IND).forEach(([k, d]) => { if (!d.A || true) { const o = document.createElement('option'); o.value = k; o.textContent = d.l; $('lp-ind').appendChild(o); } });
-$('lp-ind').value = lpInd;
+$('lp-ind').value = lpInd; (function () { const ctl = $('lp-ind').closest('.view__foot'); if (ctl) { ctl.classList.remove('view__foot'); ctl.style.padding = '0 16px'; $('lp').parentNode.insertBefore(ctl, $('lp')); } })();
 $('lp-ind').addEventListener('change', e => { lpInd = e.target.value; if (tableData) lollipop($('lp'), tableData.byC); });
 
 /* ===================== cartes d'indicateurs ===================== */
@@ -823,7 +899,7 @@ function renderCards(a) {
     const pressed = c.ind && mapInd === c.ind;
     return `<button type="button" class="card${c.lead ? ' card--lead' : ''}" ${c.ind ? `data-ind="${c.ind}" aria-pressed="${pressed}" title="Cartographier cet indicateur"` : 'disabled style="cursor:default"'}><div class="card__k">${c.l}</div><div class="card__v num">${f(val)}</div><div class="card__s num">${c.s(a, REF)}</div>${delta}</button>`;
   }).join('');
-  $('cards').querySelectorAll('.card[data-ind]').forEach(b => b.addEventListener('click', () => { mapInd = b.dataset.ind; $('map-ind').value = mapInd; lpInd = mapInd; $('lp-ind').value = lpInd; renderMap(); renderCards(a); if (tableData) lollipop($('lp'), tableData.byC); }));
+  $('cards').querySelectorAll('.card[data-ind]').forEach(b => b.addEventListener('click', () => { mapInd = b.dataset.ind; $('map-ind').value = mapInd; lpInd = mapInd; $('lp-ind').value = lpInd; (function () { const ctl = $('lp-ind').closest('.view__foot'); if (ctl) { ctl.classList.remove('view__foot'); ctl.style.padding = '0 16px'; $('lp').parentNode.insertBefore(ctl, $('lp')); } })(); renderMap(); renderCards(a); if (tableData) lollipop($('lp'), tableData.byC); }));
 }
 
 /* ===================== bandeau de filtres ===================== */
@@ -839,6 +915,57 @@ function renderChips() {
   $('terr-com').value = terr.kind === 'com' ? terr.id : terr.kind === 'iris' ? IRIS[terr.id][1] : '';
 }
 $('reset').addEventListener('click', () => { FDIMS.forEach(d => F[d].clear()); setTerr({ kind: 'R' }); });
+/* listes déroulantes à cases à cocher, une par dimension */
+(function buildDropdowns() {
+  const host = $('dds');
+  FDIMS.forEach(d => {
+    const w = document.createElement('div'); w.className = 'fsel dd';
+    w.innerHTML = `<label id="ddl-${d}">${esc(DIM[d].l)}</label><button type="button" class="dd__btn" id="ddb-${d}" aria-haspopup="true" aria-expanded="false" aria-labelledby="ddl-${d} ddb-${d}">Tous</button><div class="dd__pop" id="ddp-${d}" hidden>${DIM[d].labels.map((l, i) => `<label><input type="checkbox" data-i="${i}"> ${esc(l)}</label>`).join('')}<label class="dd__all"><input type="checkbox" data-all="1"> Tout sélectionner / effacer</label></div>`;
+    host.appendChild(w);
+    const btn = w.querySelector('.dd__btn'), pop = w.querySelector('.dd__pop');
+    btn.addEventListener('click', e => { e.stopPropagation(); const open = pop.hidden; document.querySelectorAll('.dd__pop').forEach(p => p.hidden = true); pop.hidden = !open; btn.setAttribute('aria-expanded', String(open)); });
+    pop.addEventListener('click', e => e.stopPropagation());
+    pop.querySelectorAll('input').forEach(cb => cb.addEventListener('change', () => {
+      if (cb.dataset.all) { if (F[d].size) F[d].clear(); else DIM[d].labels.forEach((_, i) => F[d].add(i)); }
+      else { const i = +cb.dataset.i; if (cb.checked) F[d].add(i); else F[d].delete(i); }
+      render();
+    }));
+  });
+  document.addEventListener('click', () => document.querySelectorAll('.dd__pop').forEach(p => { p.hidden = true; }));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.querySelectorAll('.dd__pop').forEach(p => p.hidden = true); document.querySelectorAll('.view.full').forEach(v => v.classList.remove('full')); document.querySelectorAll('.info').forEach(i => i.hidden = true); } });
+})();
+function syncDropdowns() {
+  FDIMS.forEach(d => {
+    const btn = $('ddb-' + d); if (!btn) return;
+    const n = F[d].size, labels = DIM[d].labels;
+    btn.textContent = n === 0 ? 'Tous' : n === 1 ? labels[[...F[d]][0]] : n + ' sur ' + labels.length;
+    btn.classList.toggle('active', n > 0);
+    $('ddp-' + d).querySelectorAll('input[data-i]').forEach(cb => cb.checked = F[d].has(+cb.dataset.i));
+    const all = $('ddp-' + d).querySelector('input[data-all]'); all.checked = n > 0; all.indeterminate = n > 0 && n < labels.length;
+  });
+}
+/* actions des widgets : définition, export, plein écran */
+const WDATA = {};
+function toCSV(rows) { return rows.map(r => r.map(v => { const s = v == null ? '' : String(v); return /[\t\n"]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join('\t')).join('\n'); }
+async function exportWidget(view) {
+  const key = view.dataset.export, title = view.dataset.title || key;
+  let rows = WDATA[key];
+  if (key === 'tbl') { rows = [COLS.map(c => c.l)]; $('tbl').querySelectorAll('tbody tr').forEach(tr => rows.push([...tr.children].map(td => td.firstChild ? td.firstChild.textContent.trim() : td.textContent.trim()))); }
+  if (!rows) return;
+  const csv = '\ufeff' + toCSV(rows), name = title.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '_').toLowerCase() + '_' + (terr.kind === 'R' ? 'reunion' : terrName().replace(/[^\w]+/g, '_')) + '.csv';
+  let msg = '';
+  try { await navigator.clipboard.writeText(csv); msg = 'Données copiées (CSV).'; } catch (e) { msg = 'Copie impossible dans ce navigateur.'; }
+  try { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); } catch (e) {}
+  let m = view.querySelector('.msg'); if (!m) { m = document.createElement('span'); m.className = 'msg'; view.querySelector('.view__h').insertBefore(m, view.querySelector('.view__acts')); }
+  m.textContent = msg; setTimeout(() => { m.textContent = ''; }, 3000);
+}
+document.querySelectorAll('.view [data-act]').forEach(b => b.addEventListener('click', e => {
+  e.stopPropagation(); const view = b.closest('.view'), act = b.dataset.act;
+  if (act === 'info') { const inf = view.querySelector('.info'); const was = inf.hidden; document.querySelectorAll('.info').forEach(i => i.hidden = true); inf.style.top = (view.querySelector('.view__h').offsetHeight + 4) + 'px'; inf.hidden = !was; }
+  else if (act === 'csv') exportWidget(view);
+  else if (act === 'full') { const on = view.classList.toggle('full'); b.setAttribute('aria-label', on ? 'Quitter le plein écran' : 'Plein écran'); }
+}));
+document.addEventListener('click', e => { if (!e.target.closest('.info') && !e.target.closest('[data-act="info"]')) document.querySelectorAll('.info').forEach(i => i.hidden = true); });
 EPCI.forEach(e => { const o = document.createElement('option'); o.value = e; o.textContent = e; $('terr-epci').appendChild(o); });
 EPCI.forEach(e => { const og = document.createElement('optgroup'); og.label = e; COMM.filter(c => c.e === e).forEach(c => { const o = document.createElement('option'); o.value = c.c; o.textContent = c.n; og.appendChild(o); }); $('terr-com').appendChild(og); });
 $('terr-epci').addEventListener('change', e => setTerr(e.target.value ? { kind: 'epci', id: e.target.value } : { kind: 'R' }));
@@ -882,17 +1009,20 @@ function renderTable() {
   tb.querySelectorAll('tr').forEach(tr => tr.addEventListener('click', () => { const k = tr.dataset.kind; setTerr(k === 'R' ? { kind: 'R' } : { kind: k, id: tr.dataset.id }); }));
   $('tbl').querySelectorAll('th').forEach(th => th.setAttribute('aria-sort', th.dataset.k === sortK ? (sortDir > 0 ? 'ascending' : 'descending') : 'none'));
 }
-$('copy').addEventListener('click', async () => {
-  const lines = [COLS.map(c => c.l).join('\t')];
-  $('tbl').querySelectorAll('tbody tr').forEach(tr => lines.push([...tr.children].map(td => td.firstChild ? td.firstChild.textContent.trim() : td.textContent.trim()).join('\t')));
-  const msg = $('copy-msg');
-  try { await navigator.clipboard.writeText(lines.join('\n')); msg.textContent = 'Tableau copié.'; }
-  catch (e) { const r = document.createRange(); r.selectNodeContents($('tbl')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent = 'Tableau sélectionné : Ctrl+C pour copier.'; }
-  setTimeout(() => { msg.textContent = ''; }, 3500);
-});
+
 
 /* ===================== onglets ===================== */
-document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => { tab = b.dataset.tab; document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x === b ? 'true' : 'false')); ['parc', 'menages', 'confort', 'donnees'].forEach(t => $('tab-' + t).hidden = t !== tab); }));
+const PAGES = ['synthese', 'parc', 'occupation', 'menages', 'confort', 'donnees'];
+function showTab(t) {
+  tab = t; document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x.dataset.tab === t ? 'true' : 'false'));
+  PAGES.forEach(p => $('page-' + p).hidden = p !== t);
+  const page = $('page-' + t), slot = page.querySelector('.map-slot');
+  if (t === 'synthese') page.insertBefore($('w-map'), page.firstElementChild); else if (slot) slot.appendChild($('w-map'));
+  $('w-map').hidden = !(t === 'synthese' || slot);
+  try { sessionStorage.setItem('tab', t); } catch (e) {}
+}
+document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+try { const t0 = sessionStorage.getItem('tab'); if (t0 && PAGES.includes(t0)) showTab(t0); } catch (e) {}
 document.querySelectorAll('.seg [data-level]').forEach(b => b.addEventListener('click', () => { level = b.dataset.level; document.querySelectorAll('.seg [data-level]').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false')); syncIndOptions(); renderMap(); }));
 Object.entries(IND).forEach(([k, d]) => { const o = document.createElement('option'); o.value = k; o.textContent = d.l; $('map-ind').appendChild(o); });
 $('map-ind').value = mapInd;
@@ -912,7 +1042,7 @@ function render() {
   const cube = iri != null ? B : A, cs = iri != null ? null : coms;
   const a = aggregate(cube, null, cs, iri), base = aggregate(cube, 'ALL', cs, iri);
   lastAgg = a;
-  renderChips(); renderCards(a);
+  renderChips(); syncDropdowns(); renderCards(a);
   const S = {}; FDIMS.forEach(d => { if (cube.D[d]) S[d] = aggregate(cube, d, cs, iri); });
   const dist = (d, agg) => DIM[d].labels.map((_, i) => agg[d.toLowerCase()][i]);
   donut($('d-CAT'), 'CAT', dist('CAT', S.CAT), dist('CAT', base), 'logements');

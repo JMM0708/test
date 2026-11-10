@@ -90,8 +90,11 @@ territoire sont comparées à La Réunion (repère vertical sur les graphiques).
 ## Explorateur « Logements » (carte et filtres croisés)
 
 `explorateur.html` est la version décisionnelle du même jeu de données, sur le
-modèle des outils de tableaux de bord interactifs : une carte choroplèthe et
-des vues qui servent toutes de filtres, recalculées côté navigateur.
+modèle des tableaux de bord Prompto (Datarocks) publiés sur PEIGEO : barre
+d'application et pages en onglets (Synthèse, Parc de logements, Occupation,
+Ménages, Confort, Données), barre de filtres en listes déroulantes, grille de
+widgets en cartes Material avec icônes de définition, d'export CSV et de plein
+écran, source sous chaque widget, carte synchronisée avec les filtres.
 
 - **Carte** à trois mailles (24 communes, 5 EPCI, 344 IRIS), 27 indicateurs
   cartographiables en quintiles, zoom et déplacement, clic pour filtrer sur le
